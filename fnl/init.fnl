@@ -1,8 +1,10 @@
 (local lazy (require :lazy)) ; bootstraps packer
 
 (lazy.setup [
-             :Olical/nfnl
-             :nvim-lua/plenary.nvim
+	     :Olical/nfnl
+	     :nvim-lua/plenary.nvim
+	     ; :udayvir-singh/hibiscus.nvim
+	     ; :udayvir-singh/tangerine.nvim
 	     :MunifTanjim/nui.nvim
 	     :Olical/aniseed
 	     :Olical/conjure
@@ -56,7 +58,7 @@
 	     :sindrets/diffview.nvim
 	     :echasnovski/mini.nvim
 	     :lukas-reineke/indent-blankline.nvim
-         :stevearc/dressing.nvim
+	     :stevearc/dressing.nvim
 	     ; :ray-x/guihua.lua {:run "cd lua/fzy && make"}
 	     ; :ray-x/go.nvim {:mod :go}
 	     ; :NvChad/nvterm {:mod :nvterm}

@@ -43,5 +43,6 @@ end
 bootstrap("https://github.com/Olical/nfnl")
 -- require('nfnl')['compile-all-files']()
 require('init')
+require('options')
 
 vim.cmd([[colorscheme carbonfox]])

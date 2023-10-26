@@ -1,9 +1,31 @@
+; (import-macros {: augroup!} :hibiscus.vim)
+
+; (set! :shiftwidth 8)
+
 (local core (require :nfnl.core))
 (local config (require :nfnl.config))
 (local default (config.default))
 
-(local starter (require :mini.starter))
-(starter.setup)
+(let [starter (require :mini.starter)]
+  (starter.setup))
+
+(let [marks (require :marks)]
+  (marks.setup))
+
+(let [lualine (require :lualine)]
+  (lualine.setup))
+
+(let [which-key (require :which-key)]
+  (which-key.setup))
+
+(let [ibl (require :ibl)]
+  (ibl.setup))
+
+(let [pqf (require :pqf)]
+  (pqf.setup))
+
+(let [dressing (require :dressing)]
+  (dressing.setup))
 
 (set vim.g.mapleader " ")
 (set vim.g.maplocalleader ",")
@@ -32,4 +54,4 @@
 (set vim.opt.tabstop 4)
 (set vim.opt.softtabstop 4)
 (set vim.opt.shiftwidth 4)
-(set vim.o.expandtab true)
+(set vim.opt.expandtab true)
