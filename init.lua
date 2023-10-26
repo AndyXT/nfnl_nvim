@@ -42,7 +42,7 @@ local function bootstrap(url, ref)
 end
 
 bootstrap("https://github.com/Olical/nfnl")
-require('nfnl')['compile-all-files']()
+-- require('nfnl')['compile-all-files']()
 
 require'init'
 vim.cmd([[colorscheme carbonfox]])
