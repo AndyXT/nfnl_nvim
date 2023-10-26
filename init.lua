@@ -17,8 +17,6 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
-require'lua.init'
-
 local function bootstrap(url, ref)
     local name = url:gsub(".*/", "")
     local path
@@ -45,3 +43,6 @@ end
 
 bootstrap("https://github.com/Olical/nfnl")
 require('nfnl')['compile-all-files']()
+
+require'init'
+vim.cmd([[colorscheme carbonfox]])
