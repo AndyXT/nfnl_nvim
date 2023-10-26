@@ -4,6 +4,9 @@
              :nvim-lua/plenary.nvim
              ; :udayvir-singh/hibiscus.nvim
              ; :udayvir-singh/tangerine.nvim
+             :L3MON4D3/LuaSnip
+             :saadparwaiz1/cmp_luasnip
+             :max397574/better-escape.nvim
              :rktjmp/hotpot.nvim
              :MunifTanjim/nui.nvim
              :Olical/aniseed
