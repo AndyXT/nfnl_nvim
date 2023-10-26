@@ -2,6 +2,9 @@
 (local config (require :nfnl.config))
 (local default (config.default))
 
+(local starter (require :mini.starter))
+(starter.setup)
+
 (set vim.g.mapleader " ")
 (set vim.g.maplocalleader ",")
 

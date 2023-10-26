@@ -2,6 +2,8 @@
 
 (lazy.setup [
              :Olical/nfnl
+             :nvim-lua/plenary.nvim
+	     :MunifTanjim/nui.nvim
 	     :Olical/aniseed
 	     :Olical/conjure
 	     :Olical/nvim-local-fennel
@@ -20,7 +22,7 @@
 	     :hrsh7th/nvim-cmp
 	     :jiangmiao/auto-pairs
 	     :lewis6991/impatient.nvim
-	     :liuchengxu/vim-better-default
+	     ;:liuchengxu/vim-better-default
 	     :marko-cerovac/material.nvim
 	     :mbbill/undotree
 	     :neovim/nvim-lspconfig
@@ -54,6 +56,7 @@
 	     :sindrets/diffview.nvim
 	     :echasnovski/mini.nvim
 	     :lukas-reineke/indent-blankline.nvim
+         :stevearc/dressing.nvim
 	     ; :ray-x/guihua.lua {:run "cd lua/fzy && make"}
 	     ; :ray-x/go.nvim {:mod :go}
 	     ; :NvChad/nvterm {:mod :nvterm}
