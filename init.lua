@@ -19,26 +19,6 @@ vim.opt.rtp:prepend(lazypath)
 
 require'lua.init'
 
--- Make some modules easier to access.
-local execute = vim.api.nvim_command
-local fn = vim.fn
-local fmt = string.format
-
--- function ensure (user, repo)
---   -- Ensures a given github.com/USER/REPO is cloned in the pack/packer/start directory.
---   -- local install_path = fmt("%s/packer/start/%s", pack_path, repo, repo)
---   local install_path = vim.fn.stdpath("data") .. "/lazy/" .. repo
---   if fn.empty(fn.glob(install_path)) > 0 then
---     execute(fmt("!git clone https://github.com/%s/%s %s", user, repo, install_path))
---   end
--- end
-
--- ensure("Olical", "nfnl")
-
--- require("lazy").setup({
---   { "Olical/nfnl", ft = "fennel" },
--- })
-
 local function bootstrap(url, ref)
     local name = url:gsub(".*/", "")
     local path
@@ -62,9 +42,6 @@ local function bootstrap(url, ref)
         print(name .. ": finished installing")
     end
 end
--- for stable version [recommended]
--- bootstrap("https://github.com/udayvir-singh/tangerine.nvim")
--- bootstrap("https://github.com/udayvir-singh/hibiscus.nvim")
--- bootstrap("https://github.com/folke/lazy.nvim")
+
 bootstrap("https://github.com/Olical/nfnl")
 require('nfnl')['compile-all-files']()
