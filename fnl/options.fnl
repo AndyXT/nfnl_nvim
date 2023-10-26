@@ -1,6 +1,7 @@
 ; (import-macros {: augroup!} :hibiscus.vim)
 
 ; (set! :shiftwidth 8)
+; (set path (.. path "**"))
 
 (local core (require :nfnl.core))
 (local config (require :nfnl.config))
@@ -54,4 +55,4 @@
 (set vim.opt.tabstop 4)
 (set vim.opt.softtabstop 4)
 (set vim.opt.shiftwidth 4)
-(set vim.opt.expandtab true)
+(set vim.o.expandtab true)

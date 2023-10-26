@@ -1,5 +1,6 @@
 -- ~/.config/nvim/plugin/0-tangerine.lua or ~/.config/nvim/init.lua
 vim.cmd("set exrc")	
+vim.cmd("set path+=**")	
 vim.o.shellcmdflag = "-c"
 
 local pack = "lazy"
