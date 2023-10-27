@@ -66,5 +66,37 @@
              ; :ray-x/go.nvim {:mod :go}
              ; :NvChad/nvterm {:mod :nvterm}
              :EdenEast/nightfox.nvim
-             ])
+             {1 :folke/trouble.nvim
+              :cmd [:TroubleToggle :Trouble]
+              :keys [{1 :<leader>xx
+                      2 "<cmd>TroubleToggle document_diagnostics<cr>"
+                      :desc "Document Diagnostics (Trouble)"}
+                     {1 :<leader>xX
+                      2 "<cmd>TroubleToggle workspace_diagnostics<cr>"
+                      :desc "Workspace Diagnostics (Trouble)"}
+                     {1 :<leader>xL
+                      2 "<cmd>TroubleToggle loclist<cr>"
+                      :desc "Location List (Trouble)"}
+                     {1 :<leader>xQ
+                      2 "<cmd>TroubleToggle quickfix<cr>"
+                      :desc "Quickfix List (Trouble)"}
+                     {1 "[q"
+                      2 (fn []
+                            (if ((. (require :trouble) :is_open))
+                                ((. (require :trouble) :previous) {:jump true
+                                                                   :skip_groups true})
+                                (do
+                                    (local (ok err) (pcall vim.cmd.cprev))
+                                    (when (not ok) (vim.notify err vim.log.levels.ERROR)))))
+                      :desc "Previous trouble/quickfix item"}
+                     {1 "]q"
+                      2 (fn []
+                            (if ((. (require :trouble) :is_open))
+                                ((. (require :trouble) :next) {:jump true :skip_groups true})
+                                (do
+                                    (local (ok err) (pcall vim.cmd.cnext))
+                                    (when (not ok) (vim.notify err vim.log.levels.ERROR)))))
+                      :desc "Next trouble/quickfix item"}]
+              :opts {:use_diagnostic_signs true}}
+            ])
 return {}
