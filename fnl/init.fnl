@@ -205,6 +205,7 @@
                      ret)
              :opts {:labeled_modes :nx}}
             {1 :folke/neodev.nvim :opts {}}
+            :rafamadriz/friendly-snippets
             ])
 ; (require :mini)
 ; (require :pqf)
