@@ -79,6 +79,9 @@
              ; :ray-x/guihua.lua {:run "cd lua/fzy && make"}
              ; :ray-x/go.nvim {:mod :go}
              ; :NvChad/nvterm {:mod :nvterm}
+             {1 :NvChad/nvterm
+              :config (fn []
+                          ((. (require :nvterm) :setup)))}
              :EdenEast/nightfox.nvim
              {1 :folke/trouble.nvim
               :cmd [:TroubleToggle :Trouble]
@@ -112,5 +115,18 @@
                                     (when (not ok) (vim.notify err vim.log.levels.ERROR)))))
                       :desc "Next trouble/quickfix item"}]
               :opts {:use_diagnostic_signs true}}
+            {1 :ThePrimeagen/refactoring.nvim
+             :config (fn []
+             ((. (require :refactoring) :setup)))
+             :dependencies [:nvim-lua/plenary.nvim :nvim-treesitter/nvim-treesitter]}
+            :ThePrimeagen/harpoon
             ])
+; (require :mini)
+; (require :pqf)
+; (require :cmp)
+; (require :ibl)
+; (require :better-escape)
+; (require :lualine)
+; (require :marks)
+; (require :which-key)
 return {}

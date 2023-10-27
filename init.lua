@@ -1,6 +1,5 @@
--- ~/.config/nvim/plugin/0-tangerine.lua or ~/.config/nvim/init.lua
-vim.cmd("set exrc")	
-vim.cmd("set path+=**")	
+vim.cmd("set exrc")
+vim.cmd("set path+=**")
 vim.o.shellcmdflag = "-c"
 
 local pack = "lazy"
@@ -45,5 +44,15 @@ bootstrap("https://github.com/Olical/nfnl")
 -- require('nfnl')['compile-all-files']()
 require('init')
 require('options')
+-- require('cmp')
+-- require('lualine')
+-- require('mini')
+-- require('pqf')
+-- require('cmp')
+-- require('ibl')
+-- require('better-escape')
+-- require('lualine')
+-- require('marks')
+-- require('which-key')
 
 vim.cmd([[colorscheme carbonfox]])
