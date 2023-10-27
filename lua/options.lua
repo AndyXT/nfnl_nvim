@@ -107,9 +107,10 @@ local function on_attach(_, bufnr)
   end
   return vim.api.nvim_buf_create_user_command(bufnr, "Format", _10_, {desc = "Format current buffer with LSP"})
 end
+do end (require("neodev")).setup()
 do
   local lspconfig = require("lspconfig")
-  local servers = {"lua_ls", "gopls", "fennel_language_server"}
+  local servers = {"lua_ls", "gopls", "fennel_language_server", "clangd"}
   for index, value in ipairs(servers) do
     lspconfig[value].setup({capabilities = capabilities, on_attach = on_attach})
   end
@@ -144,7 +145,7 @@ local function _11_()
   return vim.highlight.on_yank()
 end
 vim.api.nvim_create_autocmd("TextYankPost", {callback = _11_, group = highlight_group, pattern = "*"})
-do end (require("telescope")).setup({defaults = {mappings = {i = {["<C-u>"] = false, ["<C-d>"] = false}}}})
+do end (require("telescope")).setup({defaults = {mappings = {i = {["<C-d>"] = false, ["<C-u>"] = false}}}})
 vim.keymap.set("n", "<leader>?", (require("telescope.builtin")).oldfiles, {desc = "[?] Find recently opened files"})
 vim.keymap.set("n", "<leader>b", (require("telescope.builtin")).buffers, {desc = "[ ] Find existing buffers"})
 local function _12_()

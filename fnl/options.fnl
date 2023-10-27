@@ -139,8 +139,10 @@
                                         (fn [_] (vim.lsp.buf.format))
                                         {:desc "Format current buffer with LSP"}))
 
+((. (require :neodev) :setup))
+
 (let [lspconfig (require :lspconfig)]
-  (let [servers [:lua_ls :gopls :fennel_language_server]]
+  (let [servers [:lua_ls :gopls :fennel_language_server :clangd]]
     (each [index value (ipairs servers)]
       ((. lspconfig value :setup) {:capabilities capabilities
                                    :on_attach on_attach}))))

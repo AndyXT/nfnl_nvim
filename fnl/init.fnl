@@ -121,6 +121,90 @@
              :dependencies [:nvim-lua/plenary.nvim :nvim-treesitter/nvim-treesitter]}
             :ThePrimeagen/harpoon
             :onsails/lspkind.nvim
+            {1 :p00f/clangd_extensions.nvim
+             :config (fn [])
+             :lazy true
+             :opts {:extensions {:ast {:kind_icons {:Compound ""
+                                                    :PackExpansion ""
+                                                    :Recovery ""
+                                                    :TemplateParamObject ""
+                                                    :TemplateTemplateParm ""
+                                                    :TemplateTypeParm ""
+                                                    :TranslationUnit ""}
+                                       :role_icons {:declaration ""
+                                                    :expression ""
+                                                    :specifier ""
+                                                    :statement ""
+                                                    "template argument" ""
+                                                    :type ""}}
+                                 :inlay_hints {:inline false}}}}
+            {1 :folke/todo-comments.nvim
+             :cmd [:TodoTrouble :TodoTelescope]
+             :config true
+             :event [:BufReadPost :BufNewFile]
+             :keys [{1 "]t"
+                     2 (fn []
+                         ((. (require :todo-comments) :jump_next)))
+                     :desc "Next todo comment"}
+                    {1 "[t"
+                     2 (fn []
+                         ((. (require :todo-comments) :jump_prev)))
+                     :desc "Previous todo comment"}
+                    {1 :<leader>xt 2 :<cmd>TodoTrouble<cr> :desc "Todo (Trouble)"}
+                    {1 :<leader>xT
+                     2 "<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>"
+                     :desc "Todo/Fix/Fixme (Trouble)"}
+                    {1 :<leader>st 2 :<cmd>TodoTelescope<cr> :desc :Todo}
+                    {1 :<leader>sT
+                     2 "<cmd>TodoTelescope keywords=TODO,FIX,FIXME<cr>"
+                     :desc :Todo/Fix/Fixme}]}
+            {1 :stevearc/aerial.nvim
+             :dependencies [:nvim-treesitter/nvim-treesitter :nvim-tree/nvim-web-devicons]
+             :opts {}}
+            {1 :ggandor/leap.nvim
+             :dependencies [:tpope/vim-repeat]
+             :init (fn []
+                     (vim.api.nvim_create_autocmd :User
+                                                  {:callback (fn []
+                                                               (vim.cmd.hi :Cursor
+                                                                           :blend=100)
+                                                               (vim.opt.guicursor:append ["a:Cursor/lCursor"]))
+                                                   :pattern :LeapEnter})
+                     (vim.api.nvim_create_autocmd :User
+                                                  {:callback (fn []
+                                                               (vim.cmd.hi :Cursor :blend=0)
+                                                               (vim.opt.guicursor:remove ["a:Cursor/lCursor"]))
+                                                   :pattern :LeapLeave}))
+             :keys [{1 :s
+                     2 "<Plug>(leap-forward-to)"
+                     :desc "Leap forward to"
+                     :mode [:n :x :o]}
+                    {1 :S
+                     2 "<Plug>(leap-backward-to)"
+                     :desc "Leap backward to"
+                     :mode [:n :x :o]}
+                    {1 :x
+                     2 "<Plug>(leap-forward-till)"
+                     :desc "Leap forward till"
+                     :mode [:x :o]}
+                    {1 :X
+                     2 "<Plug>(leap-backward-till)"
+                     :desc "Leap backward till"
+                     :mode [:x :o]}
+                    {1 :gs
+                     2 "<Plug>(leap-from-window)"
+                     :desc "Leap from window"
+                     :mode [:n :x :o]}]
+             :opts {}}
+            {1 :ggandor/flit.nvim
+             :dependencies {1 :ggandor/leap.nvim :dependencies [:tpope/vim-repeat]}
+             :keys (fn []
+                     (local ret {})
+                     (each [_ key (ipairs [:f :F :t :T])]
+                       (tset ret (+ (length ret) 1) {1 key :desc key :mode [:n :x :o]}))
+                     ret)
+             :opts {:labeled_modes :nx}}
+            {1 :folke/neodev.nvim :opts {}}
             ])
 ; (require :mini)
 ; (require :pqf)
