@@ -103,6 +103,7 @@
                                           {:name :buffer}
                                           {:name :nvim_lua}
                                           {:name :path}
+                                          {:name :copilot :group_index 2}
                                           {:name :conjure}])})
 (cmp.setup.cmdline ["/" "?"]
                    {:mapping (cmp.mapping.preset.cmdline)
@@ -390,3 +391,40 @@
                                   :renderer {:group_empty true}
                                   :sort_by :case_sensitive
                                   :view {:width 30}})
+(local rt (require :rust-tools))
+(rt.setup {:server {: capabilities :on_attach on-attach}})
+
+((. (require :copilot) :setup) {:copilot_node_command :node
+                                :filetypes {:. false
+                                            :c true
+                                            :cvs false
+                                            :gitcommit false
+                                            :gitrebase false
+                                            :go true
+                                            :help false
+                                            :hgcommit false
+                                            :lua true
+                                            :markdown false
+                                            :python true
+                                            :rust true
+                                            :scala true
+                                            :svn false
+                                            :yaml false}
+                                :panel {:auto_refresh true
+                                        :enabled false
+                                        :keymap {:accept :<CR>
+                                                 :jump_next "]]"
+                                                 :jump_prev "[["
+                                                 :open :<M-CR>
+                                                 :refresh :gr}
+                                        :layout {:position :bottom :ratio 0.4}}
+                                :server_opts_overrides {}
+                                :suggestion {:auto_trigger false
+                                             :debounce 75
+                                             :enabled false
+                                             :keymap {:accept :<Tab>
+                                                      :accept_line false
+                                                      :accept_word false
+                                                      :dismiss :<C-q>
+                                                      :next :<C-l>
+                                                      :prev :<C-h>}}})

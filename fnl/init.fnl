@@ -209,6 +209,15 @@
             :rafamadriz/friendly-snippets
             :debugloop/telescope-undo.nvim
             :nvim-tree/nvim-tree.lua
+            :simrat39/rust-tools.nvim
+            {1 :zbirenbaum/copilot.lua
+             :cmd :Copilot
+             :config (fn []
+                       ((. (require :copilot) :setup)))
+             :event :InsertEnter}
+            {1 :zbirenbaum/copilot-cmp
+             :config (fn []
+                       ((. (require :copilot_cmp) :setup)))}
             ])
 ; (require :mini)
 ; (require :pqf)
