@@ -78,8 +78,6 @@
              :echasnovski/mini.nvim
              :lukas-reineke/indent-blankline.nvim
              :stevearc/dressing.nvim
-             ; :ray-x/guihua.lua {:run "cd lua/fzy && make"}
-             ; :ray-x/go.nvim
              {1 :NvChad/nvterm
               :config (fn []
                           ((. (require :nvterm) :setup)))}
@@ -218,13 +216,14 @@
             {1 :zbirenbaum/copilot-cmp
              :config (fn []
                        ((. (require :copilot_cmp) :setup)))}
+            {1 :ray-x/go.nvim
+             :build ":lua require(\"go.install\").update_all_sync()"
+             :config (fn []
+                       ((. (require :go) :setup)))
+             :dependencies [:ray-x/guihua.lua
+                            :neovim/nvim-lspconfig
+                            :nvim-treesitter/nvim-treesitter]
+             :event [:CmdlineEnter]
+             :ft [:go :gomod]}	
             ])
-; (require :mini)
-; (require :pqf)
-; (require :cmp)
-; (require :ibl)
-; (require :better-escape)
-; (require :lualine)
-; (require :marks)
-; (require :which-key)
 return {}
