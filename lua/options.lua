@@ -35,11 +35,46 @@ do
   local better_escape = require("better_escape")
   better_escape.setup()
 end
-do
-  local cmp = require("cmp")
-  cmp.setup({{sources = cmp.config.sources({{name = "nvim_lsp"}, {name = "luasnip"}, {name = "buffer"}, {name = "nvim_lua"}, {name = "path"}})}})
-  cmp.setup.cmdline({"/", "?"}, {{mapping = cmp.mapping.preset.cmdline}, {sources = cmp.config.sources({{name = "path"}}, {{name = "cmdline"}})}})
+local cmp = require("cmp")
+local luasnip = require("luasnip")
+do end (require("luasnip.loaders.from_vscode")).lazy_load()
+luasnip.config.setup({})
+local function has_words_before()
+  if (vim.api.nvim_buf_get_option(0, "buftype") == "prompt") then
+    return false
+  else
+  end
+  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
+  return ((col ~= 0) and (((vim.api.nvim_buf_get_text(0, (line - 1), 0, (line - 1), col, {}))[1]):match("^%s*$") == nil))
 end
+local lspkind = require("lspkind")
+local function _2_(entry, vim_item)
+  return vim_item
+end
+local function _3_(fallback)
+  if cmp.visible() then
+    return cmp.select_prev_item()
+  elseif (require("luasnip")).jumpable(( - 1)) then
+    return vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-jump-prev", true, true, true), "")
+  else
+    return fallback()
+  end
+end
+local function _5_(fallback)
+  if (cmp.visible() and has_words_before()) then
+    return cmp.select_next_item()
+  elseif (require("luasnip")).expand_or_jumpable() then
+    return vim.fn.feedkeys(vim.api.nvim_replace_termcodes("<Plug>luasnip-expand-or-jump", true, true, true), "")
+  else
+    return fallback()
+  end
+end
+local function _7_(args)
+  return (require("luasnip")).lsp_expand(args.body)
+end
+cmp.setup({formatting = {format = lspkind.cmp_format({before = _2_, ellipsis_char = "...", maxwidth = 50, mode = "symbol", symbol_map = {Copilot = "\239\132\147"}})}, mapping = cmp.mapping.preset.insert({["<C-Space>"] = cmp.mapping.complete(), ["<C-b>"] = cmp.mapping.scroll_docs(( - 4)), ["<C-e>"] = cmp.mapping.abort(), ["<C-f>"] = cmp.mapping.scroll_docs(4), ["<C-n>"] = cmp.mapping.select_next_item(), ["<C-p>"] = cmp.mapping.select_prev_item(), ["<CR>"] = cmp.mapping.confirm({select = true}), ["<S-Tab>"] = cmp.mapping(_3_, {"i", "s"}), ["<Tab>"] = cmp.mapping(_5_, {"i", "s"})}), snippet = {expand = _7_}, sources = cmp.config.sources({{name = "nvim_lsp"}, {name = "luasnip"}, {name = "buffer"}, {name = "nvim_lua"}, {name = "path"}, {name = "conjure"}})})
+cmp.setup.cmdline({"/", "?"}, {mapping = cmp.mapping.preset.cmdline(), sources = {{name = "buffer"}}})
+cmp.setup.cmdline(":", {mapping = cmp.mapping.preset.cmdline(), sources = cmp.config.sources({{name = "path"}}, {{name = "cmdline"}})})
 local capability = vim.lsp.protocol.make_client_capabilities()
 local capabilities = (require("cmp_nvim_lsp")).default_capabilities(capability)
 local function on_attach(_, bufnr)
@@ -63,14 +98,14 @@ local function on_attach(_, bufnr)
   nmap("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
   nmap("<leader>wa", vim.lsp.buf.add_workspace_folder, "[W]orkspace [A]dd Folder")
   nmap("<leader>wr", vim.lsp.buf.remove_workspace_folder, "[W]orkspace [R]emove Folder")
-  local function _2_()
+  local function _9_()
     return print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
   end
-  nmap("<leader>wl", _2_, "[W]orkspace [L]ist Folders")
-  local function _3_(_0)
+  nmap("<leader>wl", _9_, "[W]orkspace [L]ist Folders")
+  local function _10_(_0)
     return vim.lsp.buf.format()
   end
-  return vim.api.nvim_buf_create_user_command(bufnr, "Format", _3_, {desc = "Format current buffer with LSP"})
+  return vim.api.nvim_buf_create_user_command(bufnr, "Format", _10_, {desc = "Format current buffer with LSP"})
 end
 do
   local lspconfig = require("lspconfig")
@@ -105,17 +140,17 @@ vim.keymap.set({"n", "v"}, "<Space>", "<Nop>", {silent = true})
 vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", {expr = true, silent = true})
 vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", {expr = true, silent = true})
 local highlight_group = vim.api.nvim_create_augroup("YankHighlight", {clear = true})
-local function _4_()
+local function _11_()
   return vim.highlight.on_yank()
 end
-vim.api.nvim_create_autocmd("TextYankPost", {callback = _4_, group = highlight_group, pattern = "*"})
+vim.api.nvim_create_autocmd("TextYankPost", {callback = _11_, group = highlight_group, pattern = "*"})
 do end (require("telescope")).setup({defaults = {mappings = {i = {["<C-d>"] = false, ["<C-u>"] = false}}}})
 vim.keymap.set("n", "<leader>?", (require("telescope.builtin")).oldfiles, {desc = "[?] Find recently opened files"})
 vim.keymap.set("n", "<leader>b", (require("telescope.builtin")).buffers, {desc = "[ ] Find existing buffers"})
-local function _5_()
+local function _12_()
   return (require("telescope.builtin")).current_buffer_fuzzy_find((require("telescope.themes")).get_dropdown({winblend = 10, previewer = false}))
 end
-vim.keymap.set("n", "<leader>/", _5_, {desc = "[/] Fuzzily search in current buffer"})
+vim.keymap.set("n", "<leader>/", _12_, {desc = "[/] Fuzzily search in current buffer"})
 vim.keymap.set("n", "<leader>gf", (require("telescope.builtin")).git_files, {desc = "Search [G]it [F]iles"})
 vim.keymap.set("n", "<leader>sf", (require("telescope.builtin")).find_files, {desc = "[S]earch [F]iles"})
 vim.keymap.set("n", "<leader>sh", (require("telescope.builtin")).help_tags, {desc = "[S]earch [H]elp"})
@@ -128,84 +163,84 @@ local terminal = require("nvterm.terminal")
 local ft_cmds = {python = ("python3 " .. vim.fn.expand("%"))}
 local toggle_modes = {"n", "t"}
 local mappings
-local function _6_()
+local function _13_()
   return terminal.send(ft_cmds[vim.bo.filetype])
 end
-local function _7_()
+local function _14_()
   return terminal.toggle("horizontal")
 end
-local function _8_()
+local function _15_()
   return terminal.toggle("vertical")
 end
-local function _9_()
+local function _16_()
   return terminal.toggle("float")
 end
-mappings = {{"n", "<C-l>", _6_}, {toggle_modes, "<A-h>", _7_}, {toggle_modes, "<A-v>", _8_}, {toggle_modes, "<A-i>", _9_}}
+mappings = {{"n", "<C-l>", _13_}, {toggle_modes, "<A-h>", _14_}, {toggle_modes, "<A-v>", _15_}, {toggle_modes, "<A-i>", _16_}}
 local opts = {noremap = true, silent = true}
 for _, mapping in ipairs(mappings) do
   vim.keymap.set(mapping[1], mapping[2], mapping[3], opts)
 end
 vim.keymap.set("n", "<leader>.", "<cmd>Telescope file_browser path=%:p:h select_buffer=true<cr>", {desc = "File Browser Buffer CWD"})
 do end (require("telescope")).load_extension("harpoon")
-local function _10_()
+local function _17_()
   return (require("harpoon.mark")).add_file()
 end
-vim.keymap.set("n", "<leader>ha", _10_, {desc = "Add File"})
-local function _11_()
+vim.keymap.set("n", "<leader>ha", _17_, {desc = "Add File"})
+local function _18_()
   return (require("harpoon.ui")).toggle_quick_menu()
 end
-vim.keymap.set("n", "<leader>hm", _11_, {desc = "Toggle Menu"})
-local function _12_()
+vim.keymap.set("n", "<leader>hm", _18_, {desc = "Toggle Menu"})
+local function _19_()
   return (require("harpoon.ui")).nav_next()
 end
-vim.keymap.set("n", "<leader>hn", _12_, {desc = "[N]ext  File"})
-local function _13_()
+vim.keymap.set("n", "<leader>hn", _19_, {desc = "[N]ext  File"})
+local function _20_()
   return (require("harpoon.ui")).nav_prev()
 end
-vim.keymap.set("n", "<leader>hp", _13_, {desc = "[P]revious File"})
+vim.keymap.set("n", "<leader>hp", _20_, {desc = "[P]revious File"})
 do end (require("refactoring")).setup({})
-local function _14_()
+local function _21_()
   return (require("refactoring")).refactor("Extract Function")
 end
-vim.keymap.set("x", "<leader>re", _14_, {desc = "Extract Function"})
-local function _15_()
+vim.keymap.set("x", "<leader>re", _21_, {desc = "Extract Function"})
+local function _22_()
   return (require("refactoring")).refactor("Extract Function To File")
 end
-vim.keymap.set("x", "<leader>rf", _15_, {desc = "Extract Function to File"})
-local function _16_()
+vim.keymap.set("x", "<leader>rf", _22_, {desc = "Extract Function to File"})
+local function _23_()
   return (require("refactoring")).refactor("Extract Variable")
 end
-vim.keymap.set("x", "<leader>rv", _16_, {desc = "Extract Variable"})
-local function _17_()
+vim.keymap.set("x", "<leader>rv", _23_, {desc = "Extract Variable"})
+local function _24_()
   return (require("refactoring")).refactor("Inline Function")
 end
-vim.keymap.set("n", "<leader>rI", _17_, {desc = "Inline Function"})
-local function _18_()
+vim.keymap.set("n", "<leader>rI", _24_, {desc = "Inline Function"})
+local function _25_()
   return (require("refactoring")).refactor("Inline Variable")
 end
-vim.keymap.set({"n", "x"}, "<leader>ri", _18_, {desc = "Inline Variable"})
-local function _19_()
+vim.keymap.set({"n", "x"}, "<leader>ri", _25_, {desc = "Inline Variable"})
+local function _26_()
   return (require("refactoring")).refactor("Extract Block")
 end
-vim.keymap.set("n", "<leader>rb", _19_, {desc = "Extract Block"})
-local function _20_()
+vim.keymap.set("n", "<leader>rb", _26_, {desc = "Extract Block"})
+local function _27_()
   return (require("refactoring")).refactor("Extract Block To File")
 end
-vim.keymap.set("n", "<leader>rbf", _20_, {desc = "Extract Block To File"})
+vim.keymap.set("n", "<leader>rbf", _27_, {desc = "Extract Block To File"})
 do end (require("telescope")).load_extension("refactoring")
-local function _21_()
+local function _28_()
   return (((require("telescope")).extensions).refactoring).refactors()
 end
-vim.keymap.set({"n", "x"}, "<leader>rr", _21_, {desc = "Select Refactor Menu"})
-local function _22_()
+vim.keymap.set({"n", "x"}, "<leader>rr", _28_, {desc = "Select Refactor Menu"})
+local function _29_()
   return ((require("refactoring")).debug).printf({below = false})
 end
-vim.keymap.set("n", "<leader>rp", _22_, {desc = "Debug Printf"})
-local function _23_()
+vim.keymap.set("n", "<leader>rp", _29_, {desc = "Debug Printf"})
+local function _30_()
   return ((require("refactoring")).debug).print_var()
 end
-vim.keymap.set({"x", "n"}, "<leader>rv", _23_, {desc = "Debug Print Var"})
-local function _24_()
+vim.keymap.set({"x", "n"}, "<leader>rv", _30_, {desc = "Debug Print Var"})
+local function _31_()
   return ((require("refactoring")).debug).cleanup({})
 end
-return vim.keymap.set("n", "<leader>rc", _24_, {desc = "Debug Cleanup"})
+return vim.keymap.set("n", "<leader>rc", _31_, {desc = "Debug Cleanup"})
