@@ -1,10 +1,14 @@
--- [nfnl] Compiled from fnl/options.fnl by https://github.com/Olical/nfnl, do not edit.
+-- [nfnl] Compiled from fnl\options.fnl by https://github.com/Olical/nfnl, do not edit.
 local core = require("nfnl.core")
 local config = require("nfnl.config")
 local default = config.default()
 do
   local starter = require("mini.starter")
   starter.setup()
+end
+do
+  local misc = require("mini.misc")
+  misc.setup()
 end
 do
   local marks = require("marks")
@@ -181,6 +185,7 @@ local opts = {noremap = true, silent = true}
 for _, mapping in ipairs(mappings) do
   vim.keymap.set(mapping[1], mapping[2], mapping[3], opts)
 end
+pcall((require("telescope")).load_extension, "file_browser")
 vim.keymap.set("n", "<leader>.", "<cmd>Telescope file_browser path=%:p:h select_buffer=true<cr>", {desc = "File Browser Buffer CWD"})
 do end (require("telescope")).load_extension("harpoon")
 local function _17_()
@@ -248,4 +253,9 @@ vim.keymap.set("n", "<leader>rc", _31_, {desc = "Debug Cleanup"})
 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, {desc = "Go to previous diagnostic message"})
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, {desc = "Go to next diagnostic message"})
 vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, {desc = "Open floating diagnostic message"})
-return vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, {desc = "Open diagnostics list"})
+vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, {desc = "Open diagnostics list"})
+vim.keymap.set("n", "<leader>z", MiniMisc.zoom, {desc = "Toggle Zoom current window"})
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+vim.opt.termguicolors = true
+return (require("nvim-tree")).setup({filters = {dotfiles = true}, renderer = {group_empty = true}, sort_by = "case_sensitive", view = {width = 30}})

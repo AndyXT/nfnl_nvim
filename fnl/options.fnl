@@ -5,6 +5,9 @@
 (let [starter (require :mini.starter)]
   (starter.setup))
 
+(let [misc (require :mini.misc)]
+  (misc.setup))
+
 (let [marks (require :marks)]
   (marks.setup))
 
@@ -14,24 +17,25 @@
 (let [which-key (require :which-key)]
   (which-key.setup))
 
-((. (require :which-key) :register) {:<leader>c {:_ :which_key_ignore
-                                                 :name "[C]ode"}
-                                     :<leader>d {:_ :which_key_ignore
-                                                 :name "[D]ocument"}
-                                     :<leader>g {:_ :which_key_ignore
-                                                 :name "[G]it"}
-                                     :<leader>h {:_ :which_key_ignore
-                                                 :name "[H]arpoon"}
-                                     :<leader>o {:_ :which_key_ignore
-                                                 :name "[O]rgmode"}
-                                     :<leader>r {:_ :which_key_ignore
-                                                 :name "[R]ename"}
-                                     :<leader>s {:_ :which_key_ignore
-                                                 :name "[S]earch"}
-                                     :<leader>w {:_ :which_key_ignore
-                                                 :name "[W]orkspace"}
-                                     :<leader>x {:_ :which_key_ignore
-                                                 :name "[T]rouble"}})
+((. (require :which-key) :register) 
+  {:<leader>c {:_ :which_key_ignore
+              :name "[C]ode"}
+   :<leader>d {:_ :which_key_ignore
+               :name "[D]ocument"}
+   :<leader>g {:_ :which_key_ignore
+               :name "[G]it"}
+   :<leader>h {:_ :which_key_ignore
+               :name "[H]arpoon"}
+   :<leader>o {:_ :which_key_ignore
+               :name "[O]rgmode"}
+   :<leader>r {:_ :which_key_ignore
+               :name "[R]ename"}
+   :<leader>s {:_ :which_key_ignore
+               :name "[S]earch"}
+   :<leader>w {:_ :which_key_ignore
+               :name "[W]orkspace"}
+   :<leader>x {:_ :which_key_ignore
+               :name "[T]rouble"}})
 
 (let [ibl (require :ibl)]
   (ibl.setup))
@@ -61,34 +65,37 @@
                                                       :maxwidth 50
                                                       :mode :symbol
                                                       :symbol_map {:Copilot ""}})}
-            :mapping (cmp.mapping.preset.insert {:<C-Space> (cmp.mapping.complete)
-                                                 :<C-b> (cmp.mapping.scroll_docs (- 4))
-                                                 :<C-e> (cmp.mapping.abort)
-                                                 :<C-f> (cmp.mapping.scroll_docs 4)
-                                                 :<C-n> (cmp.mapping.select_next_item)
-                                                 :<C-p> (cmp.mapping.select_prev_item)
-                                                 :<CR> (cmp.mapping.confirm {:select true})
-                                                 :<S-Tab> (cmp.mapping (fn [fallback]
-                                                                         (if (cmp.visible)
-                                                                             (cmp.select_prev_item)
-                                                                             ((. (require :luasnip)
-                                                                                 :jumpable) (- 1))
-                                                                             (vim.fn.feedkeys 
-                                                                               (vim.api.nvim_replace_termcodes 
-                                                                                 :<Plug>luasnip-jump-prev true true true) "")
-                                                                             (fallback)))
-                                                                       [:i :s])
-                                                 :<Tab> (cmp.mapping (fn [fallback]
-                                                                       (if (and (cmp.visible)
-                                                                                (has-words-before))
-                                                                           (cmp.select_next_item)
-                                                                           ((. (require :luasnip)
-                                                                               :expand_or_jumpable))
-                                                                           (vim.fn.feedkeys 
-                                                                             (vim.api.nvim_replace_termcodes 
-                                                                               :<Plug>luasnip-expand-or-jump true true true) "")
-                                                                           (fallback)))
-                                                                     [:i :s])})
+            :mapping (cmp.mapping.preset.insert 
+                      {:<C-Space> (cmp.mapping.complete)
+                       :<C-b> (cmp.mapping.scroll_docs (- 4))
+                       :<C-e> (cmp.mapping.abort)
+                       :<C-f> (cmp.mapping.scroll_docs 4)
+                       :<C-n> (cmp.mapping.select_next_item)
+                       :<C-p> (cmp.mapping.select_prev_item)
+                       :<CR> (cmp.mapping.confirm {:select true})
+                       :<S-Tab> (cmp.mapping 
+                                  (fn [fallback]
+                                    (if (cmp.visible)
+                                      (cmp.select_prev_item)
+                                      ((. (require :luasnip)
+                                          :jumpable) (- 1))
+                                      (vim.fn.feedkeys 
+                                        (vim.api.nvim_replace_termcodes 
+                                          :<Plug>luasnip-jump-prev true true true) "")
+                                      (fallback)))
+                                  [:i :s])
+                       :<Tab> (cmp.mapping 
+                                (fn [fallback]
+                                  (if (and (cmp.visible)
+                                         (has-words-before))
+                                    (cmp.select_next_item)
+                                    ((. (require :luasnip)
+                                        :expand_or_jumpable))
+                                    (vim.fn.feedkeys 
+                                      (vim.api.nvim_replace_termcodes 
+                                        :<Plug>luasnip-expand-or-jump true true true) "")
+                                    (fallback)))
+                                [:i :s])})
             :snippet {:expand (fn [args]
                                 ((. (require :luasnip) :lsp_expand) args.body))}
             :sources (cmp.config.sources [{:name :nvim_lsp}
@@ -276,6 +283,8 @@
 (local opts {:noremap true :silent true})
 (each [_ mapping (ipairs mappings)]
   (vim.keymap.set (. mapping 1) (. mapping 2) (. mapping 3) opts))	
+
+(pcall (. (require :telescope) :load_extension) :file_browser)
 (vim.keymap.set :n :<leader>.
                 "<cmd>Telescope file_browser path=%:p:h select_buffer=true<cr>"
                 {:desc "File Browser Buffer CWD"})
@@ -353,3 +362,31 @@
                 {:desc "Open floating diagnostic message"})
 (vim.keymap.set :n :<leader>q vim.diagnostic.setloclist
                 {:desc "Open diagnostics list"})
+(vim.keymap.set :n :<leader>z MiniMisc.zoom
+                {:desc "Toggle Zoom current window"})
+; ((. (require :telescope) :load_extension) :undo)
+; ((. (require :telescope) :setup) {:extensions {:undo {:layout_config {:preview_height 0.8}
+;                                                       :layout_strategy :vertical
+;                                                       :side_by_side true}}})
+
+; (vim.keymap.set :n :<leader>u "<cmd>Telescope undo<cr>"
+;                 {:desc "Telescope Undo"})
+(set vim.g.loaded_netrw 1)
+(set vim.g.loaded_netrwPlugin 1)
+(set vim.opt.termguicolors true)
+; (fn my-on-attach [bufnr]
+;   (let [api (require :nvim-tree.api)]
+;     (fn opts [desc]
+;       {:buffer bufnr
+;        :desc (.. "nvim-tree: " desc)
+;        :noremap true
+;        :nowait true
+;        :silent true})
+
+;     (api.config.mappings.default_on_attach bufnr)
+;     (vim.keymap.set :n :<C-t> api.tree.change_root_to_parent (opts :Up))
+;     (vim.keymap.set :n "?" api.tree.toggle_help (opts :Help))))
+((. (require :nvim-tree) :setup) {:filters {:dotfiles true}
+                                  :renderer {:group_empty true}
+                                  :sort_by :case_sensitive
+                                  :view {:width 30}})

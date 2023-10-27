@@ -34,7 +34,7 @@
              :nvim-lualine/lualine.nvim
              {1 :nvim-telescope/telescope.nvim
               :branch :0.1.x
-              :config (fn []
+              :config (lambda []
                           ((. (require :telescope) :setup) {:extensions {:undo {:layout_config {:preview_height 0.8}
                                                                                 :layout_strategy :vertical
                                                                                 :side_by_side true}}})
@@ -45,6 +45,8 @@
                              {1 :nvim-telescope/telescope-fzf-native.nvim
                               :build :make
                               :cond (fn [] (= (vim.fn.executable :make) 1))}]}
+             {1 :nvim-telescope/telescope-file-browser.nvim
+             :dependencies [:nvim-telescope/telescope.nvim :nvim-lua/plenary.nvim]}
              {1 :nvim-treesitter/nvim-treesitter
               :build ":TSUpdate"
               :dependencies [:nvim-treesitter/nvim-treesitter-textobjects]}
@@ -77,8 +79,7 @@
              :lukas-reineke/indent-blankline.nvim
              :stevearc/dressing.nvim
              ; :ray-x/guihua.lua {:run "cd lua/fzy && make"}
-             ; :ray-x/go.nvim {:mod :go}
-             ; :NvChad/nvterm {:mod :nvterm}
+             ; :ray-x/go.nvim
              {1 :NvChad/nvterm
               :config (fn []
                           ((. (require :nvterm) :setup)))}
@@ -206,6 +207,8 @@
              :opts {:labeled_modes :nx}}
             {1 :folke/neodev.nvim :opts {}}
             :rafamadriz/friendly-snippets
+            :debugloop/telescope-undo.nvim
+            :nvim-tree/nvim-tree.lua
             ])
 ; (require :mini)
 ; (require :pqf)
