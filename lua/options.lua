@@ -144,7 +144,7 @@ local function _11_()
   return vim.highlight.on_yank()
 end
 vim.api.nvim_create_autocmd("TextYankPost", {callback = _11_, group = highlight_group, pattern = "*"})
-do end (require("telescope")).setup({defaults = {mappings = {i = {["<C-d>"] = false, ["<C-u>"] = false}}}})
+do end (require("telescope")).setup({defaults = {mappings = {i = {["<C-u>"] = false, ["<C-d>"] = false}}}})
 vim.keymap.set("n", "<leader>?", (require("telescope.builtin")).oldfiles, {desc = "[?] Find recently opened files"})
 vim.keymap.set("n", "<leader>b", (require("telescope.builtin")).buffers, {desc = "[ ] Find existing buffers"})
 local function _12_()

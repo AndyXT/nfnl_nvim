@@ -1,8 +1,3 @@
-; (import-macros {: augroup!} :hibiscus.vim)
-
-; (set! :shiftwidth 8)
-; (set path (.. path "**"))
-
 (local core (require :nfnl.core))
 (local config (require :nfnl.config))
 (local default (config.default))
@@ -49,19 +44,6 @@
 
 (let [better-escape (require :better_escape)]
   (better-escape.setup))
-
-; (let [cmp (require :cmp)]
-;   (cmp.setup [
-;               {:sources (cmp.config.sources [{:name :nvim_lsp}
-;                                              {:name :luasnip}
-;                                              {:name :buffer}
-;                                              {:name :nvim_lua}
-;                                              {:name :path}])}
-;               ])
-;   (cmp.setup.cmdline ["/" "?"] [
-;                               {:mapping cmp.mapping.preset.cmdline}
-;                               {:sources (cmp.config.sources [{:name :path}] [{:name :cmdline}])}  
-;                                 ]))
 
 (local cmp (require :cmp))
 (local luasnip (require :luasnip))
@@ -313,6 +295,7 @@
                 (fn []
                   ((. (require :harpoon.ui) :nav_prev)))
                 {:desc "[P]revious File"})
+
 ((. (require :refactoring) :setup) {})
 (vim.keymap.set :x :<leader>re
                 (fn []
