@@ -120,6 +120,7 @@
              ((. (require :refactoring) :setup)))
              :dependencies [:nvim-lua/plenary.nvim :nvim-treesitter/nvim-treesitter]}
             :ThePrimeagen/harpoon
+            :onsails/lspkind.nvim
             ])
 ; (require :mini)
 ; (require :pqf)
