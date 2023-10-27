@@ -103,6 +103,8 @@
       ((. lspconfig value :setup) {:capabilities capabilities
                                    :on_attach on_attach}))))
 
+(pcall (. (require :telescope) :load_extension) :fzf)	
+
 (set vim.g.mapleader " ")
 (set vim.g.maplocalleader ",")
 

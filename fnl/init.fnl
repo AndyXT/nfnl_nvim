@@ -32,7 +32,19 @@
              :mbbill/undotree
              :neovim/nvim-lspconfig
              :nvim-lualine/lualine.nvim
-             :nvim-telescope/telescope.nvim
+             {1 :nvim-telescope/telescope.nvim
+              :branch :0.1.x
+              :config (fn []
+                          ((. (require :telescope) :setup) {:extensions {:undo {:layout_config {:preview_height 0.8}
+                                                                                :layout_strategy :vertical
+                                                                                :side_by_side true}}})
+                          ((. (require :telescope) :load_extension) :undo)
+                          (vim.keymap.set :n :<leader>u "<cmd>Telescope undo<cr>"))
+              :dependencies [:nvim-lua/plenary.nvim
+                             :debugloop/telescope-undo.nvim
+                             {1 :nvim-telescope/telescope-fzf-native.nvim
+                              :build :make
+                              :cond (fn [] (= (vim.fn.executable :make) 1))}]}
              :nvim-treesitter/nvim-treesitter
              :radenling/vim-dispatch-neovim
              :tpope/vim-abolish

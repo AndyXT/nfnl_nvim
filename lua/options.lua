@@ -79,6 +79,7 @@ do
     lspconfig[value].setup({capabilities = capabilities, on_attach = on_attach})
   end
 end
+pcall((require("telescope")).load_extension, "fzf")
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
 vim.o.mouse = "a"
