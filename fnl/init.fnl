@@ -45,7 +45,9 @@
                              {1 :nvim-telescope/telescope-fzf-native.nvim
                               :build :make
                               :cond (fn [] (= (vim.fn.executable :make) 1))}]}
-             :nvim-treesitter/nvim-treesitter
+             {1 :nvim-treesitter/nvim-treesitter
+              :build ":TSUpdate"
+              :dependencies [:nvim-treesitter/nvim-treesitter-textobjects]}
              :radenling/vim-dispatch-neovim
              :tpope/vim-abolish
              :tpope/vim-commentary
