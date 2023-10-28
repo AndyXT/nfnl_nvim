@@ -223,5 +223,9 @@
                             :nvim-treesitter/nvim-treesitter]
              :event [:CmdlineEnter]
              :ft [:go :gomod]}	
+            :godlygeek/tabular
+            ; :preservim/vim-markdown
+            :vim-pandoc/vim-pandoc
+            :vim-pandoc/vim-pandoc-syntax
             ])
 return {}
