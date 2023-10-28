@@ -150,7 +150,7 @@
 ((. (require :neodev) :setup))
 
 (let [lspconfig (require :lspconfig)]
-  (let [servers [:lua_ls :gopls :fennel_language_server :clangd]]
+  (let [servers [:lua_ls :gopls :fennel_language_server :clangd :racket_langserver]]
     (each [index value (ipairs servers)]
       ((. lspconfig value :setup) {:capabilities capabilities
                                    :on_attach on_attach}))))
@@ -228,7 +228,7 @@
                 {:desc "[S]earch [D]iagnostics"})
 ((. (require :nvim-treesitter.configs) :setup) 
   {:auto_install false
-    :ensure_installed [:c :cpp :go :lua :python :rust :tsx :typescript :vimdoc :vim :scala :elixir :heex :kotlin :fennel]
+    :ensure_installed [:c :cpp :go :lua :python :rust :tsx :typescript :vimdoc :vim :scala :elixir :heex :kotlin :fennel :racket]
     :highlight {:enable true}
     :incremental_selection {:enable true
                             :keymaps {:init_selection :<c-space>

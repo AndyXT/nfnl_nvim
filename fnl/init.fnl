@@ -20,6 +20,8 @@
              :folke/which-key.nvim
              :ggandor/lightspeed.nvim
              :guns/vim-sexp
+             ;:guns/vim-sexp
+             ;:wlangstroth/vim-racket
              :hrsh7th/cmp-buffer
              :hrsh7th/cmp-cmdline
              :hrsh7th/cmp-nvim-lsp
