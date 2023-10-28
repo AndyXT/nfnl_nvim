@@ -2,8 +2,6 @@
 (lazy.setup [
              :Olical/nfnl
              :nvim-lua/plenary.nvim
-             ; :udayvir-singh/hibiscus.nvim
-             ; :udayvir-singh/tangerine.nvim
              :L3MON4D3/LuaSnip
              :saadparwaiz1/cmp_luasnip
              :max397574/better-escape.nvim
@@ -20,7 +18,6 @@
              :folke/which-key.nvim
              :ggandor/lightspeed.nvim
              :guns/vim-sexp
-             ;:guns/vim-sexp
              ;:wlangstroth/vim-racket
              :hrsh7th/cmp-buffer
              :hrsh7th/cmp-cmdline
@@ -29,7 +26,6 @@
              :hrsh7th/nvim-cmp
              :jiangmiao/auto-pairs
              :lewis6991/impatient.nvim
-             ;:liuchengxu/vim-better-default
              :marko-cerovac/material.nvim
              :mbbill/undotree
              :neovim/nvim-lspconfig
@@ -210,22 +206,22 @@
             :debugloop/telescope-undo.nvim
             :nvim-tree/nvim-tree.lua
             :simrat39/rust-tools.nvim
-            {1 :zbirenbaum/copilot.lua
-             :cmd :Copilot
-             :config (fn []
-                       ((. (require :copilot) :setup)))
-             :event :InsertEnter}
-            {1 :zbirenbaum/copilot-cmp
-             :config (fn []
-                       ((. (require :copilot_cmp) :setup)))}
-            {1 :ray-x/go.nvim
-             :build ":lua require(\"go.install\").update_all_sync()"
-             :config (fn []
-                       ((. (require :go) :setup)))
-             :dependencies [:ray-x/guihua.lua
-                            :neovim/nvim-lspconfig
-                            :nvim-treesitter/nvim-treesitter]
-             :event [:CmdlineEnter]
-             :ft [:go :gomod]}	
+            ; {1 :zbirenbaum/copilot.lua
+            ;  :cmd :Copilot
+            ;  :config (fn []
+            ;            ((. (require :copilot) :setup)))
+            ;  :event :InsertEnter}
+            ; {1 :zbirenbaum/copilot-cmp
+            ;  :config (fn []
+            ;            ((. (require :copilot_cmp) :setup)))}
+            ; {1 :ray-x/go.nvim
+            ;  :build ":lua require(\"go.install\").update_all_sync()"
+            ;  :config (fn []
+            ;            ((. (require :go) :setup)))
+            ;  :dependencies [:ray-x/guihua.lua
+            ;                 :neovim/nvim-lspconfig
+            ;                 :nvim-treesitter/nvim-treesitter]
+            ;  :event [:CmdlineEnter]
+            ;  :ft [:go :gomod]}	
             ])
 return {}
