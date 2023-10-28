@@ -2,8 +2,6 @@
 (lazy.setup [
              :Olical/nfnl
              :nvim-lua/plenary.nvim
-             ; :udayvir-singh/hibiscus.nvim
-             ; :udayvir-singh/tangerine.nvim
              :L3MON4D3/LuaSnip
              :saadparwaiz1/cmp_luasnip
              :max397574/better-escape.nvim
@@ -20,7 +18,6 @@
              :folke/which-key.nvim
              :ggandor/lightspeed.nvim
              :guns/vim-sexp
-             ;:guns/vim-sexp
              ;:wlangstroth/vim-racket
              :hrsh7th/cmp-buffer
              :hrsh7th/cmp-cmdline
@@ -29,7 +26,6 @@
              :hrsh7th/nvim-cmp
              :jiangmiao/auto-pairs
              :lewis6991/impatient.nvim
-             ;:liuchengxu/vim-better-default
              :marko-cerovac/material.nvim
              :mbbill/undotree
              :neovim/nvim-lspconfig
