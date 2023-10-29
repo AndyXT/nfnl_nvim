@@ -227,5 +227,6 @@
             ; :preservim/vim-markdown
             :vim-pandoc/vim-pandoc
             :vim-pandoc/vim-pandoc-syntax
+            :williamboman/mason.nvim
             ])
 return {}

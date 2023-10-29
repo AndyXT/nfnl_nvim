@@ -8,6 +8,9 @@
 (let [misc (require :mini.misc)]
   (misc.setup))
 
+(let [misc (require :mini.move)]
+  (misc.setup))
+
 (let [marks (require :marks)]
   (marks.setup))
 
@@ -150,10 +153,15 @@
 ((. (require :neodev) :setup))
 
 (let [lspconfig (require :lspconfig)]
-  (let [servers [:lua_ls :gopls :fennel_language_server :clangd :racket_langserver]]
+  (let [servers [:lua_ls :gopls :fennel_language_server :clangd]]
     (each [index value (ipairs servers)]
       ((. lspconfig value :setup) {:capabilities capabilities
-                                   :on_attach on_attach}))))
+                                   :on_attach on_attach})))
+  ((. lspconfig :racket_langserver :setup) {:capabilities capabilities
+                                            :on_attach on_attach}))
+                                            ;:cmd ["xvfb-run" "racket" "-l" "racket-langserver"]
+
+
 
 (pcall (. (require :telescope) :load_extension) :fzf)	
 
@@ -428,3 +436,4 @@
                                                       :dismiss :<C-q>
                                                       :next :<C-l>
                                                       :prev :<C-h>}}})
+((. (require :mason) :setup) {})

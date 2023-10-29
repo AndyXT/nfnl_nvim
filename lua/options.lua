@@ -11,6 +11,10 @@ do
   misc.setup()
 end
 do
+  local misc = require("mini.move")
+  misc.setup()
+end
+do
   local marks = require("marks")
   marks.setup()
 end
@@ -114,10 +118,13 @@ end
 do end (require("neodev")).setup()
 do
   local lspconfig = require("lspconfig")
-  local servers = {"lua_ls", "gopls", "fennel_language_server", "clangd", "racket_langserver"}
-  for index, value in ipairs(servers) do
-    lspconfig[value].setup({capabilities = capabilities, on_attach = on_attach})
+  do
+    local servers = {"lua_ls", "gopls", "fennel_language_server", "clangd"}
+    for index, value in ipairs(servers) do
+      lspconfig[value].setup({capabilities = capabilities, on_attach = on_attach})
+    end
   end
+  lspconfig.racket_langserver.setup({capabilities = capabilities, on_attach = on_attach})
 end
 pcall((require("telescope")).load_extension, "fzf")
 vim.g.mapleader = " "
@@ -149,7 +156,7 @@ local function _11_()
   return vim.highlight.on_yank()
 end
 vim.api.nvim_create_autocmd("TextYankPost", {callback = _11_, group = highlight_group, pattern = "*"})
-do end (require("telescope")).setup({defaults = {mappings = {i = {["<C-d>"] = false, ["<C-u>"] = false}}}})
+do end (require("telescope")).setup({defaults = {mappings = {i = {["<C-u>"] = false, ["<C-d>"] = false}}}})
 vim.keymap.set("n", "<leader>?", (require("telescope.builtin")).oldfiles, {desc = "[?] Find recently opened files"})
 vim.keymap.set("n", "<leader>b", (require("telescope.builtin")).buffers, {desc = "[ ] Find existing buffers"})
 local function _12_()
@@ -261,4 +268,5 @@ vim.opt.termguicolors = true
 do end (require("nvim-tree")).setup({filters = {dotfiles = true}, renderer = {group_empty = true}, sort_by = "case_sensitive", view = {width = 30}})
 local rt = require("rust-tools")
 rt.setup({server = {capabilities = capabilities, on_attach = on_attach}})
-return (require("copilot")).setup({copilot_node_command = "node", filetypes = {c = true, go = true, lua = true, python = true, rust = true, scala = true, cvs = false, yaml = false, ["."] = false, gitrebase = false, svn = false, markdown = false, help = false, hgcommit = false, gitcommit = false}, panel = {auto_refresh = true, keymap = {accept = "<CR>", jump_next = "]]", jump_prev = "[[", open = "<M-CR>", refresh = "gr"}, layout = {position = "bottom", ratio = 0.4}, enabled = false}, server_opts_overrides = {}, suggestion = {debounce = 75, keymap = {accept = "<Tab>", dismiss = "<C-q>", next = "<C-l>", prev = "<C-h>", accept_word = false, accept_line = false}, auto_trigger = false, enabled = false}})
+do end (require("copilot")).setup({copilot_node_command = "node", filetypes = {c = true, go = true, lua = true, python = true, rust = true, scala = true, svn = false, gitcommit = false, markdown = false, yaml = false, hgcommit = false, gitrebase = false, help = false, ["."] = false, cvs = false}, panel = {auto_refresh = true, keymap = {accept = "<CR>", jump_next = "]]", jump_prev = "[[", open = "<M-CR>", refresh = "gr"}, layout = {position = "bottom", ratio = 0.4}, enabled = false}, server_opts_overrides = {}, suggestion = {debounce = 75, keymap = {accept = "<Tab>", dismiss = "<C-q>", next = "<C-l>", prev = "<C-h>", accept_line = false, accept_word = false}, auto_trigger = false, enabled = false}})
+return (require("mason")).setup({})
