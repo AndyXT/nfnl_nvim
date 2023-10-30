@@ -228,5 +228,13 @@
             :vim-pandoc/vim-pandoc
             :vim-pandoc/vim-pandoc-syntax
             :williamboman/mason.nvim
+            {1 :jackMort/ChatGPT.nvim
+             :config (fn []
+                       ((. (require :chatgpt) :setup) {}))
+             :dependencies [:MunifTanjim/nui.nvim
+                            :nvim-lua/plenary.nvim
+                            :nvim-telescope/telescope.nvim]
+             :event :VeryLazy}
+            :ConradIrwin/vim-bracketed-paste
             ])
 return {}
