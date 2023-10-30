@@ -127,6 +127,7 @@ do
   lspconfig.racket_langserver.setup({capabilities = capabilities, on_attach = on_attach})
 end
 pcall((require("telescope")).load_extension, "fzf")
+pcall((require("telescope")).load_extension, "conventional_commits")
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
 vim.wo.number = true
@@ -156,7 +157,7 @@ local function _11_()
   return vim.highlight.on_yank()
 end
 vim.api.nvim_create_autocmd("TextYankPost", {callback = _11_, group = highlight_group, pattern = "*"})
-do end (require("telescope")).setup({defaults = {mappings = {i = {["<C-u>"] = false, ["<C-d>"] = false}}}})
+do end (require("telescope")).setup({defaults = {mappings = {i = {["<C-d>"] = false, ["<C-u>"] = false}}}})
 vim.keymap.set("n", "<leader>?", (require("telescope.builtin")).oldfiles, {desc = "[?] Find recently opened files"})
 vim.keymap.set("n", "<leader>b", (require("telescope.builtin")).buffers, {desc = "[ ] Find existing buffers"})
 local function _12_()
@@ -268,6 +269,6 @@ vim.opt.termguicolors = true
 do end (require("nvim-tree")).setup({filters = {dotfiles = true}, renderer = {group_empty = true}, sort_by = "case_sensitive", view = {width = 30}})
 local rt = require("rust-tools")
 rt.setup({server = {capabilities = capabilities, on_attach = on_attach}})
-do end (require("copilot")).setup({copilot_node_command = "node", filetypes = {c = true, go = true, lua = true, python = true, rust = true, scala = true, yaml = false, gitrebase = false, gitcommit = false, hgcommit = false, cvs = false, ["."] = false, help = false, markdown = false, svn = false}, panel = {auto_refresh = true, keymap = {accept = "<CR>", jump_next = "]]", jump_prev = "[[", open = "<M-CR>", refresh = "gr"}, layout = {position = "bottom", ratio = 0.4}, enabled = false}, server_opts_overrides = {}, suggestion = {debounce = 75, keymap = {accept = "<Tab>", dismiss = "<C-q>", next = "<C-l>", prev = "<C-h>", accept_word = false, accept_line = false}, enabled = false, auto_trigger = false}})
+do end (require("copilot")).setup({copilot_node_command = "node", filetypes = {c = true, go = true, lua = true, python = true, rust = true, scala = true, yaml = false, gitrebase = false, ["."] = false, cvs = false, hgcommit = false, help = false, gitcommit = false, markdown = false, svn = false}, panel = {auto_refresh = true, keymap = {accept = "<CR>", jump_next = "]]", jump_prev = "[[", open = "<M-CR>", refresh = "gr"}, layout = {position = "bottom", ratio = 0.4}, enabled = false}, server_opts_overrides = {}, suggestion = {debounce = 75, keymap = {accept = "<Tab>", dismiss = "<C-q>", next = "<C-l>", prev = "<C-h>", accept_line = false, accept_word = false}, auto_trigger = false, enabled = false}})
 do end (require("mason")).setup({})
 return (require("lualine")).setup({extensions = {"fzf", "quickfix", "fugitive", "nvim-tree"}})

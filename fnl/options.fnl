@@ -164,6 +164,7 @@
 
 
 (pcall (. (require :telescope) :load_extension) :fzf)	
+(pcall (. (require :telescope) :load_extension) :conventional_commits)	
 
 (set vim.g.mapleader " ")
 (set vim.g.maplocalleader ",")

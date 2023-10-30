@@ -238,5 +238,6 @@
             :ConradIrwin/vim-bracketed-paste
             :ellisonleao/gruvbox.nvim
             {1 :akinsho/git-conflict.nvim :config true :version "*"}
+            :olacin/telescope-cc.nvim
             ])
 return {}
