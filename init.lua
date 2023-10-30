@@ -45,4 +45,5 @@ bootstrap("https://github.com/Olical/nfnl")
 require('init')
 require('options')
 
-vim.cmd([[colorscheme carbonfox]])
+-- vim.cmd([[colorscheme carbonfox]])
+vim.cmd([[colorscheme gruvbox]])

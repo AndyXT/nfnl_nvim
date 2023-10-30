@@ -236,5 +236,7 @@
                             :nvim-telescope/telescope.nvim]
              :event :VeryLazy}
             :ConradIrwin/vim-bracketed-paste
+            :ellisonleao/gruvbox.nvim
+            {1 :akinsho/git-conflict.nvim :config true :version "*"}
             ])
 return {}

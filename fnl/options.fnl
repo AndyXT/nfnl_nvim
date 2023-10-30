@@ -437,3 +437,5 @@
                                                       :next :<C-l>
                                                       :prev :<C-h>}}})
 ((. (require :mason) :setup) {})
+
+((. (require :lualine) :setup) {:extensions [:fzf :quickfix :fugitive :nvim-tree]})
