@@ -17,7 +17,7 @@
              :clojure-vim/vim-jack-in
              :folke/which-key.nvim
              :ggandor/lightspeed.nvim
-             :guns/vim-sexp
+             ; :guns/vim-sexp
              ;:wlangstroth/vim-racket
              :hrsh7th/cmp-buffer
              :hrsh7th/cmp-cmdline
@@ -228,5 +228,9 @@
             :vim-pandoc/vim-pandoc
             :vim-pandoc/vim-pandoc-syntax
             :williamboman/mason.nvim
+            :hiphish/rainbow-delimiters.nvim
+            {1 :julienvincent/nvim-paredit
+             :config (fn []
+                       ((. (require :nvim-paredit) :setup)))}
             ])
 return {}
