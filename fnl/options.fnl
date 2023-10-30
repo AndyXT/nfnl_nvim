@@ -373,13 +373,13 @@
                 {:desc "Open diagnostics list"})
 (vim.keymap.set :n :<leader>z MiniMisc.zoom
                 {:desc "Toggle Zoom current window"})
-; ((. (require :telescope) :load_extension) :undo)
-; ((. (require :telescope) :setup) {:extensions {:undo {:layout_config {:preview_height 0.8}
-;                                                       :layout_strategy :vertical
-;                                                       :side_by_side true}}})
+((. (require :telescope) :load_extension) :undo)
+((. (require :telescope) :setup) {:extensions {:undo {:layout_config {:preview_height 0.8}
+                                                      :layout_strategy :vertical
+                                                      :side_by_side true}}})
 
-; (vim.keymap.set :n :<leader>u "<cmd>Telescope undo<cr>"
-;                 {:desc "Telescope Undo"})
+(vim.keymap.set :n :<leader>u "<cmd>Telescope undo<cr>"
+                {:desc "Telescope Undo"})
 (set vim.g.loaded_netrw 1)
 (set vim.g.loaded_netrwPlugin 1)
 (set vim.opt.termguicolors true)

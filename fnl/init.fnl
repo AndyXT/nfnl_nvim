@@ -232,5 +232,6 @@
             {1 :julienvincent/nvim-paredit
              :config (fn []
                        ((. (require :nvim-paredit) :setup)))}
+            {1 :ellisonleao/gruvbox.nvim :config true :opts ... :priority 1000}
             ])
 return {}

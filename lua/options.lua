@@ -262,11 +262,14 @@ vim.keymap.set("n", "]d", vim.diagnostic.goto_next, {desc = "Go to next diagnost
 vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, {desc = "Open floating diagnostic message"})
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, {desc = "Open diagnostics list"})
 vim.keymap.set("n", "<leader>z", MiniMisc.zoom, {desc = "Toggle Zoom current window"})
+do end (require("telescope")).load_extension("undo")
+do end (require("telescope")).setup({extensions = {undo = {layout_config = {preview_height = 0.8}, layout_strategy = "vertical", side_by_side = true}}})
+vim.keymap.set("n", "<leader>u", "<cmd>Telescope undo<cr>", {desc = "Telescope Undo"})
 vim.g.loaded_netrw = 1
 vim.g.loaded_netrwPlugin = 1
 vim.opt.termguicolors = true
 do end (require("nvim-tree")).setup({filters = {dotfiles = true}, renderer = {group_empty = true}, sort_by = "case_sensitive", view = {width = 30}})
 local rt = require("rust-tools")
 rt.setup({server = {capabilities = capabilities, on_attach = on_attach}})
-do end (require("copilot")).setup({copilot_node_command = "node", filetypes = {c = true, go = true, lua = true, python = true, rust = true, scala = true, svn = false, gitcommit = false, markdown = false, yaml = false, hgcommit = false, gitrebase = false, help = false, ["."] = false, cvs = false}, panel = {auto_refresh = true, keymap = {accept = "<CR>", jump_next = "]]", jump_prev = "[[", open = "<M-CR>", refresh = "gr"}, layout = {position = "bottom", ratio = 0.4}, enabled = false}, server_opts_overrides = {}, suggestion = {debounce = 75, keymap = {accept = "<Tab>", dismiss = "<C-q>", next = "<C-l>", prev = "<C-h>", accept_line = false, accept_word = false}, auto_trigger = false, enabled = false}})
+do end (require("copilot")).setup({copilot_node_command = "node", filetypes = {c = true, go = true, lua = true, python = true, rust = true, scala = true, cvs = false, ["."] = false, yaml = false, gitcommit = false, svn = false, gitrebase = false, help = false, markdown = false, hgcommit = false}, panel = {auto_refresh = true, keymap = {accept = "<CR>", jump_next = "]]", jump_prev = "[[", open = "<M-CR>", refresh = "gr"}, layout = {position = "bottom", ratio = 0.4}, enabled = false}, server_opts_overrides = {}, suggestion = {debounce = 75, keymap = {accept = "<Tab>", dismiss = "<C-q>", next = "<C-l>", prev = "<C-h>", accept_line = false, accept_word = false}, auto_trigger = false, enabled = false}})
 return (require("mason")).setup({})
