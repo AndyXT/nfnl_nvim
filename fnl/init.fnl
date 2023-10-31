@@ -233,5 +233,15 @@
              :config (fn []
                        ((. (require :nvim-paredit) :setup)))}
             {1 :ellisonleao/gruvbox.nvim :config true :opts ... :priority 1000}
+            {1 :jackMort/ChatGPT.nvim
+             :config (fn []
+                       ((. (require :chatgpt) :setup) {}))
+             :dependencies [:MunifTanjim/nui.nvim
+                            :nvim-lua/plenary.nvim
+                            :nvim-telescope/telescope.nvim]
+             :event :VeryLazy}
+            :ConradIrwin/vim-bracketed-paste
+            {1 :akinsho/git-conflict.nvim :config true :version "*"}
+            :olacin/telescope-cc.nvim
             ])
 return {}

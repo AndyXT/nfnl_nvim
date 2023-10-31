@@ -164,6 +164,7 @@
 
 
 (pcall (. (require :telescope) :load_extension) :fzf)	
+(pcall (. (require :telescope) :load_extension) :conventional_commits)	
 
 (set vim.g.mapleader " ")
 (set vim.g.maplocalleader ",")
@@ -236,7 +237,7 @@
                 {:desc "[S]earch [D]iagnostics"})
 ((. (require :nvim-treesitter.configs) :setup) 
   {:auto_install false
-    :ensure_installed [:c :cpp :go :lua :python :rust :tsx :typescript :vimdoc :vim :scala :elixir :heex :kotlin :fennel :racket]
+    :ensure_installed [:c :cpp :go :lua :python :rust :tsx :typescript :vimdoc :vim :scala :elixir :heex :kotlin :fennel :racket :awk]
     :highlight {:enable true}
     :incremental_selection {:enable true
                             :keymaps {:init_selection :<c-space>
@@ -400,7 +401,7 @@
                                   :sort_by :case_sensitive
                                   :view {:width 30}})
 (local rt (require :rust-tools))
-(rt.setup {:server {: capabilities :on_attach on-attach}})
+(rt.setup {:server {:capabilities capabilities :on_attach on-attach}})
 
 ((. (require :copilot) :setup) {:copilot_node_command :node
                                 :filetypes {:. false
@@ -437,3 +438,5 @@
                                                       :next :<C-l>
                                                       :prev :<C-h>}}})
 ((. (require :mason) :setup) {})
+
+((. (require :lualine) :setup) {:extensions [:fzf :quickfix :fugitive :nvim-tree]})
