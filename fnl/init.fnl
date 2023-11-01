@@ -243,5 +243,6 @@
             :ConradIrwin/vim-bracketed-paste
             {1 :akinsho/git-conflict.nvim :config true :version "*"}
             :olacin/telescope-cc.nvim
+            :monkoose/nvlime
             ])
 return {}

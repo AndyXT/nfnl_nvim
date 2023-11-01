@@ -440,3 +440,5 @@
 ((. (require :mason) :setup) {})
 
 ((. (require :lualine) :setup) {:extensions [:fzf :quickfix :fugitive :nvim-tree]})
+
+((. (. (require :cmp) :setup) :filetype) [:lisp] {:sources [{:name :nvlime}]})
