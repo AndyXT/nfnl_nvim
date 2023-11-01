@@ -65,8 +65,8 @@
              :nvim-tree/nvim-web-devicons
              :yorickpeterse/nvim-pqf
              :kevinhwang91/nvim-bqf
-             :junegunn/fzf
-             :junegunn/fzf.vim
+             ; {1 :junegunn/fzf :build "./install --bin"}
+             ; :junegunn/fzf.vim
              :folke/neodev.nvim
              :nvim-pack/nvim-spectre
              :chentoast/marks.nvim
@@ -244,5 +244,8 @@
             {1 :akinsho/git-conflict.nvim :config true :version "*"}
             :olacin/telescope-cc.nvim
             :monkoose/nvlime
+            :anuvyklack/hydra.nvim
+            {1 :lotabout/skim :build "./install"}
+            :lotabout/skim.vim
             ])
 return {}

@@ -442,3 +442,6 @@
 ((. (require :lualine) :setup) {:extensions [:fzf :quickfix :fugitive :nvim-tree]})
 
 ((. (. (require :cmp) :setup) :filetype) [:lisp] {:sources [{:name :nvlime}]})
+
+(vim.cmd "command! -bang -nargs=* Ag call fzf#vim#ag_interactive(<q-args>, fzf#vim#with_preview('right:50%:hidden', 'alt-h'))")
+(vim.cmd "command! -bang -nargs=* Rg call fzf#vim#rg_interactive(<q-args>, fzf#vim#with_preview('right:50%:hidden', 'alt-h'))")
