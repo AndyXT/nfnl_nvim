@@ -157,7 +157,7 @@ local function _11_()
   return vim.highlight.on_yank()
 end
 vim.api.nvim_create_autocmd("TextYankPost", {callback = _11_, group = highlight_group, pattern = "*"})
-do end (require("telescope")).setup({defaults = {mappings = {i = {["<C-d>"] = false, ["<C-u>"] = false}}}})
+do end (require("telescope")).setup({defaults = {mappings = {i = {["<C-u>"] = false, ["<C-d>"] = false}}}})
 vim.keymap.set("n", "<leader>?", (require("telescope.builtin")).oldfiles, {desc = "[?] Find recently opened files"})
 vim.keymap.set("n", "<leader>b", (require("telescope.builtin")).buffers, {desc = "[ ] Find existing buffers"})
 local function _12_()
@@ -272,7 +272,7 @@ vim.opt.termguicolors = true
 do end (require("nvim-tree")).setup({filters = {dotfiles = true}, renderer = {group_empty = true}, sort_by = "case_sensitive", view = {width = 30}})
 local rt = require("rust-tools")
 rt.setup({server = {capabilities = capabilities, on_attach = on_attach}})
-do end (require("copilot")).setup({copilot_node_command = "node", filetypes = {c = true, go = true, lua = true, python = true, rust = true, scala = true, gitcommit = false, ["."] = false, gitrebase = false, markdown = false, help = false, hgcommit = false, yaml = false, cvs = false, svn = false}, panel = {auto_refresh = true, keymap = {accept = "<CR>", jump_next = "]]", jump_prev = "[[", open = "<M-CR>", refresh = "gr"}, layout = {position = "bottom", ratio = 0.4}, enabled = false}, server_opts_overrides = {}, suggestion = {debounce = 75, keymap = {accept = "<Tab>", dismiss = "<C-q>", next = "<C-l>", prev = "<C-h>", accept_line = false, accept_word = false}, auto_trigger = false, enabled = false}})
+do end (require("copilot")).setup({copilot_node_command = "node", filetypes = {c = true, go = true, lua = true, python = true, rust = true, scala = true, hgcommit = false, yaml = false, svn = false, help = false, ["."] = false, gitrebase = false, markdown = false, gitcommit = false, cvs = false}, panel = {auto_refresh = true, keymap = {accept = "<CR>", jump_next = "]]", jump_prev = "[[", open = "<M-CR>", refresh = "gr"}, layout = {position = "bottom", ratio = 0.4}, enabled = false}, server_opts_overrides = {}, suggestion = {debounce = 75, keymap = {accept = "<Tab>", dismiss = "<C-q>", next = "<C-l>", prev = "<C-h>", accept_line = false, accept_word = false}, enabled = false, auto_trigger = false}})
 do end (require("mason")).setup({})
 do end (require("lualine")).setup({extensions = {"fzf", "quickfix", "fugitive", "nvim-tree"}})
 do end ((require("cmp")).setup).filetype({"lisp"}, {sources = {{name = "nvlime"}}})
@@ -288,4 +288,5 @@ local function _32_()
   vim.o.virtualedit = "all"
   return nil
 end
-return Hydra({body = "<leader>D", config = {color = "pink", hint = {border = "rounded"}, invoke_on_body = true, on_enter = _32_}, heads = {{"H", "<C-v>h:VBox<CR>"}, {"J", "<C-v>j:VBox<CR>"}, {"K", "<C-v>k:VBox<CR>"}, {"L", "<C-v>l:VBox<CR>"}, {"f", ":VBox<CR>", {mode = "v"}}, {"<Esc>", nil, {exit = true}}}, hint1 = hint1, mode = "n", name = "Draw Diagram"})
+Hydra({body = "<leader>D", config = {color = "pink", hint = {border = "rounded"}, invoke_on_body = true, on_enter = _32_}, heads = {{"H", "<C-v>h:VBox<CR>"}, {"J", "<C-v>j:VBox<CR>"}, {"K", "<C-v>k:VBox<CR>"}, {"L", "<C-v>l:VBox<CR>"}, {"f", ":VBox<CR>", {mode = "v"}}, {"<Esc>", nil, {exit = true}}}, hint1 = hint1, mode = "n", name = "Draw Diagram"})
+return vim.cmd("if executable('ag')\n  let g:ackprg = 'ag --vimgrep'\nendif")
