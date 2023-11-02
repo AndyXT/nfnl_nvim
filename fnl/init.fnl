@@ -247,5 +247,6 @@
             :anuvyklack/hydra.nvim
             {1 :lotabout/skim :build "./install"}
             :lotabout/skim.vim
+            :jbyuki/venn.nvim
             ])
 return {}
