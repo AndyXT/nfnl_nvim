@@ -157,7 +157,7 @@ local function _11_()
   return vim.highlight.on_yank()
 end
 vim.api.nvim_create_autocmd("TextYankPost", {callback = _11_, group = highlight_group, pattern = "*"})
-do end (require("telescope")).setup({defaults = {mappings = {i = {["<C-u>"] = false, ["<C-d>"] = false}}}})
+do end (require("telescope")).setup({defaults = {mappings = {i = {["<C-d>"] = false, ["<C-u>"] = false}}}})
 vim.keymap.set("n", "<leader>?", (require("telescope.builtin")).oldfiles, {desc = "[?] Find recently opened files"})
 vim.keymap.set("n", "<leader>b", (require("telescope.builtin")).buffers, {desc = "[ ] Find existing buffers"})
 local function _12_()
@@ -272,12 +272,13 @@ vim.opt.termguicolors = true
 do end (require("nvim-tree")).setup({filters = {dotfiles = true}, renderer = {group_empty = true}, sort_by = "case_sensitive", view = {width = 30}})
 local rt = require("rust-tools")
 rt.setup({server = {capabilities = capabilities, on_attach = on_attach}})
-do end (require("copilot")).setup({copilot_node_command = "node", filetypes = {c = true, go = true, lua = true, python = true, rust = true, scala = true, gitrebase = false, yaml = false, hgcommit = false, cvs = false, help = false, ["."] = false, svn = false, markdown = false, gitcommit = false}, panel = {auto_refresh = true, keymap = {accept = "<CR>", jump_next = "]]", jump_prev = "[[", open = "<M-CR>", refresh = "gr"}, layout = {position = "bottom", ratio = 0.4}, enabled = false}, server_opts_overrides = {}, suggestion = {debounce = 75, keymap = {accept = "<Tab>", dismiss = "<C-q>", next = "<C-l>", prev = "<C-h>", accept_line = false, accept_word = false}, enabled = false, auto_trigger = false}})
+do end (require("copilot")).setup({copilot_node_command = "node", filetypes = {c = true, go = true, lua = true, python = true, rust = true, scala = true, gitcommit = false, ["."] = false, gitrebase = false, markdown = false, help = false, hgcommit = false, yaml = false, cvs = false, svn = false}, panel = {auto_refresh = true, keymap = {accept = "<CR>", jump_next = "]]", jump_prev = "[[", open = "<M-CR>", refresh = "gr"}, layout = {position = "bottom", ratio = 0.4}, enabled = false}, server_opts_overrides = {}, suggestion = {debounce = 75, keymap = {accept = "<Tab>", dismiss = "<C-q>", next = "<C-l>", prev = "<C-h>", accept_line = false, accept_word = false}, auto_trigger = false, enabled = false}})
 do end (require("mason")).setup({})
 do end (require("lualine")).setup({extensions = {"fzf", "quickfix", "fugitive", "nvim-tree"}})
 do end ((require("cmp")).setup).filetype({"lisp"}, {sources = {{name = "nvlime"}}})
 vim.cmd("command! -bang -nargs=* Ag call fzf#vim#ag_interactive(<q-args>, fzf#vim#with_preview('right:50%:hidden', 'alt-h'))")
 vim.cmd("command! -bang -nargs=* Rg call fzf#vim#rg_interactive(<q-args>, fzf#vim#with_preview('right:50%:hidden', 'alt-h'))")
+vim.cmd("inoremap <expr> <c-x><c-f> fzf#vim#complete#path('rg --files')")
 local Hydra = require("hydra")
 local cmd = (require("hydra.keymap-util")).cmd
 local hint = "                 _f_: files       _m_: marks\n   \226\150\136\240\159\172\173\240\159\172\173\240\159\172\173\240\159\172\173\240\159\172\173\240\159\172\173\240\159\172\173\240\159\172\173\240\159\172\188    _o_: old files   _g_: live grep\n  \226\150\136\226\150\136\226\150\136\226\150\136    \226\150\136\226\150\136\226\150\136\240\159\172\190   _p_: projects    _/_: search in file\n  \226\150\136\226\150\136 \238\138\133\226\150\129     \226\150\136\226\150\136\n  \226\150\136\226\150\136\240\159\172\191      \226\150\136\226\150\136\226\150\136   _r_: resume      _u_: undotree\n \226\150\136\226\150\136\240\159\172\157\240\159\174\132\240\159\174\132\240\159\174\132\240\159\174\132\240\159\174\132\240\159\174\132\240\159\174\132\240\159\174\132\240\159\172\134\226\150\136\240\159\173\128  _h_: vim help    _c_: execute command\n \226\150\136\226\150\136\240\159\172\186\240\159\172\185\240\159\172\177\240\159\172\173\240\159\172\173\240\159\172\173\240\159\172\173\240\159\172\181\240\159\172\185\240\159\172\185\226\150\136\226\150\136  _k_: keymaps     _;_: commands history \n                 _O_: options     _?_: search history\n ^\n                 _<Enter>_: Telescope           _<Esc>_\n"

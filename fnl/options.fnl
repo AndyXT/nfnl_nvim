@@ -446,6 +446,8 @@
 (vim.cmd "command! -bang -nargs=* Ag call fzf#vim#ag_interactive(<q-args>, fzf#vim#with_preview('right:50%:hidden', 'alt-h'))")
 (vim.cmd "command! -bang -nargs=* Rg call fzf#vim#rg_interactive(<q-args>, fzf#vim#with_preview('right:50%:hidden', 'alt-h'))")
 
+(vim.cmd "inoremap <expr> <c-x><c-f> fzf#vim#complete#path('rg --files')")
+
 (local Hydra (require :hydra))
 (local cmd (. (require :hydra.keymap-util) :cmd))
 (local hint "                 _f_: files       _m_: marks
