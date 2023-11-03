@@ -247,5 +247,6 @@
             :anuvyklack/hydra.nvim
             :jbyuki/venn.nvim
             :mileszs/ack.vim
+            :AndyXT/nfnl-plugin-example
             ])
 return {}

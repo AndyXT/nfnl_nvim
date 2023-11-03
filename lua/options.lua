@@ -23,6 +23,10 @@ do
   ai.setup()
 end
 do
+  local pick = require("mini.pick")
+  pick.setup()
+end
+do
   local extra = require("mini.extra")
   extra.setup()
 end
@@ -284,7 +288,7 @@ vim.opt.termguicolors = true
 do end (require("nvim-tree")).setup({filters = {dotfiles = true}, renderer = {group_empty = true}, sort_by = "case_sensitive", view = {width = 30}})
 local rt = require("rust-tools")
 rt.setup({server = {capabilities = capabilities, on_attach = on_attach}})
-do end (require("copilot")).setup({copilot_node_command = "node", filetypes = {c = true, go = true, lua = true, python = true, rust = true, scala = true, gitcommit = false, yaml = false, gitrebase = false, hgcommit = false, help = false, svn = false, cvs = false, ["."] = false, markdown = false}, panel = {auto_refresh = true, keymap = {accept = "<CR>", jump_next = "]]", jump_prev = "[[", open = "<M-CR>", refresh = "gr"}, layout = {position = "bottom", ratio = 0.4}, enabled = false}, server_opts_overrides = {}, suggestion = {debounce = 75, keymap = {accept = "<Tab>", dismiss = "<C-q>", next = "<C-l>", prev = "<C-h>", accept_line = false, accept_word = false}, enabled = false, auto_trigger = false}})
+do end (require("copilot")).setup({copilot_node_command = "node", filetypes = {c = true, go = true, lua = true, python = true, rust = true, scala = true, cvs = false, help = false, gitcommit = false, yaml = false, svn = false, gitrebase = false, markdown = false, ["."] = false, hgcommit = false}, panel = {auto_refresh = true, keymap = {accept = "<CR>", jump_next = "]]", jump_prev = "[[", open = "<M-CR>", refresh = "gr"}, layout = {position = "bottom", ratio = 0.4}, enabled = false}, server_opts_overrides = {}, suggestion = {debounce = 75, keymap = {accept = "<Tab>", dismiss = "<C-q>", next = "<C-l>", prev = "<C-h>", accept_word = false, accept_line = false}, enabled = false, auto_trigger = false}})
 do end (require("mason")).setup({})
 do end (require("lualine")).setup({extensions = {"fzf", "quickfix", "fugitive", "nvim-tree"}})
 do end ((require("cmp")).setup).filetype({"lisp"}, {sources = {{name = "nvlime"}}})

@@ -17,6 +17,9 @@
 (let [ai (require :mini.ai)]
   (ai.setup))
 
+(let [pick (require :mini.pick)]
+  (pick.setup))
+
 (let [extra (require :mini.extra)]
   (extra.setup))
 
