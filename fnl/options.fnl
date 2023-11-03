@@ -8,8 +8,17 @@
 (let [misc (require :mini.misc)]
   (misc.setup))
 
-(let [misc (require :mini.move)]
-  (misc.setup))
+(let [move (require :mini.move)]
+  (move.setup))
+
+(let [sessions (require :mini.sessions)]
+  (sessions.setup))
+
+(let [ai (require :mini.ai)]
+  (ai.setup))
+
+(let [extra (require :mini.extra)]
+  (extra.setup))
 
 (let [marks (require :marks)]
   (marks.setup))
@@ -215,7 +224,7 @@
 (vim.keymap.set :n :<leader>? (. (require :telescope.builtin) :oldfiles)
                 {:desc "[?] Find recently opened files"})
 (vim.keymap.set :n :<leader>b (. (require :telescope.builtin) :buffers)
-                {:desc "[ ] Find existing buffers"})
+                {:desc "[b] Find existing buffers"})
 (vim.keymap.set :n :<leader>/
                 (fn []
                   ((. (require :telescope.builtin) :current_buffer_fuzzy_find)
@@ -443,8 +452,8 @@
 
 ((. (. (require :cmp) :setup) :filetype) [:lisp] {:sources [{:name :nvlime}]})
 
-(vim.cmd "command! -bang -nargs=* Ag call fzf#vim#ag_interactive(<q-args>, fzf#vim#with_preview('right:50%:hidden', 'alt-h'))")
-(vim.cmd "command! -bang -nargs=* Rg call fzf#vim#rg_interactive(<q-args>, fzf#vim#with_preview('right:50%:hidden', 'alt-h'))")
+; (vim.cmd "command! -bang -nargs=* Ag call fzf#vim#ag_interactive(<q-args>, fzf#vim#with_preview('right:50%:hidden', 'alt-h'))")
+; (vim.cmd "command! -bang -nargs=* Rg call fzf#vim#rg_interactive(<q-args>, fzf#vim#with_preview('right:50%:hidden', 'alt-h'))")
 
 (vim.cmd "inoremap <expr> <c-x><c-f> fzf#vim#complete#path('rg --files')")
 

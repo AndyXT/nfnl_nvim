@@ -11,8 +11,20 @@ do
   misc.setup()
 end
 do
-  local misc = require("mini.move")
-  misc.setup()
+  local move = require("mini.move")
+  move.setup()
+end
+do
+  local sessions = require("mini.sessions")
+  sessions.setup()
+end
+do
+  local ai = require("mini.ai")
+  ai.setup()
+end
+do
+  local extra = require("mini.extra")
+  extra.setup()
 end
 do
   local marks = require("marks")
@@ -157,9 +169,9 @@ local function _11_()
   return vim.highlight.on_yank()
 end
 vim.api.nvim_create_autocmd("TextYankPost", {callback = _11_, group = highlight_group, pattern = "*"})
-do end (require("telescope")).setup({defaults = {mappings = {i = {["<C-u>"] = false, ["<C-d>"] = false}}}})
+do end (require("telescope")).setup({defaults = {mappings = {i = {["<C-d>"] = false, ["<C-u>"] = false}}}})
 vim.keymap.set("n", "<leader>?", (require("telescope.builtin")).oldfiles, {desc = "[?] Find recently opened files"})
-vim.keymap.set("n", "<leader>b", (require("telescope.builtin")).buffers, {desc = "[ ] Find existing buffers"})
+vim.keymap.set("n", "<leader>b", (require("telescope.builtin")).buffers, {desc = "[b] Find existing buffers"})
 local function _12_()
   return (require("telescope.builtin")).current_buffer_fuzzy_find((require("telescope.themes")).get_dropdown({winblend = 10, previewer = false}))
 end
@@ -272,12 +284,10 @@ vim.opt.termguicolors = true
 do end (require("nvim-tree")).setup({filters = {dotfiles = true}, renderer = {group_empty = true}, sort_by = "case_sensitive", view = {width = 30}})
 local rt = require("rust-tools")
 rt.setup({server = {capabilities = capabilities, on_attach = on_attach}})
-do end (require("copilot")).setup({copilot_node_command = "node", filetypes = {c = true, go = true, lua = true, python = true, rust = true, scala = true, hgcommit = false, yaml = false, svn = false, help = false, ["."] = false, gitrebase = false, markdown = false, gitcommit = false, cvs = false}, panel = {auto_refresh = true, keymap = {accept = "<CR>", jump_next = "]]", jump_prev = "[[", open = "<M-CR>", refresh = "gr"}, layout = {position = "bottom", ratio = 0.4}, enabled = false}, server_opts_overrides = {}, suggestion = {debounce = 75, keymap = {accept = "<Tab>", dismiss = "<C-q>", next = "<C-l>", prev = "<C-h>", accept_line = false, accept_word = false}, enabled = false, auto_trigger = false}})
+do end (require("copilot")).setup({copilot_node_command = "node", filetypes = {c = true, go = true, lua = true, python = true, rust = true, scala = true, gitcommit = false, yaml = false, gitrebase = false, hgcommit = false, help = false, svn = false, cvs = false, ["."] = false, markdown = false}, panel = {auto_refresh = true, keymap = {accept = "<CR>", jump_next = "]]", jump_prev = "[[", open = "<M-CR>", refresh = "gr"}, layout = {position = "bottom", ratio = 0.4}, enabled = false}, server_opts_overrides = {}, suggestion = {debounce = 75, keymap = {accept = "<Tab>", dismiss = "<C-q>", next = "<C-l>", prev = "<C-h>", accept_line = false, accept_word = false}, enabled = false, auto_trigger = false}})
 do end (require("mason")).setup({})
 do end (require("lualine")).setup({extensions = {"fzf", "quickfix", "fugitive", "nvim-tree"}})
 do end ((require("cmp")).setup).filetype({"lisp"}, {sources = {{name = "nvlime"}}})
-vim.cmd("command! -bang -nargs=* Ag call fzf#vim#ag_interactive(<q-args>, fzf#vim#with_preview('right:50%:hidden', 'alt-h'))")
-vim.cmd("command! -bang -nargs=* Rg call fzf#vim#rg_interactive(<q-args>, fzf#vim#with_preview('right:50%:hidden', 'alt-h'))")
 vim.cmd("inoremap <expr> <c-x><c-f> fzf#vim#complete#path('rg --files')")
 local Hydra = require("hydra")
 local cmd = (require("hydra.keymap-util")).cmd
