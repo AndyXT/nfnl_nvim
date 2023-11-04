@@ -2,8 +2,43 @@
 (local config (require :nfnl.config))
 (local default (config.default))
 
+(set vim.wo.number true)
+(set vim.o.mouse "a")
+(set vim.o.clipboard "unnamedplus")
+
+(set vim.o.breakindent true)
+
+;; Case-insensitive searching UNLESS \C or capital in search
+(set vim.o.ignorecase true)
+(set vim.o.smartcase true)
+
+;; Keep signcolumn on by default
+(set vim.wo.signcolumn "yes")
+
+;; Decrease update time
+(set vim.o.updatetime 200)
+(set vim.o.timeoutlen 250)
+
+;; Set completeopt to have a better completion experience
+(set vim.o.completeopt "menuone,noselect")
+
+;; NOTE: You should make sure your terminal supports this
+(set vim.o.termguicolors true)
+(set vim.opt.tabstop 4)
+(set vim.opt.softtabstop 4)
+(set vim.opt.shiftwidth 4)
+(set vim.o.expandtab true)
+
+(set vim.opt.swapfile false)
+(set vim.opt.backup false)
+(set vim.opt.undodir (.. (os.getenv :HOME) :/.vim/undodir))
+(set vim.opt.undofile true)
+
 (let [starter (require :mini.starter)]
   (starter.setup))
+
+(let [files (require :mini.files)]
+  (files.setup))
 
 (let [misc (require :mini.misc)]
   (misc.setup))
@@ -20,46 +55,103 @@
 (let [pick (require :mini.pick)]
   (pick.setup))
 
-(let [extra (require :mini.extra)]
-  (extra.setup))
+(local extra (require :mini.extra))
+(extra.setup)
+
+(let [statusline (require :mini.statusline)]
+  (statusline.setup))
+
+(let [indentscope (require :mini.indentscope)]
+  (indentscope.setup))
+
+(let [comments (require :mini.comment)]
+  (comments.setup))
+
+(let [jump (require :mini.jump)]
+  (jump.setup))
+
+(let [jump2d (require :mini.jump2d)]
+  (jump2d.setup))
+
+; (let [clue (require :mini.clue)]
+  ; (clue.setup))
+
+(set vim.g.mapleader " ")
+(set vim.g.maplocalleader ",")
+
+(local miniclue (require :mini.clue))
+(miniclue.setup {:clues [(miniclue.gen_clues.builtin_completion)
+                         (miniclue.gen_clues.g)
+                         (miniclue.gen_clues.marks)
+                         (miniclue.gen_clues.registers)
+                         (miniclue.gen_clues.windows)
+                         (miniclue.gen_clues.z)
+                         {:mode :n :keys :<LocalLeader>e :desc :+EvalConjure}
+                         {:mode :n :keys :<LocalLeader>l :desc :+LogConjure}
+                         {:mode :n :keys :<LocalLeader>r :desc :+REPLConjure}
+                         {:mode :n :keys :<LocalLeader>t :desc :+TestConjure}
+                         {:mode :n :keys :<Leader>c :desc :+Code}
+                         {:mode :n :keys :<Leader>r :desc :+Refactor}
+                         {:mode :n :keys :<Leader>w :desc :+Workspace}
+                         {:mode :n :keys :<Leader>f :desc :+Find}
+                         {:mode :n :keys :<Leader>g :desc :+Git}
+                         {:mode :n :keys :<Leader>d :desc :+Document}]
+                 :triggers [{:keys :<Leader> :mode :n}
+                            {:keys :<Leader> :mode :x}
+                            {:keys :<LocalLeader> :mode :n}
+                            {:keys :<LocalLeader> :mode :x}
+                            {:keys :<C-x> :mode :i}
+                            {:keys :g :mode :n}
+                            {:keys :g :mode :x}
+                            {:keys "'" :mode :n}
+                            {:keys "`" :mode :n}
+                            {:keys "'" :mode :x}
+                            {:keys "`" :mode :x}
+                            {:keys "\"" :mode :n}
+                            {:keys "\"" :mode :x}
+                            {:keys :<C-r> :mode :i}
+                            {:keys :<C-r> :mode :c}
+                            {:keys :<C-w> :mode :n}
+                            {:keys :z :mode :n}
+                            {:keys :z :mode :x}]})
 
 (let [marks (require :marks)]
   (marks.setup))
 
-(let [lualine (require :lualine)]
-  (lualine.setup))
+; (let [lualine (require :lualine)]
+;   (lualine.setup))
 
-(let [which-key (require :which-key)]
-  (which-key.setup))
+; (let [which-key (require :which-key)]
+;   (which-key.setup))
+;
+; ((. (require :which-key) :register) 
+;   {:<leader>c {:_ :which_key_ignore
+;               :name "[C]ode"}
+;    :<leader>d {:_ :which_key_ignore
+;                :name "[D]ocument"}
+;    :<leader>g {:_ :which_key_ignore
+;                :name "[G]it"}
+;    :<leader>h {:_ :which_key_ignore
+;                :name "[H]arpoon"}
+;    :<leader>o {:_ :which_key_ignore
+;                :name "[O]rgmode"}
+;    :<leader>r {:_ :which_key_ignore
+;                :name "[R]ename"}
+;    :<leader>s {:_ :which_key_ignore
+;                :name "[S]earch"}
+;    :<leader>w {:_ :which_key_ignore
+;                :name "[W]orkspace"}
+;    :<leader>x {:_ :which_key_ignore
+;                :name "[T]rouble"}})
 
-((. (require :which-key) :register) 
-  {:<leader>c {:_ :which_key_ignore
-              :name "[C]ode"}
-   :<leader>d {:_ :which_key_ignore
-               :name "[D]ocument"}
-   :<leader>g {:_ :which_key_ignore
-               :name "[G]it"}
-   :<leader>h {:_ :which_key_ignore
-               :name "[H]arpoon"}
-   :<leader>o {:_ :which_key_ignore
-               :name "[O]rgmode"}
-   :<leader>r {:_ :which_key_ignore
-               :name "[R]ename"}
-   :<leader>s {:_ :which_key_ignore
-               :name "[S]earch"}
-   :<leader>w {:_ :which_key_ignore
-               :name "[W]orkspace"}
-   :<leader>x {:_ :which_key_ignore
-               :name "[T]rouble"}})
-
-(let [ibl (require :ibl)]
-  (ibl.setup))
+; (let [ibl (require :ibl)]
+;   (ibl.setup))
 
 (let [pqf (require :pqf)]
   (pqf.setup))
 
-(let [dressing (require :dressing)]
-  (dressing.setup))
+; (let [dressing (require :dressing)]
+;   (dressing.setup))
 
 (let [better-escape (require :better_escape)]
   (better-escape.setup))
@@ -138,15 +230,14 @@
   (nmap :<leader>rn vim.lsp.buf.rename "[R]e[n]ame")
   (nmap :<leader>ca vim.lsp.buf.code_action "[C]ode [A]ction")
   (nmap :gd vim.lsp.buf.definition "[G]oto [D]efinition")
-  (nmap :gr (. (require :telescope.builtin) :lsp_references)
+  (nmap :gr "<cmd>Pick lsp scope='references'" 
         "[G]oto [R]eferences")
-  (nmap :gI (. (require :telescope.builtin) :lsp_implementations)
+  (nmap :gI "<cmd>Pick lsp scope='implementation'"
         "[G]oto [I]mplementation")
   (nmap :<leader>D vim.lsp.buf.type_definition "Type [D]efinition")
-  (nmap :<leader>ds (. (require :telescope.builtin) :lsp_document_symbols)
+  (nmap :<leader>ds "<cmd>Pick lsp scope='document_symbols'"
         "[D]ocument [S]ymbols")
-  (nmap :<leader>ws (. (require :telescope.builtin)
-                       :lsp_dynamic_workspace_symbols)
+  (nmap :<leader>ws "<cmd>Pick lsp scope='workspace_symbols'"
         "[W]orkspace [S]ymbols")
   (nmap :K vim.lsp.buf.hover "Hover Documentation")
   (nmap :<C-k> vim.lsp.buf.signature_help "Signature Documentation")
@@ -173,47 +264,11 @@
                                             :on_attach on_attach}))
                                             ;:cmd ["xvfb-run" "racket" "-l" "racket-langserver"]
 
-
-
-(pcall (. (require :telescope) :load_extension) :fzf)	
-(pcall (. (require :telescope) :load_extension) :conventional_commits)	
-
-(set vim.g.mapleader " ")
-(set vim.g.maplocalleader ",")
-
-(set vim.wo.number true)
-(set vim.o.mouse "a")
-(set vim.o.clipboard "unnamedplus")
-
-(set vim.o.breakindent true)
-
-;; Case-insensitive searching UNLESS \C or capital in search
-(set vim.o.ignorecase true)
-(set vim.o.smartcase true)
-
-;; Keep signcolumn on by default
-(set vim.wo.signcolumn "yes")
-
-;; Decrease update time
-(set vim.o.updatetime 250)
-(set vim.o.timeoutlen 300)
-
-;; Set completeopt to have a better completion experience
-(set vim.o.completeopt "menuone,noselect")
-
-;; NOTE: You should make sure your terminal supports this
-(set vim.o.termguicolors true)
-(set vim.opt.tabstop 4)
-(set vim.opt.softtabstop 4)
-(set vim.opt.shiftwidth 4)
-(set vim.o.expandtab true)
-
-(set vim.opt.swapfile false)
-(set vim.opt.backup false)
-(set vim.opt.undodir (.. (os.getenv :HOME) :/.vim/undodir))
-(set vim.opt.undofile true)
+; (pcall (. (require :telescope) :load_extension) :fzf)	
+; (pcall (. (require :telescope) :load_extension) :conventional_commits)	
 
 (vim.keymap.set [:n :v] :<Space> :<Nop> {:silent true})
+(vim.keymap.set :n :<esc> "<cmd>noh<cr>" {:silent true})
 (vim.keymap.set :n :k "v:count == 0 ? 'gk' : 'k'" {:expr true :silent true})
 (vim.keymap.set :n :j "v:count == 0 ? 'gj' : 'j'" {:expr true :silent true})
 (local highlight-group
@@ -222,31 +277,33 @@
                              {:callback (fn [] (vim.highlight.on_yank))
                               :group highlight-group
                               :pattern "*"})
-((. (require :telescope) :setup) {:defaults {:mappings {:i {:<C-d> false
-                                                            :<C-u> false}}}})
-(vim.keymap.set :n :<leader>? (. (require :telescope.builtin) :oldfiles)
+; ((. (require :telescope) :setup) {:defaults {:mappings {:i {:<C-d> false
+;                                                             :<C-u> false}}}})
+(vim.keymap.set :n :<leader>? "<CMD>Pick oldfiles<CR>"
                 {:desc "[?] Find recently opened files"})
-(vim.keymap.set :n :<leader>b (. (require :telescope.builtin) :buffers)
+(vim.keymap.set :n :<leader>b "<CMD>Pick buffers<CR>"
                 {:desc "[b] Find existing buffers"})
-(vim.keymap.set :n :<leader>/
-                (fn []
-                  ((. (require :telescope.builtin) :current_buffer_fuzzy_find)
-                    ((. (require :telescope.themes) :get_dropdown)
-                      {:previewer false :winblend 10})))
+(vim.keymap.set :n :<leader>/ "<CMD>Pick buf_lines<CR>"
+;                 (fn []
+;                   ((. (require :telescope.builtin) :current_buffer_fuzzy_find)
+;                     ((. (require :telescope.themes) :get_dropdown)
+;                       {:previewer false :winblend 10})))
                 {:desc "[/] Fuzzily search in current buffer"})
 
-(vim.keymap.set :n :<leader>gf (. (require :telescope.builtin) :git_files)
+(vim.keymap.set :n :<leader>gf "<CMD>Pick git_files<CR>"
                 {:desc "Search [G]it [F]iles"})
-(vim.keymap.set :n :<leader>sf (. (require :telescope.builtin) :find_files)
-                {:desc "[S]earch [F]iles"})
-(vim.keymap.set :n :<leader>sh (. (require :telescope.builtin) :help_tags)
+(vim.keymap.set :n :<leader>ff "<CMD>Pick files<CR>"
+                {:desc "[F]ind [F]iles"})
+(vim.keymap.set :n :<leader>fh "<CMD>Pick help<CR>"
                 {:desc "[S]earch [H]elp"})
-(vim.keymap.set :n :<leader>sw (. (require :telescope.builtin) :grep_string)
-                {:desc "[S]earch current [W]ord"})
-(vim.keymap.set :n :<leader>sg (. (require :telescope.builtin) :live_grep)
+; (vim.keymap.set :n :<leader>fw "<CMD>Pick git_files<CR>"
+;                 {:desc "[S]earch current [W]ord"})
+(vim.keymap.set :n :<leader>fg "<CMD>Pick grep_live<CR>"
                 {:desc "[S]earch by [G]rep"})
-(vim.keymap.set :n :<leader>sd (. (require :telescope.builtin) :diagnostics)
+(vim.keymap.set :n :<leader>fd "<CMD>Pick diagnostic<CR>"
                 {:desc "[S]earch [D]iagnostics"})
+(vim.keymap.set :n :<leader>e (fn [] (MiniFiles.open))
+                {:desc "File [e]xplorer"})
 ((. (require :nvim-treesitter.configs) :setup) 
   {:auto_install false
     :ensure_installed [:c :cpp :go :lua :python :rust :tsx :typescript :vimdoc :vim :scala :elixir :heex :kotlin :fennel :racket :awk]
@@ -306,96 +363,96 @@
 (each [_ mapping (ipairs mappings)]
   (vim.keymap.set (. mapping 1) (. mapping 2) (. mapping 3) opts))	
 
-(pcall (. (require :telescope) :load_extension) :file_browser)
-(vim.keymap.set :n :<leader>.
-                "<cmd>Telescope file_browser path=%:p:h select_buffer=true<cr>"
-                {:desc "File Browser Buffer CWD"})
+; (pcall (. (require :telescope) :load_extension) :file_browser)
+; (vim.keymap.set :n :<leader>.
+;                 "<cmd>Telescope file_browser path=%:p:h select_buffer=true<cr>"
+;                 {:desc "File Browser Buffer CWD"})
 
-((. (require :telescope) :load_extension) :harpoon)
-(vim.keymap.set :n :<leader>ha
-                (fn []
-                  ((. (require :harpoon.mark) :add_file)))
-                {:desc "Add File"})
-(vim.keymap.set :n :<leader>hm
-                (fn []
-                  ((. (require :harpoon.ui) :toggle_quick_menu)))
-                {:desc "Toggle Menu"})
-(vim.keymap.set :n :<leader>hn
-                (fn []
-                  ((. (require :harpoon.ui) :nav_next)))
-                {:desc "[N]ext  File"})
-(vim.keymap.set :n :<leader>hp
-                (fn []
-                  ((. (require :harpoon.ui) :nav_prev)))
-                {:desc "[P]revious File"})
+; ((. (require :telescope) :load_extension) :harpoon)
+; (vim.keymap.set :n :<leader>ha
+;                 (fn []
+;                   ((. (require :harpoon.mark) :add_file)))
+;                 {:desc "Add File"})
+; (vim.keymap.set :n :<leader>hm
+;                 (fn []
+;                   ((. (require :harpoon.ui) :toggle_quick_menu)))
+;                 {:desc "Toggle Menu"})
+; (vim.keymap.set :n :<leader>hn
+;                 (fn []
+;                   ((. (require :harpoon.ui) :nav_next)))
+;                 {:desc "[N]ext  File"})
+; (vim.keymap.set :n :<leader>hp
+;                 (fn []
+;                   ((. (require :harpoon.ui) :nav_prev)))
+;                 {:desc "[P]revious File"})
+; 
+; ((. (require :refactoring) :setup) {})
+; (vim.keymap.set :x :<leader>re
+;                 (fn []
+;                   ((. (require :refactoring) :refactor) "Extract Function"))
+;                 {:desc "Extract Function"})
+; (vim.keymap.set :x :<leader>rf
+;                 (fn []
+;                   ((. (require :refactoring) :refactor) "Extract Function To File"))
+;                 {:desc "Extract Function to File"})
+; (vim.keymap.set :x :<leader>rv
+;                 (fn []
+;                   ((. (require :refactoring) :refactor) "Extract Variable"))
+;                 {:desc "Extract Variable"})
+; (vim.keymap.set :n :<leader>rI
+;                 (fn []
+;                   ((. (require :refactoring) :refactor) "Inline Function"))
+;                 {:desc "Inline Function"})
+; (vim.keymap.set [:n :x] :<leader>ri
+;                 (fn []
+;                   ((. (require :refactoring) :refactor) "Inline Variable"))
+;                 {:desc "Inline Variable"})
+; (vim.keymap.set :n :<leader>rb
+;                 (fn []
+;                   ((. (require :refactoring) :refactor) "Extract Block"))
+;                 {:desc "Extract Block"})
+; (vim.keymap.set :n :<leader>rbf
+;                 (fn []
+;                   ((. (require :refactoring) :refactor) "Extract Block To File"))
+;                 {:desc "Extract Block To File"})
+;  ((. (require :telescope) :load_extension) :refactoring)
+;  (vim.keymap.set [:n :x] :<leader>rr
+;                  (fn []
+;                    ((. (. (. (require :telescope) :extensions) :refactoring)
+;                        :refactors)))
+;                  {:desc "Select Refactor Menu"})
+; (vim.keymap.set :n :<leader>rp
+;                 (fn []
+;                   ((. (. (require :refactoring) :debug) :printf) {:below false}))
+;                 {:desc "Debug Printf"})
+; (vim.keymap.set [:x :n] :<leader>rv
+;                 (fn []
+;                   ((. (. (require :refactoring) :debug) :print_var)))
+;                 {:desc "Debug Print Var"})
+; (vim.keymap.set :n :<leader>rc
+;                 (fn []
+;                   ((. (. (require :refactoring) :debug) :cleanup) {}))
+;                 {:desc "Debug Cleanup"})
+; (vim.keymap.set :n "[d" vim.diagnostic.goto_prev
+;                 {:desc "Go to previous diagnostic message"})
+; (vim.keymap.set :n "]d" vim.diagnostic.goto_next
+;                 {:desc "Go to next diagnostic message"})
+; (vim.keymap.set :n :<leader>e vim.diagnostic.open_float
+;                 {:desc "Open floating diagnostic message"})
+; (vim.keymap.set :n :<leader>q vim.diagnostic.setloclist
+;                 {:desc "Open diagnostics list"})
+; (vim.keymap.set :n :<leader>z MiniMisc.zoom
+;                {:desc "Toggle Zoom current window"})
+; ((. (require :telescope) :load_extension) :undo)
+; ((. (require :telescope) :setup) {:extensions {:undo {:layout_config {:preview_height 0.8}
+;                                                       :layout_strategy :vertical
+;                                                       :side_by_side true}}})
 
-((. (require :refactoring) :setup) {})
-(vim.keymap.set :x :<leader>re
-                (fn []
-                  ((. (require :refactoring) :refactor) "Extract Function"))
-                {:desc "Extract Function"})
-(vim.keymap.set :x :<leader>rf
-                (fn []
-                  ((. (require :refactoring) :refactor) "Extract Function To File"))
-                {:desc "Extract Function to File"})
-(vim.keymap.set :x :<leader>rv
-                (fn []
-                  ((. (require :refactoring) :refactor) "Extract Variable"))
-                {:desc "Extract Variable"})
-(vim.keymap.set :n :<leader>rI
-                (fn []
-                  ((. (require :refactoring) :refactor) "Inline Function"))
-                {:desc "Inline Function"})
-(vim.keymap.set [:n :x] :<leader>ri
-                (fn []
-                  ((. (require :refactoring) :refactor) "Inline Variable"))
-                {:desc "Inline Variable"})
-(vim.keymap.set :n :<leader>rb
-                (fn []
-                  ((. (require :refactoring) :refactor) "Extract Block"))
-                {:desc "Extract Block"})
-(vim.keymap.set :n :<leader>rbf
-                (fn []
-                  ((. (require :refactoring) :refactor) "Extract Block To File"))
-                {:desc "Extract Block To File"})
-((. (require :telescope) :load_extension) :refactoring)
-(vim.keymap.set [:n :x] :<leader>rr
-                (fn []
-                  ((. (. (. (require :telescope) :extensions) :refactoring)
-                      :refactors)))
-                {:desc "Select Refactor Menu"})
-(vim.keymap.set :n :<leader>rp
-                (fn []
-                  ((. (. (require :refactoring) :debug) :printf) {:below false}))
-                {:desc "Debug Printf"})
-(vim.keymap.set [:x :n] :<leader>rv
-                (fn []
-                  ((. (. (require :refactoring) :debug) :print_var)))
-                {:desc "Debug Print Var"})
-(vim.keymap.set :n :<leader>rc
-                (fn []
-                  ((. (. (require :refactoring) :debug) :cleanup) {}))
-                {:desc "Debug Cleanup"})
-(vim.keymap.set :n "[d" vim.diagnostic.goto_prev
-                {:desc "Go to previous diagnostic message"})
-(vim.keymap.set :n "]d" vim.diagnostic.goto_next
-                {:desc "Go to next diagnostic message"})
-(vim.keymap.set :n :<leader>e vim.diagnostic.open_float
-                {:desc "Open floating diagnostic message"})
-(vim.keymap.set :n :<leader>q vim.diagnostic.setloclist
-                {:desc "Open diagnostics list"})
-(vim.keymap.set :n :<leader>z MiniMisc.zoom
-                {:desc "Toggle Zoom current window"})
-((. (require :telescope) :load_extension) :undo)
-((. (require :telescope) :setup) {:extensions {:undo {:layout_config {:preview_height 0.8}
-                                                      :layout_strategy :vertical
-                                                      :side_by_side true}}})
-
-(vim.keymap.set :n :<leader>u "<cmd>Telescope undo<cr>"
-                {:desc "Telescope Undo"})
-(set vim.g.loaded_netrw 1)
-(set vim.g.loaded_netrwPlugin 1)
-(set vim.opt.termguicolors true)
+; (vim.keymap.set :n :<leader>u "<cmd>Telescope undo<cr>"
+;                 {:desc "Telescope Undo"})
+; (set vim.g.loaded_netrw 1)
+; (set vim.g.loaded_netrwPlugin 1)
+; (set vim.opt.termguicolors true)
 ; (fn my-on-attach [bufnr]
 ;   (let [api (require :nvim-tree.api)]
 ;     (fn opts [desc]
@@ -408,10 +465,10 @@
 ;     (api.config.mappings.default_on_attach bufnr)
 ;     (vim.keymap.set :n :<C-t> api.tree.change_root_to_parent (opts :Up))
 ;     (vim.keymap.set :n "?" api.tree.toggle_help (opts :Help))))
-((. (require :nvim-tree) :setup) {:filters {:dotfiles true}
-                                  :renderer {:group_empty true}
-                                  :sort_by :case_sensitive
-                                  :view {:width 30}})
+; ((. (require :nvim-tree) :setup) {:filters {:dotfiles true}
+;                                   :renderer {:group_empty true}
+;                                   :sort_by :case_sensitive
+;                                   :view {:width 30}})
 (local rt (require :rust-tools))
 (rt.setup {:server {:capabilities capabilities :on_attach on-attach}})
 
@@ -449,80 +506,80 @@
                                                       :dismiss :<C-q>
                                                       :next :<C-l>
                                                       :prev :<C-h>}}})
-((. (require :mason) :setup) {})
+; ((. (require :mason) :setup) {})
 
-((. (require :lualine) :setup) {:extensions [:fzf :quickfix :fugitive :nvim-tree]})
+; ((. (require :lualine) :setup) {:extensions [:fzf :quickfix :fugitive :nvim-tree]})
 
-((. (. (require :cmp) :setup) :filetype) [:lisp] {:sources [{:name :nvlime}]})
+; ((. (. (require :cmp) :setup) :filetype) [:lisp] {:sources [{:name :nvlime}]})
 
 ; (vim.cmd "command! -bang -nargs=* Ag call fzf#vim#ag_interactive(<q-args>, fzf#vim#with_preview('right:50%:hidden', 'alt-h'))")
 ; (vim.cmd "command! -bang -nargs=* Rg call fzf#vim#rg_interactive(<q-args>, fzf#vim#with_preview('right:50%:hidden', 'alt-h'))")
 
 (vim.cmd "inoremap <expr> <c-x><c-f> fzf#vim#complete#path('rg --files')")
 
-(local Hydra (require :hydra))
-(local cmd (. (require :hydra.keymap-util) :cmd))
-(local hint "                 _f_: files       _m_: marks
-   █🬭🬭🬭🬭🬭🬭🬭🬭🬼    _o_: old files   _g_: live grep
-  ████    ███🬾   _p_: projects    _/_: search in file
-  ██ ▁     ██
-  ██🬿      ███   _r_: resume      _u_: undotree
- ██🬝🮄🮄🮄🮄🮄🮄🮄🮄🬆█🭀  _h_: vim help    _c_: execute command
- ██🬺🬹🬱🬭🬭🬭🬭🬵🬹🬹██  _k_: keymaps     _;_: commands history 
-                 _O_: options     _?_: search history
- ^
-                 _<Enter>_: Telescope           _<Esc>_
-")
-(Hydra {:body :<Leader>f
-        :config {:color :teal
-                 :hint {:border :rounded :position :middle}
-                 :invoke_on_body true}
-        :heads [[:f (cmd "Telescope find_files")]
-                [:g (cmd "Telescope live_grep")]
-                [:o (cmd "Telescope oldfiles") {:desc "recently opened files"}]
-                [:h (cmd "Telescope help_tags") {:desc "vim help"}]
-                [:m (cmd :MarksListBuf) {:desc :marks}]
-                [:k (cmd "Telescope keymaps")]
-                [:O (cmd "Telescope vim_options")]
-                [:r (cmd "Telescope resume")]
-                [:p (cmd "Telescope projects") {:desc :projects}]
-                ["/"
-                 (cmd "Telescope current_buffer_fuzzy_find")
-                 {:desc "search in file"}]
-                ["?" (cmd "Telescope search_history") {:desc "search history"}]
-                [";"
-                 (cmd "Telescope command_history")
-                 {:desc "command-line history"}]
-                [:c (cmd "Telescope commands") {:desc "execute command"}]
-                [:u
-                 (cmd "silent! %foldopen! | UndotreeToggle")
-                 {:desc :undotree}]
-                [:<Enter>
-                 (cmd :Telescope)
-                 {:desc "list all pickers" :exit true}]
-                [:<Esc> nil {:exit true :nowait true}]]
-        : hint
-        :mode :n
-        :name :Telescope})
-(local hint1 " Arrow^^^^^^   Select region with <C-v> 
- ^ ^ _K_ ^ ^   _f_: surround it with box
- _H_ ^ ^ _L_
- ^ ^ _J_ ^ ^                      _<Esc>_
-")
-(Hydra {:body :<leader>D
-        :config {:color :pink
-                 :hint {:border :rounded}
-                 :invoke_on_body true
-                 :on_enter (fn [] (set vim.o.virtualedit :all))}
-        :heads [[:H "<C-v>h:VBox<CR>"]
-                [:J "<C-v>j:VBox<CR>"]
-                [:K "<C-v>k:VBox<CR>"]
-                [:L "<C-v>l:VBox<CR>"]
-                [:f ":VBox<CR>" {:mode :v}]
-                [:<Esc> nil {:exit true}]]
-        : hint1
-        :mode :n
-        :name "Draw Diagram"})
+; (local Hydra (require :hydra))
+; (local cmd (. (require :hydra.keymap-util) :cmd))
+; (local hint "                 _f_: files       _m_: marks
+;    █🬭🬭🬭🬭🬭🬭🬭🬭🬼    _o_: old files   _g_: live grep
+;   ████    ███🬾   _p_: projects    _/_: search in file
+;   ██ ▁     ██
+;   ██🬿      ███   _r_: resume      _u_: undotree
+;  ██🬝🮄🮄🮄🮄🮄🮄🮄🮄🬆█🭀  _h_: vim help    _c_: execute command
+;  ██🬺🬹🬱🬭🬭🬭🬭🬵🬹🬹██  _k_: keymaps     _;_: commands history 
+;                  _O_: options     _?_: search history
+;  ^
+;                  _<Enter>_: Telescope           _<Esc>_
+; ")
+; (Hydra {:body :<Leader>f
+;         :config {:color :teal
+;                  :hint {:border :rounded :position :middle}
+;                  :invoke_on_body true}
+;         :heads [[:f (cmd "Telescope find_files")]
+;                 [:g (cmd "Telescope live_grep")]
+;                 [:o (cmd "Telescope oldfiles") {:desc "recently opened files"}]
+;                 [:h (cmd "Telescope help_tags") {:desc "vim help"}]
+;                 [:m (cmd :MarksListBuf) {:desc :marks}]
+;                 [:k (cmd "Telescope keymaps")]
+;                 [:O (cmd "Telescope vim_options")]
+;                 [:r (cmd "Telescope resume")]
+;                 [:p (cmd "Telescope projects") {:desc :projects}]
+;                 ["/"
+;                  (cmd "Telescope current_buffer_fuzzy_find")
+;                  {:desc "search in file"}]
+;                 ["?" (cmd "Telescope search_history") {:desc "search history"}]
+;                 [";"
+;                  (cmd "Telescope command_history")
+;                  {:desc "command-line history"}]
+;                 [:c (cmd "Telescope commands") {:desc "execute command"}]
+;                 [:u
+;                  (cmd "silent! %foldopen! | UndotreeToggle")
+;                  {:desc :undotree}]
+;                 [:<Enter>
+;                  (cmd :Telescope)
+;                  {:desc "list all pickers" :exit true}]
+;                 [:<Esc> nil {:exit true :nowait true}]]
+;         : hint
+;         :mode :n
+;         :name :Telescope})
+; (local hint1 " Arrow^^^^^^   Select region with <C-v> 
+;  ^ ^ _K_ ^ ^   _f_: surround it with box
+;  _H_ ^ ^ _L_
+;  ^ ^ _J_ ^ ^                      _<Esc>_
+; ")
+; (Hydra {:body :<leader>D
+;         :config {:color :pink
+;                  :hint {:border :rounded}
+;                  :invoke_on_body true
+;                  :on_enter (fn [] (set vim.o.virtualedit :all))}
+;         :heads [[:H "<C-v>h:VBox<CR>"]
+;                 [:J "<C-v>j:VBox<CR>"]
+;                 [:K "<C-v>k:VBox<CR>"]
+;                 [:L "<C-v>l:VBox<CR>"]
+;                 [:f ":VBox<CR>" {:mode :v}]
+;                 [:<Esc> nil {:exit true}]]
+;         : hint1
+;         :mode :n
+;         :name "Draw Diagram"})
 (vim.cmd "if executable('ag')
   let g:ackprg = 'ag --vimgrep'
 endif")

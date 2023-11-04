@@ -2,9 +2,32 @@
 local core = require("nfnl.core")
 local config = require("nfnl.config")
 local default = config.default()
+vim.wo.number = true
+vim.o.mouse = "a"
+vim.o.clipboard = "unnamedplus"
+vim.o.breakindent = true
+vim.o.ignorecase = true
+vim.o.smartcase = true
+vim.wo.signcolumn = "yes"
+vim.o.updatetime = 200
+vim.o.timeoutlen = 250
+vim.o.completeopt = "menuone,noselect"
+vim.o.termguicolors = true
+vim.opt.tabstop = 4
+vim.opt.softtabstop = 4
+vim.opt.shiftwidth = 4
+vim.o.expandtab = true
+vim.opt.swapfile = false
+vim.opt.backup = false
+vim.opt.undodir = (os.getenv("HOME") .. "/.vim/undodir")
+vim.opt.undofile = true
 do
   local starter = require("mini.starter")
   starter.setup()
+end
+do
+  local files = require("mini.files")
+  files.setup()
 end
 do
   local misc = require("mini.misc")
@@ -26,34 +49,39 @@ do
   local pick = require("mini.pick")
   pick.setup()
 end
+local extra = require("mini.extra")
+extra.setup()
 do
-  local extra = require("mini.extra")
-  extra.setup()
+  local statusline = require("mini.statusline")
+  statusline.setup()
 end
+do
+  local indentscope = require("mini.indentscope")
+  indentscope.setup()
+end
+do
+  local comments = require("mini.comment")
+  comments.setup()
+end
+do
+  local jump = require("mini.jump")
+  jump.setup()
+end
+do
+  local jump2d = require("mini.jump2d")
+  jump2d.setup()
+end
+vim.g.mapleader = " "
+vim.g.maplocalleader = ","
+local miniclue = require("mini.clue")
+miniclue.setup({clues = {miniclue.gen_clues.builtin_completion(), miniclue.gen_clues.g(), miniclue.gen_clues.marks(), miniclue.gen_clues.registers(), miniclue.gen_clues.windows(), miniclue.gen_clues.z(), {mode = "n", keys = "<LocalLeader>e", desc = "+EvalConjure"}, {mode = "n", keys = "<LocalLeader>l", desc = "+LogConjure"}, {mode = "n", keys = "<LocalLeader>r", desc = "+REPLConjure"}, {mode = "n", keys = "<LocalLeader>t", desc = "+TestConjure"}, {mode = "n", keys = "<Leader>c", desc = "+Code"}, {mode = "n", keys = "<Leader>r", desc = "+Refactor"}, {mode = "n", keys = "<Leader>w", desc = "+Workspace"}, {mode = "n", keys = "<Leader>f", desc = "+Find"}, {mode = "n", keys = "<Leader>g", desc = "+Git"}, {mode = "n", keys = "<Leader>d", desc = "+Document"}}, triggers = {{keys = "<Leader>", mode = "n"}, {keys = "<Leader>", mode = "x"}, {keys = "<LocalLeader>", mode = "n"}, {keys = "<LocalLeader>", mode = "x"}, {keys = "<C-x>", mode = "i"}, {keys = "g", mode = "n"}, {keys = "g", mode = "x"}, {keys = "'", mode = "n"}, {keys = "`", mode = "n"}, {keys = "'", mode = "x"}, {keys = "`", mode = "x"}, {keys = "\"", mode = "n"}, {keys = "\"", mode = "x"}, {keys = "<C-r>", mode = "i"}, {keys = "<C-r>", mode = "c"}, {keys = "<C-w>", mode = "n"}, {keys = "z", mode = "n"}, {keys = "z", mode = "x"}}})
 do
   local marks = require("marks")
   marks.setup()
 end
 do
-  local lualine = require("lualine")
-  lualine.setup()
-end
-do
-  local which_key = require("which-key")
-  which_key.setup()
-end
-do end (require("which-key")).register({["<leader>c"] = {_ = "which_key_ignore", name = "[C]ode"}, ["<leader>d"] = {_ = "which_key_ignore", name = "[D]ocument"}, ["<leader>g"] = {_ = "which_key_ignore", name = "[G]it"}, ["<leader>h"] = {_ = "which_key_ignore", name = "[H]arpoon"}, ["<leader>o"] = {_ = "which_key_ignore", name = "[O]rgmode"}, ["<leader>r"] = {_ = "which_key_ignore", name = "[R]ename"}, ["<leader>s"] = {_ = "which_key_ignore", name = "[S]earch"}, ["<leader>w"] = {_ = "which_key_ignore", name = "[W]orkspace"}, ["<leader>x"] = {_ = "which_key_ignore", name = "[T]rouble"}})
-do
-  local ibl = require("ibl")
-  ibl.setup()
-end
-do
   local pqf = require("pqf")
   pqf.setup()
-end
-do
-  local dressing = require("dressing")
-  dressing.setup()
 end
 do
   local better_escape = require("better_escape")
@@ -112,11 +140,11 @@ local function on_attach(_, bufnr)
   nmap("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
   nmap("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
   nmap("gd", vim.lsp.buf.definition, "[G]oto [D]efinition")
-  nmap("gr", (require("telescope.builtin")).lsp_references, "[G]oto [R]eferences")
-  nmap("gI", (require("telescope.builtin")).lsp_implementations, "[G]oto [I]mplementation")
+  nmap("gr", "<cmd>Pick lsp scope='references'", "[G]oto [R]eferences")
+  nmap("gI", "<cmd>Pick lsp scope='implementation'", "[G]oto [I]mplementation")
   nmap("<leader>D", vim.lsp.buf.type_definition, "Type [D]efinition")
-  nmap("<leader>ds", (require("telescope.builtin")).lsp_document_symbols, "[D]ocument [S]ymbols")
-  nmap("<leader>ws", (require("telescope.builtin")).lsp_dynamic_workspace_symbols, "[W]orkspace [S]ymbols")
+  nmap("<leader>ds", "<cmd>Pick lsp scope='document_symbols'", "[D]ocument [S]ymbols")
+  nmap("<leader>ws", "<cmd>Pick lsp scope='workspace_symbols'", "[W]orkspace [S]ymbols")
   nmap("K", vim.lsp.buf.hover, "Hover Documentation")
   nmap("<C-k>", vim.lsp.buf.signature_help, "Signature Documentation")
   nmap("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
@@ -142,30 +170,8 @@ do
   end
   lspconfig.racket_langserver.setup({capabilities = capabilities, on_attach = on_attach})
 end
-pcall((require("telescope")).load_extension, "fzf")
-pcall((require("telescope")).load_extension, "conventional_commits")
-vim.g.mapleader = " "
-vim.g.maplocalleader = ","
-vim.wo.number = true
-vim.o.mouse = "a"
-vim.o.clipboard = "unnamedplus"
-vim.o.breakindent = true
-vim.o.ignorecase = true
-vim.o.smartcase = true
-vim.wo.signcolumn = "yes"
-vim.o.updatetime = 250
-vim.o.timeoutlen = 300
-vim.o.completeopt = "menuone,noselect"
-vim.o.termguicolors = true
-vim.opt.tabstop = 4
-vim.opt.softtabstop = 4
-vim.opt.shiftwidth = 4
-vim.o.expandtab = true
-vim.opt.swapfile = false
-vim.opt.backup = false
-vim.opt.undodir = (os.getenv("HOME") .. "/.vim/undodir")
-vim.opt.undofile = true
 vim.keymap.set({"n", "v"}, "<Space>", "<Nop>", {silent = true})
+vim.keymap.set("n", "<esc>", "<cmd>noh<cr>", {silent = true})
 vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", {expr = true, silent = true})
 vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", {expr = true, silent = true})
 local highlight_group = vim.api.nvim_create_augroup("YankHighlight", {clear = true})
@@ -173,19 +179,18 @@ local function _11_()
   return vim.highlight.on_yank()
 end
 vim.api.nvim_create_autocmd("TextYankPost", {callback = _11_, group = highlight_group, pattern = "*"})
-do end (require("telescope")).setup({defaults = {mappings = {i = {["<C-d>"] = false, ["<C-u>"] = false}}}})
-vim.keymap.set("n", "<leader>?", (require("telescope.builtin")).oldfiles, {desc = "[?] Find recently opened files"})
-vim.keymap.set("n", "<leader>b", (require("telescope.builtin")).buffers, {desc = "[b] Find existing buffers"})
+vim.keymap.set("n", "<leader>?", "<CMD>Pick oldfiles<CR>", {desc = "[?] Find recently opened files"})
+vim.keymap.set("n", "<leader>b", "<CMD>Pick buffers<CR>", {desc = "[b] Find existing buffers"})
+vim.keymap.set("n", "<leader>/", "<CMD>Pick buf_lines<CR>", {desc = "[/] Fuzzily search in current buffer"})
+vim.keymap.set("n", "<leader>gf", "<CMD>Pick git_files<CR>", {desc = "Search [G]it [F]iles"})
+vim.keymap.set("n", "<leader>ff", "<CMD>Pick files<CR>", {desc = "[F]ind [F]iles"})
+vim.keymap.set("n", "<leader>fh", "<CMD>Pick help<CR>", {desc = "[S]earch [H]elp"})
+vim.keymap.set("n", "<leader>fg", "<CMD>Pick grep_live<CR>", {desc = "[S]earch by [G]rep"})
+vim.keymap.set("n", "<leader>fd", "<CMD>Pick diagnostic<CR>", {desc = "[S]earch [D]iagnostics"})
 local function _12_()
-  return (require("telescope.builtin")).current_buffer_fuzzy_find((require("telescope.themes")).get_dropdown({winblend = 10, previewer = false}))
+  return MiniFiles.open()
 end
-vim.keymap.set("n", "<leader>/", _12_, {desc = "[/] Fuzzily search in current buffer"})
-vim.keymap.set("n", "<leader>gf", (require("telescope.builtin")).git_files, {desc = "Search [G]it [F]iles"})
-vim.keymap.set("n", "<leader>sf", (require("telescope.builtin")).find_files, {desc = "[S]earch [F]iles"})
-vim.keymap.set("n", "<leader>sh", (require("telescope.builtin")).help_tags, {desc = "[S]earch [H]elp"})
-vim.keymap.set("n", "<leader>sw", (require("telescope.builtin")).grep_string, {desc = "[S]earch current [W]ord"})
-vim.keymap.set("n", "<leader>sg", (require("telescope.builtin")).live_grep, {desc = "[S]earch by [G]rep"})
-vim.keymap.set("n", "<leader>sd", (require("telescope.builtin")).diagnostics, {desc = "[S]earch [D]iagnostics"})
+vim.keymap.set("n", "<leader>e", _12_, {desc = "File [e]xplorer"})
 do end (require("nvim-treesitter.configs")).setup({ensure_installed = {"c", "cpp", "go", "lua", "python", "rust", "tsx", "typescript", "vimdoc", "vim", "scala", "elixir", "heex", "kotlin", "fennel", "racket", "awk"}, highlight = {enable = true}, incremental_selection = {enable = true, keymaps = {init_selection = "<c-space>", node_decremental = "<M-space>", node_incremental = "<c-space>", scope_incremental = "<c-s>"}}, indent = {enable = true}, textobjects = {move = {enable = true, goto_next_end = {["]M"] = "@function.outer", ["]["] = "@class.outer"}, goto_next_start = {["]]"] = "@class.outer", ["]m"] = "@function.outer"}, goto_previous_end = {["[M"] = "@function.outer", ["[]"] = "@class.outer"}, goto_previous_start = {["[["] = "@class.outer", ["[m"] = "@function.outer"}, set_jumps = true}, select = {enable = true, keymaps = {aa = "@parameter.outer", ac = "@class.outer", af = "@function.outer", ia = "@parameter.inner", ic = "@class.inner", ["if"] = "@function.inner"}, lookahead = true}, swap = {enable = true, swap_next = {["<leader>a"] = "@parameter.inner"}, swap_previous = {["<leader>A"] = "@parameter.inner"}}}, auto_install = false})
 do end (require("nvterm")).setup({behavior = {auto_insert = true, autoclose_on_quit = {confirm = true, enabled = false}, close_on_exit = true}, terminals = {list = {}, shell = vim.o.shell, type_opts = {float = {border = "single", col = 0.25, height = 0.4, relative = "editor", row = 0.3, width = 0.5}, horizontal = {location = "rightbelow", split_ratio = 0.3}, vertical = {location = "rightbelow", split_ratio = 0.5}}}})
 local terminal = require("nvterm.terminal")
@@ -209,98 +214,8 @@ local opts = {noremap = true, silent = true}
 for _, mapping in ipairs(mappings) do
   vim.keymap.set(mapping[1], mapping[2], mapping[3], opts)
 end
-pcall((require("telescope")).load_extension, "file_browser")
-vim.keymap.set("n", "<leader>.", "<cmd>Telescope file_browser path=%:p:h select_buffer=true<cr>", {desc = "File Browser Buffer CWD"})
-do end (require("telescope")).load_extension("harpoon")
-local function _17_()
-  return (require("harpoon.mark")).add_file()
-end
-vim.keymap.set("n", "<leader>ha", _17_, {desc = "Add File"})
-local function _18_()
-  return (require("harpoon.ui")).toggle_quick_menu()
-end
-vim.keymap.set("n", "<leader>hm", _18_, {desc = "Toggle Menu"})
-local function _19_()
-  return (require("harpoon.ui")).nav_next()
-end
-vim.keymap.set("n", "<leader>hn", _19_, {desc = "[N]ext  File"})
-local function _20_()
-  return (require("harpoon.ui")).nav_prev()
-end
-vim.keymap.set("n", "<leader>hp", _20_, {desc = "[P]revious File"})
-do end (require("refactoring")).setup({})
-local function _21_()
-  return (require("refactoring")).refactor("Extract Function")
-end
-vim.keymap.set("x", "<leader>re", _21_, {desc = "Extract Function"})
-local function _22_()
-  return (require("refactoring")).refactor("Extract Function To File")
-end
-vim.keymap.set("x", "<leader>rf", _22_, {desc = "Extract Function to File"})
-local function _23_()
-  return (require("refactoring")).refactor("Extract Variable")
-end
-vim.keymap.set("x", "<leader>rv", _23_, {desc = "Extract Variable"})
-local function _24_()
-  return (require("refactoring")).refactor("Inline Function")
-end
-vim.keymap.set("n", "<leader>rI", _24_, {desc = "Inline Function"})
-local function _25_()
-  return (require("refactoring")).refactor("Inline Variable")
-end
-vim.keymap.set({"n", "x"}, "<leader>ri", _25_, {desc = "Inline Variable"})
-local function _26_()
-  return (require("refactoring")).refactor("Extract Block")
-end
-vim.keymap.set("n", "<leader>rb", _26_, {desc = "Extract Block"})
-local function _27_()
-  return (require("refactoring")).refactor("Extract Block To File")
-end
-vim.keymap.set("n", "<leader>rbf", _27_, {desc = "Extract Block To File"})
-do end (require("telescope")).load_extension("refactoring")
-local function _28_()
-  return (((require("telescope")).extensions).refactoring).refactors()
-end
-vim.keymap.set({"n", "x"}, "<leader>rr", _28_, {desc = "Select Refactor Menu"})
-local function _29_()
-  return ((require("refactoring")).debug).printf({below = false})
-end
-vim.keymap.set("n", "<leader>rp", _29_, {desc = "Debug Printf"})
-local function _30_()
-  return ((require("refactoring")).debug).print_var()
-end
-vim.keymap.set({"x", "n"}, "<leader>rv", _30_, {desc = "Debug Print Var"})
-local function _31_()
-  return ((require("refactoring")).debug).cleanup({})
-end
-vim.keymap.set("n", "<leader>rc", _31_, {desc = "Debug Cleanup"})
-vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, {desc = "Go to previous diagnostic message"})
-vim.keymap.set("n", "]d", vim.diagnostic.goto_next, {desc = "Go to next diagnostic message"})
-vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, {desc = "Open floating diagnostic message"})
-vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, {desc = "Open diagnostics list"})
-vim.keymap.set("n", "<leader>z", MiniMisc.zoom, {desc = "Toggle Zoom current window"})
-do end (require("telescope")).load_extension("undo")
-do end (require("telescope")).setup({extensions = {undo = {layout_config = {preview_height = 0.8}, layout_strategy = "vertical", side_by_side = true}}})
-vim.keymap.set("n", "<leader>u", "<cmd>Telescope undo<cr>", {desc = "Telescope Undo"})
-vim.g.loaded_netrw = 1
-vim.g.loaded_netrwPlugin = 1
-vim.opt.termguicolors = true
-do end (require("nvim-tree")).setup({filters = {dotfiles = true}, renderer = {group_empty = true}, sort_by = "case_sensitive", view = {width = 30}})
 local rt = require("rust-tools")
 rt.setup({server = {capabilities = capabilities, on_attach = on_attach}})
-do end (require("copilot")).setup({copilot_node_command = "node", filetypes = {c = true, go = true, lua = true, python = true, rust = true, scala = true, cvs = false, help = false, gitcommit = false, yaml = false, svn = false, gitrebase = false, markdown = false, ["."] = false, hgcommit = false}, panel = {auto_refresh = true, keymap = {accept = "<CR>", jump_next = "]]", jump_prev = "[[", open = "<M-CR>", refresh = "gr"}, layout = {position = "bottom", ratio = 0.4}, enabled = false}, server_opts_overrides = {}, suggestion = {debounce = 75, keymap = {accept = "<Tab>", dismiss = "<C-q>", next = "<C-l>", prev = "<C-h>", accept_word = false, accept_line = false}, enabled = false, auto_trigger = false}})
-do end (require("mason")).setup({})
-do end (require("lualine")).setup({extensions = {"fzf", "quickfix", "fugitive", "nvim-tree"}})
-do end ((require("cmp")).setup).filetype({"lisp"}, {sources = {{name = "nvlime"}}})
+do end (require("copilot")).setup({copilot_node_command = "node", filetypes = {c = true, go = true, lua = true, python = true, rust = true, scala = true, cvs = false, help = false, yaml = false, svn = false, gitcommit = false, ["."] = false, markdown = false, gitrebase = false, hgcommit = false}, panel = {auto_refresh = true, keymap = {accept = "<CR>", jump_next = "]]", jump_prev = "[[", open = "<M-CR>", refresh = "gr"}, layout = {position = "bottom", ratio = 0.4}, enabled = false}, server_opts_overrides = {}, suggestion = {debounce = 75, keymap = {accept = "<Tab>", dismiss = "<C-q>", next = "<C-l>", prev = "<C-h>", accept_line = false, accept_word = false}, auto_trigger = false, enabled = false}})
 vim.cmd("inoremap <expr> <c-x><c-f> fzf#vim#complete#path('rg --files')")
-local Hydra = require("hydra")
-local cmd = (require("hydra.keymap-util")).cmd
-local hint = "                 _f_: files       _m_: marks\n   \226\150\136\240\159\172\173\240\159\172\173\240\159\172\173\240\159\172\173\240\159\172\173\240\159\172\173\240\159\172\173\240\159\172\173\240\159\172\188    _o_: old files   _g_: live grep\n  \226\150\136\226\150\136\226\150\136\226\150\136    \226\150\136\226\150\136\226\150\136\240\159\172\190   _p_: projects    _/_: search in file\n  \226\150\136\226\150\136 \238\138\133\226\150\129     \226\150\136\226\150\136\n  \226\150\136\226\150\136\240\159\172\191      \226\150\136\226\150\136\226\150\136   _r_: resume      _u_: undotree\n \226\150\136\226\150\136\240\159\172\157\240\159\174\132\240\159\174\132\240\159\174\132\240\159\174\132\240\159\174\132\240\159\174\132\240\159\174\132\240\159\174\132\240\159\172\134\226\150\136\240\159\173\128  _h_: vim help    _c_: execute command\n \226\150\136\226\150\136\240\159\172\186\240\159\172\185\240\159\172\177\240\159\172\173\240\159\172\173\240\159\172\173\240\159\172\173\240\159\172\181\240\159\172\185\240\159\172\185\226\150\136\226\150\136  _k_: keymaps     _;_: commands history \n                 _O_: options     _?_: search history\n ^\n                 _<Enter>_: Telescope           _<Esc>_\n"
-Hydra({body = "<Leader>f", config = {color = "teal", hint = {border = "rounded", position = "middle"}, invoke_on_body = true}, heads = {{"f", cmd("Telescope find_files")}, {"g", cmd("Telescope live_grep")}, {"o", cmd("Telescope oldfiles"), {desc = "recently opened files"}}, {"h", cmd("Telescope help_tags"), {desc = "vim help"}}, {"m", cmd("MarksListBuf"), {desc = "marks"}}, {"k", cmd("Telescope keymaps")}, {"O", cmd("Telescope vim_options")}, {"r", cmd("Telescope resume")}, {"p", cmd("Telescope projects"), {desc = "projects"}}, {"/", cmd("Telescope current_buffer_fuzzy_find"), {desc = "search in file"}}, {"?", cmd("Telescope search_history"), {desc = "search history"}}, {";", cmd("Telescope command_history"), {desc = "command-line history"}}, {"c", cmd("Telescope commands"), {desc = "execute command"}}, {"u", cmd("silent! %foldopen! | UndotreeToggle"), {desc = "undotree"}}, {"<Enter>", cmd("Telescope"), {desc = "list all pickers", exit = true}}, {"<Esc>", nil, {exit = true, nowait = true}}}, hint = hint, mode = "n", name = "Telescope"})
-local hint1 = " Arrow^^^^^^   Select region with <C-v> \n ^ ^ _K_ ^ ^   _f_: surround it with box\n _H_ ^ ^ _L_\n ^ ^ _J_ ^ ^                      _<Esc>_\n"
-local function _32_()
-  vim.o.virtualedit = "all"
-  return nil
-end
-Hydra({body = "<leader>D", config = {color = "pink", hint = {border = "rounded"}, invoke_on_body = true, on_enter = _32_}, heads = {{"H", "<C-v>h:VBox<CR>"}, {"J", "<C-v>j:VBox<CR>"}, {"K", "<C-v>k:VBox<CR>"}, {"L", "<C-v>l:VBox<CR>"}, {"f", ":VBox<CR>", {mode = "v"}}, {"<Esc>", nil, {exit = true}}}, hint1 = hint1, mode = "n", name = "Draw Diagram"})
 return vim.cmd("if executable('ag')\n  let g:ackprg = 'ag --vimgrep'\nendif")
