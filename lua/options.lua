@@ -79,10 +79,19 @@ do
   local bracketed = require("mini.bracketed")
   bracketed.setup()
 end
+do
+  local bufremove = require("mini.bufremove")
+  bufremove.setup()
+end
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
 local miniclue = require("mini.clue")
-miniclue.setup({clues = {miniclue.gen_clues.builtin_completion(), miniclue.gen_clues.g(), miniclue.gen_clues.marks(), miniclue.gen_clues.registers(), miniclue.gen_clues.windows(), miniclue.gen_clues.z(), {mode = "n", keys = "<LocalLeader>e", desc = "+EvalConjure"}, {mode = "n", keys = "<LocalLeader>l", desc = "+LogConjure"}, {mode = "n", keys = "<LocalLeader>r", desc = "+REPLConjure"}, {mode = "n", keys = "<LocalLeader>t", desc = "+TestConjure"}, {mode = "n", keys = "<Leader>c", desc = "+Code"}, {mode = "n", keys = "<Leader>r", desc = "+Refactor"}, {mode = "n", keys = "<Leader>w", desc = "+Workspace"}, {mode = "n", keys = "<Leader>f", desc = "+Find"}, {mode = "n", keys = "<Leader>g", desc = "+Git"}, {mode = "n", keys = "<Leader>d", desc = "+Document"}}, triggers = {{keys = "<Leader>", mode = "n"}, {keys = "<Leader>", mode = "x"}, {keys = "<LocalLeader>", mode = "n"}, {keys = "<LocalLeader>", mode = "x"}, {keys = "<C-x>", mode = "i"}, {keys = "]", mode = "n"}, {keys = "]", mode = "x"}, {keys = "[", mode = "n"}, {keys = "[", mode = "x"}, {keys = "g", mode = "n"}, {keys = "g", mode = "x"}, {keys = "'", mode = "n"}, {keys = "`", mode = "n"}, {keys = "'", mode = "x"}, {keys = "`", mode = "x"}, {keys = "\"", mode = "n"}, {keys = "\"", mode = "x"}, {keys = "<C-r>", mode = "i"}, {keys = "<C-r>", mode = "c"}, {keys = "<C-w>", mode = "n"}, {keys = "z", mode = "n"}, {keys = "z", mode = "x"}}})
+miniclue.setup({clues = {miniclue.gen_clues.builtin_completion(), miniclue.gen_clues.g(), miniclue.gen_clues.marks(), miniclue.gen_clues.registers(), miniclue.gen_clues.windows(), miniclue.gen_clues.z(), {mode = "n", keys = "<LocalLeader>e", desc = "+EvalConjure"}, {mode = "n", keys = "<LocalLeader>l", desc = "+LogConjure"}, {mode = "n", keys = "<LocalLeader>r", desc = "+REPLConjure"}, {mode = "n", keys = "<LocalLeader>t", desc = "+TestConjure"}, {mode = "n", keys = "<LocalLeader>b", desc = "+Buffer"}, {mode = "n", keys = "<Leader>c", desc = "+Code"}, {mode = "n", keys = "<Leader>r", desc = "+Refactor"}, {mode = "n", keys = "<Leader>w", desc = "+Workspace"}, {mode = "n", keys = "<Leader>f", desc = "+Find"}, {mode = "n", keys = "<Leader>g", desc = "+Git"}, {mode = "n", keys = "<Leader>d", desc = "+Document"}}, triggers = {{keys = "<Leader>", mode = "n"}, {keys = "<Leader>", mode = "x"}, {keys = "<LocalLeader>", mode = "n"}, {keys = "<LocalLeader>", mode = "x"}, {keys = "<C-x>", mode = "i"}, {keys = "]", mode = "n"}, {keys = "]", mode = "x"}, {keys = "[", mode = "n"}, {keys = "[", mode = "x"}, {keys = "g", mode = "n"}, {keys = "g", mode = "x"}, {keys = "'", mode = "n"}, {keys = "`", mode = "n"}, {keys = "'", mode = "x"}, {keys = "`", mode = "x"}, {keys = "\"", mode = "n"}, {keys = "\"", mode = "x"}, {keys = "<C-r>", mode = "i"}, {keys = "<C-r>", mode = "c"}, {keys = "<C-w>", mode = "n"}, {keys = "z", mode = "n"}, {keys = "z", mode = "x"}}})
+local function _1_()
+  return MiniBufremove.delete()
+end
+vim.keymap.set("n", "<LocalLeader>bd", _1_, {desc = "Delete"})
+vim.keymap.set("n", "<LocalLeader>bw", "<Cmd>lua MiniBufremove.wipeout()<CR>", {desc = "Wipeout"})
 do
   local marks = require("marks")
   marks.setup()
@@ -108,10 +117,10 @@ local function has_words_before()
   return ((col ~= 0) and (((vim.api.nvim_buf_get_text(0, (line - 1), 0, (line - 1), col, {}))[1]):match("^%s*$") == nil))
 end
 local lspkind = require("lspkind")
-local function _2_(entry, vim_item)
+local function _3_(entry, vim_item)
   return vim_item
 end
-local function _3_(fallback)
+local function _4_(fallback)
   if cmp.visible() then
     return cmp.select_prev_item()
   elseif (require("luasnip")).jumpable(( - 1)) then
@@ -120,7 +129,7 @@ local function _3_(fallback)
     return fallback()
   end
 end
-local function _5_(fallback)
+local function _6_(fallback)
   if (cmp.visible() and has_words_before()) then
     return cmp.select_next_item()
   elseif (require("luasnip")).expand_or_jumpable() then
@@ -129,10 +138,10 @@ local function _5_(fallback)
     return fallback()
   end
 end
-local function _7_(args)
+local function _8_(args)
   return (require("luasnip")).lsp_expand(args.body)
 end
-cmp.setup({formatting = {format = lspkind.cmp_format({before = _2_, ellipsis_char = "...", maxwidth = 50, mode = "symbol", symbol_map = {Copilot = "\239\132\147"}})}, mapping = cmp.mapping.preset.insert({["<C-Space>"] = cmp.mapping.complete(), ["<C-b>"] = cmp.mapping.scroll_docs(( - 4)), ["<C-e>"] = cmp.mapping.abort(), ["<C-f>"] = cmp.mapping.scroll_docs(4), ["<C-n>"] = cmp.mapping.select_next_item(), ["<C-p>"] = cmp.mapping.select_prev_item(), ["<CR>"] = cmp.mapping.confirm({select = true}), ["<S-Tab>"] = cmp.mapping(_3_, {"i", "s"}), ["<Tab>"] = cmp.mapping(_5_, {"i", "s"})}), snippet = {expand = _7_}, sources = cmp.config.sources({{name = "nvim_lsp"}, {name = "luasnip"}, {name = "buffer"}, {name = "nvim_lua"}, {name = "path"}, {name = "copilot", group_index = 2}, {name = "conjure"}})})
+cmp.setup({formatting = {format = lspkind.cmp_format({before = _3_, ellipsis_char = "...", maxwidth = 50, mode = "symbol", symbol_map = {Copilot = "\239\132\147"}})}, mapping = cmp.mapping.preset.insert({["<C-Space>"] = cmp.mapping.complete(), ["<C-b>"] = cmp.mapping.scroll_docs(( - 4)), ["<C-e>"] = cmp.mapping.abort(), ["<C-f>"] = cmp.mapping.scroll_docs(4), ["<C-n>"] = cmp.mapping.select_next_item(), ["<C-p>"] = cmp.mapping.select_prev_item(), ["<CR>"] = cmp.mapping.confirm({select = true}), ["<S-Tab>"] = cmp.mapping(_4_, {"i", "s"}), ["<Tab>"] = cmp.mapping(_6_, {"i", "s"})}), snippet = {expand = _8_}, sources = cmp.config.sources({{name = "nvim_lsp"}, {name = "luasnip"}, {name = "buffer"}, {name = "nvim_lua"}, {name = "path"}, {name = "copilot", group_index = 2}, {name = "conjure"}})})
 cmp.setup.cmdline({"/", "?"}, {mapping = cmp.mapping.preset.cmdline(), sources = {{name = "buffer"}}})
 cmp.setup.cmdline(":", {mapping = cmp.mapping.preset.cmdline(), sources = cmp.config.sources({{name = "path"}}, {{name = "cmdline"}})})
 local capability = vim.lsp.protocol.make_client_capabilities()
@@ -158,14 +167,14 @@ local function on_attach(_, bufnr)
   nmap("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
   nmap("<leader>wa", vim.lsp.buf.add_workspace_folder, "[W]orkspace [A]dd Folder")
   nmap("<leader>wr", vim.lsp.buf.remove_workspace_folder, "[W]orkspace [R]emove Folder")
-  local function _9_()
+  local function _10_()
     return print(vim.inspect(vim.lsp.buf.list_workspace_folders()))
   end
-  nmap("<leader>wl", _9_, "[W]orkspace [L]ist Folders")
-  local function _10_(_0)
+  nmap("<leader>wl", _10_, "[W]orkspace [L]ist Folders")
+  local function _11_(_0)
     return vim.lsp.buf.format()
   end
-  return vim.api.nvim_buf_create_user_command(bufnr, "Format", _10_, {desc = "Format current buffer with LSP"})
+  return vim.api.nvim_buf_create_user_command(bufnr, "Format", _11_, {desc = "Format current buffer with LSP"})
 end
 do end (require("neodev")).setup()
 do
@@ -183,10 +192,10 @@ vim.keymap.set("n", "<esc>", "<cmd>noh<cr>", {silent = true})
 vim.keymap.set("n", "k", "v:count == 0 ? 'gk' : 'k'", {expr = true, silent = true})
 vim.keymap.set("n", "j", "v:count == 0 ? 'gj' : 'j'", {expr = true, silent = true})
 local highlight_group = vim.api.nvim_create_augroup("YankHighlight", {clear = true})
-local function _11_()
+local function _12_()
   return vim.highlight.on_yank()
 end
-vim.api.nvim_create_autocmd("TextYankPost", {callback = _11_, group = highlight_group, pattern = "*"})
+vim.api.nvim_create_autocmd("TextYankPost", {callback = _12_, group = highlight_group, pattern = "*"})
 vim.keymap.set("n", "<leader>?", "<CMD>Pick oldfiles<CR>", {desc = "[?] Find recently opened files"})
 vim.keymap.set("n", "<leader>b", "<CMD>Pick buffers<CR>", {desc = "[b] Find existing buffers"})
 vim.keymap.set("n", "<leader>/", "<CMD>Pick buf_lines<CR>", {desc = "[/] Fuzzily search in current buffer"})
@@ -195,29 +204,29 @@ vim.keymap.set("n", "<leader>ff", "<CMD>Pick files<CR>", {desc = "[F]ind [F]iles
 vim.keymap.set("n", "<leader>fh", "<CMD>Pick help<CR>", {desc = "[S]earch [H]elp"})
 vim.keymap.set("n", "<leader>fg", "<CMD>Pick grep_live<CR>", {desc = "[S]earch by [G]rep"})
 vim.keymap.set("n", "<leader>fd", "<CMD>Pick diagnostic<CR>", {desc = "[S]earch [D]iagnostics"})
-local function _12_()
+local function _13_()
   return MiniFiles.open()
 end
-vim.keymap.set("n", "<leader>e", _12_, {desc = "File [e]xplorer"})
+vim.keymap.set("n", "<leader>e", _13_, {desc = "File [e]xplorer"})
 do end (require("nvim-treesitter.configs")).setup({ensure_installed = {"c", "cpp", "go", "lua", "python", "rust", "tsx", "typescript", "vimdoc", "vim", "scala", "elixir", "heex", "kotlin", "fennel", "racket", "awk"}, highlight = {enable = true}, incremental_selection = {enable = true, keymaps = {init_selection = "<c-space>", node_decremental = "<M-space>", node_incremental = "<c-space>", scope_incremental = "<c-s>"}}, indent = {enable = true}, textobjects = {move = {enable = true, goto_next_end = {["]M"] = "@function.outer", ["]["] = "@class.outer"}, goto_next_start = {["]]"] = "@class.outer", ["]m"] = "@function.outer"}, goto_previous_end = {["[M"] = "@function.outer", ["[]"] = "@class.outer"}, goto_previous_start = {["[["] = "@class.outer", ["[m"] = "@function.outer"}, set_jumps = true}, select = {enable = true, keymaps = {aa = "@parameter.outer", ac = "@class.outer", af = "@function.outer", ia = "@parameter.inner", ic = "@class.inner", ["if"] = "@function.inner"}, lookahead = true}, swap = {enable = true, swap_next = {["<leader>a"] = "@parameter.inner"}, swap_previous = {["<leader>A"] = "@parameter.inner"}}}, auto_install = false})
 do end (require("nvterm")).setup({behavior = {auto_insert = true, autoclose_on_quit = {confirm = true, enabled = false}, close_on_exit = true}, terminals = {list = {}, shell = vim.o.shell, type_opts = {float = {border = "single", col = 0.25, height = 0.4, relative = "editor", row = 0.3, width = 0.5}, horizontal = {location = "rightbelow", split_ratio = 0.3}, vertical = {location = "rightbelow", split_ratio = 0.5}}}})
 local terminal = require("nvterm.terminal")
 local ft_cmds = {python = ("python3 " .. vim.fn.expand("%"))}
 local toggle_modes = {"n", "t"}
 local mappings
-local function _13_()
+local function _14_()
   return terminal.send(ft_cmds[vim.bo.filetype])
 end
-local function _14_()
+local function _15_()
   return terminal.toggle("horizontal")
 end
-local function _15_()
+local function _16_()
   return terminal.toggle("vertical")
 end
-local function _16_()
+local function _17_()
   return terminal.toggle("float")
 end
-mappings = {{"n", "<C-l>", _13_}, {toggle_modes, "<A-h>", _14_}, {toggle_modes, "<A-v>", _15_}, {toggle_modes, "<A-i>", _16_}}
+mappings = {{"n", "<C-l>", _14_}, {toggle_modes, "<A-h>", _15_}, {toggle_modes, "<A-v>", _16_}, {toggle_modes, "<A-i>", _17_}}
 local opts = {noremap = true, silent = true}
 for _, mapping in ipairs(mappings) do
   vim.keymap.set(mapping[1], mapping[2], mapping[3], opts)
@@ -226,9 +235,12 @@ vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, {desc = "Go to previous diag
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, {desc = "Go to next diagnostic message"})
 vim.keymap.set("n", "<leader>E", vim.diagnostic.open_float, {desc = "Open floating diagnostic message"})
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, {desc = "Open diagnostics list"})
-vim.keymap.set("n", "<leader>z", MiniMisc.zoom, {desc = "Toggle Zoom current window"})
+local function _18_()
+  return MiniMisc.zoom()
+end
+vim.keymap.set("n", "<leader>z", _18_, {desc = "Toggle Zoom current window"})
 local rt = require("rust-tools")
 rt.setup({server = {capabilities = capabilities, on_attach = on_attach}})
-do end (require("copilot")).setup({copilot_node_command = "node", filetypes = {c = true, go = true, lua = true, python = true, rust = true, scala = true, ["."] = false, yaml = false, markdown = false, svn = false, gitcommit = false, help = false, hgcommit = false, gitrebase = false, cvs = false}, panel = {auto_refresh = true, keymap = {accept = "<CR>", jump_next = "]]", jump_prev = "[[", open = "<M-CR>", refresh = "gr"}, layout = {position = "bottom", ratio = 0.4}, enabled = false}, server_opts_overrides = {}, suggestion = {debounce = 75, keymap = {accept = "<Tab>", dismiss = "<C-q>", next = "<C-l>", prev = "<C-h>", accept_word = false, accept_line = false}, enabled = false, auto_trigger = false}})
+do end (require("copilot")).setup({copilot_node_command = "node", filetypes = {c = true, go = true, lua = true, python = true, rust = true, scala = true, yaml = false, gitcommit = false, help = false, gitrebase = false, markdown = false, hgcommit = false, svn = false, cvs = false, ["."] = false}, panel = {auto_refresh = true, keymap = {accept = "<CR>", jump_next = "]]", jump_prev = "[[", open = "<M-CR>", refresh = "gr"}, layout = {position = "bottom", ratio = 0.4}, enabled = false}, server_opts_overrides = {}, suggestion = {debounce = 75, keymap = {accept = "<Tab>", dismiss = "<C-q>", next = "<C-l>", prev = "<C-h>", accept_line = false, accept_word = false}, auto_trigger = false, enabled = false}})
 vim.cmd("inoremap <expr> <c-x><c-f> fzf#vim#complete#path('rg --files')")
 return vim.cmd("if executable('ag')\n  let g:ackprg = 'ag --vimgrep'\nendif")

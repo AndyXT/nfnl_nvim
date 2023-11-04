@@ -79,6 +79,9 @@
 (let [bracketed (require :mini.bracketed)]
   (bracketed.setup))
 
+(let [bufremove (require :mini.bufremove)]
+  (bufremove.setup))
+
 (set vim.g.mapleader " ")
 (set vim.g.maplocalleader ",")
 
@@ -93,6 +96,7 @@
                          {:mode :n :keys :<LocalLeader>l :desc :+LogConjure}
                          {:mode :n :keys :<LocalLeader>r :desc :+REPLConjure}
                          {:mode :n :keys :<LocalLeader>t :desc :+TestConjure}
+                         {:mode :n :keys :<LocalLeader>b :desc :+Buffer}
                          {:mode :n :keys :<Leader>c :desc :+Code}
                          {:mode :n :keys :<Leader>r :desc :+Refactor}
                          {:mode :n :keys :<Leader>w :desc :+Workspace}
@@ -121,6 +125,11 @@
                             {:keys :<C-w> :mode :n}
                             {:keys :z :mode :n}
                             {:keys :z :mode :x}]})
+
+(vim.keymap.set :n :<LocalLeader>bd (fn [] (MiniBufremove.delete))
+                {:desc "Delete"})
+(vim.keymap.set :n :<LocalLeader>bw "<Cmd>lua MiniBufremove.wipeout()<CR>"
+                {:desc "Wipeout"})
 
 (let [marks (require :marks)]
   (marks.setup))
@@ -406,7 +415,7 @@
                 {:desc "Open floating diagnostic message"})
 (vim.keymap.set :n :<leader>q vim.diagnostic.setloclist
                 {:desc "Open diagnostics list"})
-(vim.keymap.set :n :<leader>z MiniMisc.zoom
+(vim.keymap.set :n :<leader>z (fn [] (MiniMisc.zoom))
                {:desc "Toggle Zoom current window"})
 
 ; (set vim.g.loaded_netrw 1)
