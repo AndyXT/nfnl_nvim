@@ -73,9 +73,6 @@
 (let [jump2d (require :mini.jump2d)]
   (jump2d.setup))
 
-; (let [clue (require :mini.clue)]
-  ; (clue.setup))
-
 (set vim.g.mapleader " ")
 (set vim.g.maplocalleader ",")
 
@@ -101,6 +98,10 @@
                             {:keys :<LocalLeader> :mode :n}
                             {:keys :<LocalLeader> :mode :x}
                             {:keys :<C-x> :mode :i}
+                            {:keys "]" :mode :n}
+                            {:keys "]" :mode :x}
+                            {:keys "[" :mode :n}
+                            {:keys "[" :mode :x}
                             {:keys :g :mode :n}
                             {:keys :g :mode :x}
                             {:keys "'" :mode :n}
@@ -118,40 +119,8 @@
 (let [marks (require :marks)]
   (marks.setup))
 
-; (let [lualine (require :lualine)]
-;   (lualine.setup))
-
-; (let [which-key (require :which-key)]
-;   (which-key.setup))
-;
-; ((. (require :which-key) :register) 
-;   {:<leader>c {:_ :which_key_ignore
-;               :name "[C]ode"}
-;    :<leader>d {:_ :which_key_ignore
-;                :name "[D]ocument"}
-;    :<leader>g {:_ :which_key_ignore
-;                :name "[G]it"}
-;    :<leader>h {:_ :which_key_ignore
-;                :name "[H]arpoon"}
-;    :<leader>o {:_ :which_key_ignore
-;                :name "[O]rgmode"}
-;    :<leader>r {:_ :which_key_ignore
-;                :name "[R]ename"}
-;    :<leader>s {:_ :which_key_ignore
-;                :name "[S]earch"}
-;    :<leader>w {:_ :which_key_ignore
-;                :name "[W]orkspace"}
-;    :<leader>x {:_ :which_key_ignore
-;                :name "[T]rouble"}})
-
-; (let [ibl (require :ibl)]
-;   (ibl.setup))
-
 (let [pqf (require :pqf)]
   (pqf.setup))
-
-; (let [dressing (require :dressing)]
-;   (dressing.setup))
 
 (let [better-escape (require :better_escape)]
   (better-escape.setup))
@@ -264,9 +233,6 @@
                                             :on_attach on_attach}))
                                             ;:cmd ["xvfb-run" "racket" "-l" "racket-langserver"]
 
-; (pcall (. (require :telescope) :load_extension) :fzf)	
-; (pcall (. (require :telescope) :load_extension) :conventional_commits)	
-
 (vim.keymap.set [:n :v] :<Space> :<Nop> {:silent true})
 (vim.keymap.set :n :<esc> "<cmd>noh<cr>" {:silent true})
 (vim.keymap.set :n :k "v:count == 0 ? 'gk' : 'k'" {:expr true :silent true})
@@ -277,19 +243,12 @@
                              {:callback (fn [] (vim.highlight.on_yank))
                               :group highlight-group
                               :pattern "*"})
-; ((. (require :telescope) :setup) {:defaults {:mappings {:i {:<C-d> false
-;                                                             :<C-u> false}}}})
 (vim.keymap.set :n :<leader>? "<CMD>Pick oldfiles<CR>"
                 {:desc "[?] Find recently opened files"})
 (vim.keymap.set :n :<leader>b "<CMD>Pick buffers<CR>"
                 {:desc "[b] Find existing buffers"})
 (vim.keymap.set :n :<leader>/ "<CMD>Pick buf_lines<CR>"
-;                 (fn []
-;                   ((. (require :telescope.builtin) :current_buffer_fuzzy_find)
-;                     ((. (require :telescope.themes) :get_dropdown)
-;                       {:previewer false :winblend 10})))
                 {:desc "[/] Fuzzily search in current buffer"})
-
 (vim.keymap.set :n :<leader>gf "<CMD>Pick git_files<CR>"
                 {:desc "Search [G]it [F]iles"})
 (vim.keymap.set :n :<leader>ff "<CMD>Pick files<CR>"
@@ -433,42 +392,20 @@
 ;                 (fn []
 ;                   ((. (. (require :refactoring) :debug) :cleanup) {}))
 ;                 {:desc "Debug Cleanup"})
-; (vim.keymap.set :n "[d" vim.diagnostic.goto_prev
-;                 {:desc "Go to previous diagnostic message"})
-; (vim.keymap.set :n "]d" vim.diagnostic.goto_next
-;                 {:desc "Go to next diagnostic message"})
-; (vim.keymap.set :n :<leader>e vim.diagnostic.open_float
-;                 {:desc "Open floating diagnostic message"})
-; (vim.keymap.set :n :<leader>q vim.diagnostic.setloclist
-;                 {:desc "Open diagnostics list"})
-; (vim.keymap.set :n :<leader>z MiniMisc.zoom
-;                {:desc "Toggle Zoom current window"})
-; ((. (require :telescope) :load_extension) :undo)
-; ((. (require :telescope) :setup) {:extensions {:undo {:layout_config {:preview_height 0.8}
-;                                                       :layout_strategy :vertical
-;                                                       :side_by_side true}}})
+(vim.keymap.set :n "[d" vim.diagnostic.goto_prev
+                {:desc "Go to previous diagnostic message"})
+(vim.keymap.set :n "]d" vim.diagnostic.goto_next
+                {:desc "Go to next diagnostic message"})
+(vim.keymap.set :n :<leader>E vim.diagnostic.open_float
+                {:desc "Open floating diagnostic message"})
+(vim.keymap.set :n :<leader>q vim.diagnostic.setloclist
+                {:desc "Open diagnostics list"})
+(vim.keymap.set :n :<leader>z MiniMisc.zoom
+               {:desc "Toggle Zoom current window"})
 
-; (vim.keymap.set :n :<leader>u "<cmd>Telescope undo<cr>"
-;                 {:desc "Telescope Undo"})
 ; (set vim.g.loaded_netrw 1)
 ; (set vim.g.loaded_netrwPlugin 1)
 ; (set vim.opt.termguicolors true)
-; (fn my-on-attach [bufnr]
-;   (let [api (require :nvim-tree.api)]
-;     (fn opts [desc]
-;       {:buffer bufnr
-;        :desc (.. "nvim-tree: " desc)
-;        :noremap true
-;        :nowait true
-;        :silent true})
-
-;     (api.config.mappings.default_on_attach bufnr)
-;     (vim.keymap.set :n :<C-t> api.tree.change_root_to_parent (opts :Up))
-;     (vim.keymap.set :n "?" api.tree.toggle_help (opts :Help))))
-; ((. (require :nvim-tree) :setup) {:filters {:dotfiles true}
-;                                   :renderer {:group_empty true}
-;                                   :sort_by :case_sensitive
-;                                   :view {:width 30}})
 (local rt (require :rust-tools))
 (rt.setup {:server {:capabilities capabilities :on_attach on-attach}})
 
@@ -506,80 +443,8 @@
                                                       :dismiss :<C-q>
                                                       :next :<C-l>
                                                       :prev :<C-h>}}})
-; ((. (require :mason) :setup) {})
-
-; ((. (require :lualine) :setup) {:extensions [:fzf :quickfix :fugitive :nvim-tree]})
-
-; ((. (. (require :cmp) :setup) :filetype) [:lisp] {:sources [{:name :nvlime}]})
-
-; (vim.cmd "command! -bang -nargs=* Ag call fzf#vim#ag_interactive(<q-args>, fzf#vim#with_preview('right:50%:hidden', 'alt-h'))")
-; (vim.cmd "command! -bang -nargs=* Rg call fzf#vim#rg_interactive(<q-args>, fzf#vim#with_preview('right:50%:hidden', 'alt-h'))")
 
 (vim.cmd "inoremap <expr> <c-x><c-f> fzf#vim#complete#path('rg --files')")
-
-; (local Hydra (require :hydra))
-; (local cmd (. (require :hydra.keymap-util) :cmd))
-; (local hint "                 _f_: files       _m_: marks
-;    █🬭🬭🬭🬭🬭🬭🬭🬭🬼    _o_: old files   _g_: live grep
-;   ████    ███🬾   _p_: projects    _/_: search in file
-;   ██ ▁     ██
-;   ██🬿      ███   _r_: resume      _u_: undotree
-;  ██🬝🮄🮄🮄🮄🮄🮄🮄🮄🬆█🭀  _h_: vim help    _c_: execute command
-;  ██🬺🬹🬱🬭🬭🬭🬭🬵🬹🬹██  _k_: keymaps     _;_: commands history 
-;                  _O_: options     _?_: search history
-;  ^
-;                  _<Enter>_: Telescope           _<Esc>_
-; ")
-; (Hydra {:body :<Leader>f
-;         :config {:color :teal
-;                  :hint {:border :rounded :position :middle}
-;                  :invoke_on_body true}
-;         :heads [[:f (cmd "Telescope find_files")]
-;                 [:g (cmd "Telescope live_grep")]
-;                 [:o (cmd "Telescope oldfiles") {:desc "recently opened files"}]
-;                 [:h (cmd "Telescope help_tags") {:desc "vim help"}]
-;                 [:m (cmd :MarksListBuf) {:desc :marks}]
-;                 [:k (cmd "Telescope keymaps")]
-;                 [:O (cmd "Telescope vim_options")]
-;                 [:r (cmd "Telescope resume")]
-;                 [:p (cmd "Telescope projects") {:desc :projects}]
-;                 ["/"
-;                  (cmd "Telescope current_buffer_fuzzy_find")
-;                  {:desc "search in file"}]
-;                 ["?" (cmd "Telescope search_history") {:desc "search history"}]
-;                 [";"
-;                  (cmd "Telescope command_history")
-;                  {:desc "command-line history"}]
-;                 [:c (cmd "Telescope commands") {:desc "execute command"}]
-;                 [:u
-;                  (cmd "silent! %foldopen! | UndotreeToggle")
-;                  {:desc :undotree}]
-;                 [:<Enter>
-;                  (cmd :Telescope)
-;                  {:desc "list all pickers" :exit true}]
-;                 [:<Esc> nil {:exit true :nowait true}]]
-;         : hint
-;         :mode :n
-;         :name :Telescope})
-; (local hint1 " Arrow^^^^^^   Select region with <C-v> 
-;  ^ ^ _K_ ^ ^   _f_: surround it with box
-;  _H_ ^ ^ _L_
-;  ^ ^ _J_ ^ ^                      _<Esc>_
-; ")
-; (Hydra {:body :<leader>D
-;         :config {:color :pink
-;                  :hint {:border :rounded}
-;                  :invoke_on_body true
-;                  :on_enter (fn [] (set vim.o.virtualedit :all))}
-;         :heads [[:H "<C-v>h:VBox<CR>"]
-;                 [:J "<C-v>j:VBox<CR>"]
-;                 [:K "<C-v>k:VBox<CR>"]
-;                 [:L "<C-v>l:VBox<CR>"]
-;                 [:f ":VBox<CR>" {:mode :v}]
-;                 [:<Esc> nil {:exit true}]]
-;         : hint1
-;         :mode :n
-;         :name "Draw Diagram"})
 (vim.cmd "if executable('ag')
   let g:ackprg = 'ag --vimgrep'
 endif")
