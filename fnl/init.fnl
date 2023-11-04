@@ -36,8 +36,8 @@
              :tpope/vim-repeat
              :tpope/vim-sexp-mappings-for-regular-people
              :tpope/vim-sleuth
-             :tpope/vim-surround
-             :tpope/vim-unimpaired
+             ; :tpope/vim-surround
+             ; :tpope/vim-unimpaired
              :tpope/vim-vinegar
              :nvim-tree/nvim-web-devicons
              :yorickpeterse/nvim-pqf

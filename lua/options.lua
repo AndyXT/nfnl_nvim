@@ -71,6 +71,14 @@ do
   local jump2d = require("mini.jump2d")
   jump2d.setup()
 end
+do
+  local surround = require("mini.surround")
+  surround.setup()
+end
+do
+  local bracketed = require("mini.bracketed")
+  bracketed.setup()
+end
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
 local miniclue = require("mini.clue")
@@ -221,6 +229,6 @@ vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, {desc = "Open diagno
 vim.keymap.set("n", "<leader>z", MiniMisc.zoom, {desc = "Toggle Zoom current window"})
 local rt = require("rust-tools")
 rt.setup({server = {capabilities = capabilities, on_attach = on_attach}})
-do end (require("copilot")).setup({copilot_node_command = "node", filetypes = {c = true, go = true, lua = true, python = true, rust = true, scala = true, markdown = false, svn = false, gitrebase = false, ["."] = false, yaml = false, hgcommit = false, cvs = false, help = false, gitcommit = false}, panel = {auto_refresh = true, keymap = {accept = "<CR>", jump_next = "]]", jump_prev = "[[", open = "<M-CR>", refresh = "gr"}, layout = {position = "bottom", ratio = 0.4}, enabled = false}, server_opts_overrides = {}, suggestion = {debounce = 75, keymap = {accept = "<Tab>", dismiss = "<C-q>", next = "<C-l>", prev = "<C-h>", accept_line = false, accept_word = false}, auto_trigger = false, enabled = false}})
+do end (require("copilot")).setup({copilot_node_command = "node", filetypes = {c = true, go = true, lua = true, python = true, rust = true, scala = true, ["."] = false, yaml = false, markdown = false, svn = false, gitcommit = false, help = false, hgcommit = false, gitrebase = false, cvs = false}, panel = {auto_refresh = true, keymap = {accept = "<CR>", jump_next = "]]", jump_prev = "[[", open = "<M-CR>", refresh = "gr"}, layout = {position = "bottom", ratio = 0.4}, enabled = false}, server_opts_overrides = {}, suggestion = {debounce = 75, keymap = {accept = "<Tab>", dismiss = "<C-q>", next = "<C-l>", prev = "<C-h>", accept_word = false, accept_line = false}, enabled = false, auto_trigger = false}})
 vim.cmd("inoremap <expr> <c-x><c-f> fzf#vim#complete#path('rg --files')")
 return vim.cmd("if executable('ag')\n  let g:ackprg = 'ag --vimgrep'\nendif")

@@ -73,6 +73,12 @@
 (let [jump2d (require :mini.jump2d)]
   (jump2d.setup))
 
+(let [surround (require :mini.surround)]
+  (surround.setup))
+
+(let [bracketed (require :mini.bracketed)]
+  (bracketed.setup))
+
 (set vim.g.mapleader " ")
 (set vim.g.maplocalleader ",")
 
