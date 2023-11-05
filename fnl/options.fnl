@@ -236,7 +236,7 @@
                 {:desc "File [e]xplorer"})
 ((. (require :nvim-treesitter.configs) :setup) 
   {:auto_install false
-    :ensure_installed [:c :cpp :go :lua :python :rust :tsx :typescript :vimdoc :vim :scala :elixir :heex :kotlin :fennel :racket :awk]
+    :ensure_installed [:c :cpp :go :lua :python :rust :tsx :typescript :vimdoc :vim :scala :elixir :heex :kotlin :fennel :racket :awk :scheme]
     :highlight {:enable true}
     :incremental_selection {:enable true
                             :keymaps {:init_selection :<c-space>
