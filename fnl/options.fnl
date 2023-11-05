@@ -34,59 +34,18 @@
 (set vim.opt.undodir (.. (os.getenv :HOME) :/.vim/undodir))
 (set vim.opt.undofile true)
 
-(let [starter (require :mini.starter)]
-  (starter.setup))
-
-(let [files (require :mini.files)]
-  (files.setup))
-
-(let [misc (require :mini.misc)]
-  (misc.setup))
-
-(let [move (require :mini.move)]
-  (move.setup))
-
-(let [sessions (require :mini.sessions)]
-  (sessions.setup))
-
-(let [ai (require :mini.ai)]
-  (ai.setup))
-
-(let [pick (require :mini.pick)]
-  (pick.setup))
-
-(local extra (require :mini.extra))
-(extra.setup)
-
-(let [statusline (require :mini.statusline)]
-  (statusline.setup))
-
-(let [indentscope (require :mini.indentscope)]
-  (indentscope.setup))
-
-(let [comments (require :mini.comment)]
-  (comments.setup))
-
-(let [jump (require :mini.jump)]
-  (jump.setup))
-
-(let [jump2d (require :mini.jump2d)]
-  (jump2d.setup))
-
-(let [surround (require :mini.surround)]
-  (surround.setup))
-
-(let [bracketed (require :mini.bracketed)]
-  (bracketed.setup))
-
-(let [bufremove (require :mini.bufremove)]
-  (bufremove.setup))
+(local minis [:starter :files :misc :move :sessions :ai :pick :extra :statusline :indentscope :comment :jump "jump2d" :surround :bracketed :bufremove :splitjoin])
+(each [_ value (ipairs minis)]
+  (let [mod-name (.. "mini." value)
+        module (require mod-name)]
+      (module.setup)))
 
 (set vim.g.mapleader " ")
 (set vim.g.maplocalleader ",")
 
 (local miniclue (require :mini.clue))
-(miniclue.setup {:clues [(miniclue.gen_clues.builtin_completion)
+(miniclue.setup {:window {:config {:anchor :SE :row :auto :col :auto}}
+                 :clues [(miniclue.gen_clues.builtin_completion)
                          (miniclue.gen_clues.g)
                          (miniclue.gen_clues.marks)
                          (miniclue.gen_clues.registers)
@@ -131,14 +90,11 @@
 (vim.keymap.set :n :<LocalLeader>bw "<Cmd>lua MiniBufremove.wipeout()<CR>"
                 {:desc "Wipeout"})
 
-(let [marks (require :marks)]
-  (marks.setup))
+(let [marks (require :marks)] (marks.setup))
 
-(let [pqf (require :pqf)]
-  (pqf.setup))
+(let [pqf (require :pqf)] (pqf.setup))
 
-(let [better-escape (require :better_escape)]
-  (better-escape.setup))
+(let [better-escape (require :better_escape)] (better-escape.setup))
 
 (local cmp (require :cmp))
 (local luasnip (require :luasnip))
@@ -420,7 +376,6 @@
 
 ; (set vim.g.loaded_netrw 1)
 ; (set vim.g.loaded_netrwPlugin 1)
-; (set vim.opt.termguicolors true)
 (local rt (require :rust-tools))
 (rt.setup {:server {:capabilities capabilities :on_attach on-attach}})
 
@@ -463,3 +418,6 @@
 (vim.cmd "if executable('ag')
   let g:ackprg = 'ag --vimgrep'
 endif")
+(vim.cmd "command! -bang -nargs=? -complete=dir Files call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)")
+(vim.cmd "let g:fzf_vim = {}")
+(vim.cmd "let g:fzf_vim.preview_window = ['right,50%', 'ctrl-/']")

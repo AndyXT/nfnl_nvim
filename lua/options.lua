@@ -21,72 +21,16 @@ vim.opt.swapfile = false
 vim.opt.backup = false
 vim.opt.undodir = (os.getenv("HOME") .. "/.vim/undodir")
 vim.opt.undofile = true
-do
-  local starter = require("mini.starter")
-  starter.setup()
-end
-do
-  local files = require("mini.files")
-  files.setup()
-end
-do
-  local misc = require("mini.misc")
-  misc.setup()
-end
-do
-  local move = require("mini.move")
-  move.setup()
-end
-do
-  local sessions = require("mini.sessions")
-  sessions.setup()
-end
-do
-  local ai = require("mini.ai")
-  ai.setup()
-end
-do
-  local pick = require("mini.pick")
-  pick.setup()
-end
-local extra = require("mini.extra")
-extra.setup()
-do
-  local statusline = require("mini.statusline")
-  statusline.setup()
-end
-do
-  local indentscope = require("mini.indentscope")
-  indentscope.setup()
-end
-do
-  local comments = require("mini.comment")
-  comments.setup()
-end
-do
-  local jump = require("mini.jump")
-  jump.setup()
-end
-do
-  local jump2d = require("mini.jump2d")
-  jump2d.setup()
-end
-do
-  local surround = require("mini.surround")
-  surround.setup()
-end
-do
-  local bracketed = require("mini.bracketed")
-  bracketed.setup()
-end
-do
-  local bufremove = require("mini.bufremove")
-  bufremove.setup()
+local minis = {"starter", "files", "misc", "move", "sessions", "ai", "pick", "extra", "statusline", "indentscope", "comment", "jump", "jump2d", "surround", "bracketed", "bufremove", "splitjoin"}
+for _, value in ipairs(minis) do
+  local mod_name = ("mini." .. value)
+  local module = require(mod_name)
+  module.setup()
 end
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
 local miniclue = require("mini.clue")
-miniclue.setup({clues = {miniclue.gen_clues.builtin_completion(), miniclue.gen_clues.g(), miniclue.gen_clues.marks(), miniclue.gen_clues.registers(), miniclue.gen_clues.windows(), miniclue.gen_clues.z(), {mode = "n", keys = "<LocalLeader>e", desc = "+EvalConjure"}, {mode = "n", keys = "<LocalLeader>l", desc = "+LogConjure"}, {mode = "n", keys = "<LocalLeader>r", desc = "+REPLConjure"}, {mode = "n", keys = "<LocalLeader>t", desc = "+TestConjure"}, {mode = "n", keys = "<LocalLeader>b", desc = "+Buffer"}, {mode = "n", keys = "<Leader>c", desc = "+Code"}, {mode = "n", keys = "<Leader>r", desc = "+Refactor"}, {mode = "n", keys = "<Leader>w", desc = "+Workspace"}, {mode = "n", keys = "<Leader>f", desc = "+Find"}, {mode = "n", keys = "<Leader>g", desc = "+Git"}, {mode = "n", keys = "<Leader>d", desc = "+Document"}}, triggers = {{keys = "<Leader>", mode = "n"}, {keys = "<Leader>", mode = "x"}, {keys = "<LocalLeader>", mode = "n"}, {keys = "<LocalLeader>", mode = "x"}, {keys = "<C-x>", mode = "i"}, {keys = "]", mode = "n"}, {keys = "]", mode = "x"}, {keys = "[", mode = "n"}, {keys = "[", mode = "x"}, {keys = "g", mode = "n"}, {keys = "g", mode = "x"}, {keys = "'", mode = "n"}, {keys = "`", mode = "n"}, {keys = "'", mode = "x"}, {keys = "`", mode = "x"}, {keys = "\"", mode = "n"}, {keys = "\"", mode = "x"}, {keys = "<C-r>", mode = "i"}, {keys = "<C-r>", mode = "c"}, {keys = "<C-w>", mode = "n"}, {keys = "z", mode = "n"}, {keys = "z", mode = "x"}}})
+miniclue.setup({window = {config = {anchor = "SE", row = "auto", col = "auto"}}, clues = {miniclue.gen_clues.builtin_completion(), miniclue.gen_clues.g(), miniclue.gen_clues.marks(), miniclue.gen_clues.registers(), miniclue.gen_clues.windows(), miniclue.gen_clues.z(), {mode = "n", keys = "<LocalLeader>e", desc = "+EvalConjure"}, {mode = "n", keys = "<LocalLeader>l", desc = "+LogConjure"}, {mode = "n", keys = "<LocalLeader>r", desc = "+REPLConjure"}, {mode = "n", keys = "<LocalLeader>t", desc = "+TestConjure"}, {mode = "n", keys = "<LocalLeader>b", desc = "+Buffer"}, {mode = "n", keys = "<Leader>c", desc = "+Code"}, {mode = "n", keys = "<Leader>r", desc = "+Refactor"}, {mode = "n", keys = "<Leader>w", desc = "+Workspace"}, {mode = "n", keys = "<Leader>f", desc = "+Find"}, {mode = "n", keys = "<Leader>g", desc = "+Git"}, {mode = "n", keys = "<Leader>d", desc = "+Document"}}, triggers = {{keys = "<Leader>", mode = "n"}, {keys = "<Leader>", mode = "x"}, {keys = "<LocalLeader>", mode = "n"}, {keys = "<LocalLeader>", mode = "x"}, {keys = "<C-x>", mode = "i"}, {keys = "]", mode = "n"}, {keys = "]", mode = "x"}, {keys = "[", mode = "n"}, {keys = "[", mode = "x"}, {keys = "g", mode = "n"}, {keys = "g", mode = "x"}, {keys = "'", mode = "n"}, {keys = "`", mode = "n"}, {keys = "'", mode = "x"}, {keys = "`", mode = "x"}, {keys = "\"", mode = "n"}, {keys = "\"", mode = "x"}, {keys = "<C-r>", mode = "i"}, {keys = "<C-r>", mode = "c"}, {keys = "<C-w>", mode = "n"}, {keys = "z", mode = "n"}, {keys = "z", mode = "x"}}})
 local function _1_()
   return MiniBufremove.delete()
 end
@@ -241,6 +185,9 @@ end
 vim.keymap.set("n", "<leader>z", _18_, {desc = "Toggle Zoom current window"})
 local rt = require("rust-tools")
 rt.setup({server = {capabilities = capabilities, on_attach = on_attach}})
-do end (require("copilot")).setup({copilot_node_command = "node", filetypes = {c = true, go = true, lua = true, python = true, rust = true, scala = true, yaml = false, gitcommit = false, help = false, gitrebase = false, markdown = false, hgcommit = false, svn = false, cvs = false, ["."] = false}, panel = {auto_refresh = true, keymap = {accept = "<CR>", jump_next = "]]", jump_prev = "[[", open = "<M-CR>", refresh = "gr"}, layout = {position = "bottom", ratio = 0.4}, enabled = false}, server_opts_overrides = {}, suggestion = {debounce = 75, keymap = {accept = "<Tab>", dismiss = "<C-q>", next = "<C-l>", prev = "<C-h>", accept_line = false, accept_word = false}, auto_trigger = false, enabled = false}})
+do end (require("copilot")).setup({copilot_node_command = "node", filetypes = {c = true, go = true, lua = true, python = true, rust = true, scala = true, help = false, cvs = false, yaml = false, ["."] = false, svn = false, gitcommit = false, gitrebase = false, markdown = false, hgcommit = false}, panel = {auto_refresh = true, keymap = {accept = "<CR>", jump_next = "]]", jump_prev = "[[", open = "<M-CR>", refresh = "gr"}, layout = {position = "bottom", ratio = 0.4}, enabled = false}, server_opts_overrides = {}, suggestion = {debounce = 75, keymap = {accept = "<Tab>", dismiss = "<C-q>", next = "<C-l>", prev = "<C-h>", accept_word = false, accept_line = false}, enabled = false, auto_trigger = false}})
 vim.cmd("inoremap <expr> <c-x><c-f> fzf#vim#complete#path('rg --files')")
-return vim.cmd("if executable('ag')\n  let g:ackprg = 'ag --vimgrep'\nendif")
+vim.cmd("if executable('ag')\n  let g:ackprg = 'ag --vimgrep'\nendif")
+vim.cmd("command! -bang -nargs=? -complete=dir Files call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)")
+vim.cmd("let g:fzf_vim = {}")
+return vim.cmd("let g:fzf_vim.preview_window = ['right,50%', 'ctrl-/']")
