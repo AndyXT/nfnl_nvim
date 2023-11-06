@@ -306,7 +306,7 @@
 
 ; (pcall (. (require :telescope) :load_extension) :file_browser)
 ; (vim.keymap.set :n :<leader>.
-;                 (fn [] (Mini-pick.start {:source {:items (vim.fn.readdir (vim.fn.expand "%:p:h"))}}) end)
+;                 (fn [] (MiniPick.start {:source {:items (vim.fn.readdir (vim.fn.expand "%:p:h"))}}) end)
 ;                 {:desc "File Browser Buffer CWD"})
 
 ; ((. (require :telescope) :load_extension) :harpoon)
