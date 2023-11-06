@@ -181,14 +181,14 @@
   (nmap :<leader>rn vim.lsp.buf.rename "[R]e[n]ame")
   (nmap :<leader>ca vim.lsp.buf.code_action "[C]ode [A]ction")
   (nmap :gd vim.lsp.buf.definition "[G]oto [D]efinition")
-  (nmap :gr "<cmd>Pick lsp scope='references'" 
+  (nmap :gr "<cmd>Pick lsp scope='references'<CR>" 
         "[G]oto [R]eferences")
-  (nmap :gI "<cmd>Pick lsp scope='implementation'"
+  (nmap :gI "<cmd>Pick lsp scope='implementation'<CR>"
         "[G]oto [I]mplementation")
   (nmap :<leader>D vim.lsp.buf.type_definition "Type [D]efinition")
-  (nmap :<leader>ds "<cmd>Pick lsp scope='document_symbols'"
+  (nmap :<leader>ds "<cmd>Pick lsp scope='document_symbols'<CR>"
         "[D]ocument [S]ymbols")
-  (nmap :<leader>ws "<cmd>Pick lsp scope='workspace_symbols'"
+  (nmap :<leader>ws "<cmd>Pick lsp scope='workspace_symbols'<CR>"
         "[W]orkspace [S]ymbols")
   (nmap :K vim.lsp.buf.hover "Hover Documentation")
   (nmap :<C-k> vim.lsp.buf.signature_help "Signature Documentation")
