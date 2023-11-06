@@ -295,7 +295,7 @@
 
 ; (pcall (. (require :telescope) :load_extension) :file_browser)
 ; (vim.keymap.set :n :<leader>.
-;                 "<cmd>Telescope file_browser path=%:p:h select_buffer=true<cr>"
+;                 (fn [] (Mini-pick.start {:source {:items (vim.fn.readdir (vim.fn.expand "%:p:h"))}}) end)
 ;                 {:desc "File Browser Buffer CWD"})
 
 ; ((. (require :telescope) :load_extension) :harpoon)
