@@ -115,4 +115,4 @@
             :mileszs/ack.vim
             ; :AndyXT/nfnl-plugin-example
             ])
-return {}
+{}

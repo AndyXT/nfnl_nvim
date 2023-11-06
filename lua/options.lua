@@ -21,14 +21,16 @@ vim.opt.swapfile = false
 vim.opt.backup = false
 vim.opt.undodir = (os.getenv("HOME") .. "/.vim/undodir")
 vim.opt.undofile = true
+vim.g.mapleader = " "
+vim.g.maplocalleader = ","
 local minis = {"starter", "files", "misc", "move", "sessions", "ai", "pick", "extra", "statusline", "indentscope", "comment", "jump", "jump2d", "surround", "bracketed", "bufremove", "splitjoin"}
 for _, value in ipairs(minis) do
   local mod_name = ("mini." .. value)
   local module = require(mod_name)
   module.setup()
 end
-vim.g.mapleader = " "
-vim.g.maplocalleader = ","
+local hipatterns = require("mini.hipatterns")
+hipatterns.setup({highlighters = {fixme = {group = "MiniHipatternsFixme", pattern = "%f[%w]()FIXME()%f[%W]"}, hack = {group = "MiniHipatternsHack", pattern = "%f[%w]()HACK()%f[%W]"}, hex_color = hipatterns.gen_highlighter.hex_color(), note = {group = "MiniHipatternsNote", pattern = "%f[%w]()NOTE()%f[%W]"}, todo = {group = "MiniHipatternsTodo", pattern = "%f[%w]()TODO()%f[%W]"}}})
 local miniclue = require("mini.clue")
 miniclue.setup({window = {config = {anchor = "SE", row = "auto", col = "auto"}}, clues = {miniclue.gen_clues.builtin_completion(), miniclue.gen_clues.g(), miniclue.gen_clues.marks(), miniclue.gen_clues.registers(), miniclue.gen_clues.windows(), miniclue.gen_clues.z(), {mode = "n", keys = "<LocalLeader>e", desc = "+EvalConjure"}, {mode = "n", keys = "<LocalLeader>l", desc = "+LogConjure"}, {mode = "n", keys = "<LocalLeader>r", desc = "+REPLConjure"}, {mode = "n", keys = "<LocalLeader>t", desc = "+TestConjure"}, {mode = "n", keys = "<LocalLeader>b", desc = "+Buffer"}, {mode = "n", keys = "<Leader>c", desc = "+Code"}, {mode = "n", keys = "<Leader>r", desc = "+Refactor"}, {mode = "n", keys = "<Leader>w", desc = "+Workspace"}, {mode = "n", keys = "<Leader>f", desc = "+Find"}, {mode = "n", keys = "<Leader>g", desc = "+Git"}, {mode = "n", keys = "<Leader>d", desc = "+Document"}}, triggers = {{keys = "<Leader>", mode = "n"}, {keys = "<Leader>", mode = "x"}, {keys = "<LocalLeader>", mode = "n"}, {keys = "<LocalLeader>", mode = "x"}, {keys = "<C-x>", mode = "i"}, {keys = "]", mode = "n"}, {keys = "]", mode = "x"}, {keys = "[", mode = "n"}, {keys = "[", mode = "x"}, {keys = "g", mode = "n"}, {keys = "g", mode = "x"}, {keys = "'", mode = "n"}, {keys = "`", mode = "n"}, {keys = "'", mode = "x"}, {keys = "`", mode = "x"}, {keys = "\"", mode = "n"}, {keys = "\"", mode = "x"}, {keys = "<C-r>", mode = "i"}, {keys = "<C-r>", mode = "c"}, {keys = "<C-w>", mode = "n"}, {keys = "z", mode = "n"}, {keys = "z", mode = "x"}}})
 local function _1_()
@@ -101,11 +103,11 @@ local function on_attach(_, bufnr)
   nmap("<leader>rn", vim.lsp.buf.rename, "[R]e[n]ame")
   nmap("<leader>ca", vim.lsp.buf.code_action, "[C]ode [A]ction")
   nmap("gd", vim.lsp.buf.definition, "[G]oto [D]efinition")
-  nmap("gr", "<cmd>Pick lsp scope='references'", "[G]oto [R]eferences")
-  nmap("gI", "<cmd>Pick lsp scope='implementation'", "[G]oto [I]mplementation")
+  nmap("gr", "<cmd>Pick lsp scope='references'<CR>", "[G]oto [R]eferences")
+  nmap("gI", "<cmd>Pick lsp scope='implementation'<CR>", "[G]oto [I]mplementation")
   nmap("<leader>D", vim.lsp.buf.type_definition, "Type [D]efinition")
-  nmap("<leader>ds", "<cmd>Pick lsp scope='document_symbols'", "[D]ocument [S]ymbols")
-  nmap("<leader>ws", "<cmd>Pick lsp scope='workspace_symbols'", "[W]orkspace [S]ymbols")
+  nmap("<leader>ds", "<cmd>Pick lsp scope='document_symbols'<CR>", "[D]ocument [S]ymbols")
+  nmap("<leader>ws", "<cmd>Pick lsp scope='workspace_symbols'<CR>", "[W]orkspace [S]ymbols")
   nmap("K", vim.lsp.buf.hover, "Hover Documentation")
   nmap("<C-k>", vim.lsp.buf.signature_help, "Signature Documentation")
   nmap("gD", vim.lsp.buf.declaration, "[G]oto [D]eclaration")
@@ -146,6 +148,7 @@ vim.keymap.set("n", "<leader>/", "<CMD>Pick buf_lines<CR>", {desc = "[/] Fuzzily
 vim.keymap.set("n", "<leader>gf", "<CMD>Pick git_files<CR>", {desc = "Search [G]it [F]iles"})
 vim.keymap.set("n", "<leader>ff", "<CMD>Pick files<CR>", {desc = "[F]ind [F]iles"})
 vim.keymap.set("n", "<leader>fh", "<CMD>Pick help<CR>", {desc = "[S]earch [H]elp"})
+vim.keymap.set("n", "<leader>fw", "<CMD>Pick grep pattern='<cword>'<CR>", {desc = "[S]earch current [W]ord"})
 vim.keymap.set("n", "<leader>fg", "<CMD>Pick grep_live<CR>", {desc = "[S]earch by [G]rep"})
 vim.keymap.set("n", "<leader>fd", "<CMD>Pick diagnostic<CR>", {desc = "[S]earch [D]iagnostics"})
 local function _13_()
@@ -185,7 +188,7 @@ end
 vim.keymap.set("n", "<leader>z", _18_, {desc = "Toggle Zoom current window"})
 local rt = require("rust-tools")
 rt.setup({server = {capabilities = capabilities, on_attach = on_attach}})
-do end (require("copilot")).setup({copilot_node_command = "node", filetypes = {c = true, go = true, lua = true, python = true, rust = true, scala = true, ["."] = false, yaml = false, svn = false, gitcommit = false, hgcommit = false, gitrebase = false, cvs = false, markdown = false, help = false}, panel = {auto_refresh = true, keymap = {accept = "<CR>", jump_next = "]]", jump_prev = "[[", open = "<M-CR>", refresh = "gr"}, layout = {position = "bottom", ratio = 0.4}, enabled = false}, server_opts_overrides = {}, suggestion = {debounce = 75, keymap = {accept = "<Tab>", dismiss = "<C-q>", next = "<C-l>", prev = "<C-h>", accept_line = false, accept_word = false}, enabled = false, auto_trigger = false}})
+do end (require("copilot")).setup({copilot_node_command = "node", filetypes = {c = true, go = true, lua = true, python = true, rust = true, scala = true, gitcommit = false, gitrebase = false, ["."] = false, svn = false, hgcommit = false, help = false, cvs = false, markdown = false, yaml = false}, panel = {auto_refresh = true, keymap = {accept = "<CR>", jump_next = "]]", jump_prev = "[[", open = "<M-CR>", refresh = "gr"}, layout = {position = "bottom", ratio = 0.4}, enabled = false}, server_opts_overrides = {}, suggestion = {debounce = 75, keymap = {accept = "<Tab>", dismiss = "<C-q>", next = "<C-l>", prev = "<C-h>", accept_line = false, accept_word = false}, auto_trigger = false, enabled = false}})
 vim.cmd("inoremap <expr> <c-x><c-f> fzf#vim#complete#path('rg --files')")
 vim.cmd("if executable('ag')\n  let g:ackprg = 'ag --vimgrep'\nendif")
 vim.cmd("command! -bang -nargs=? -complete=dir Files call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)")
