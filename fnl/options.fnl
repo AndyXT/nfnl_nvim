@@ -34,14 +34,14 @@
 (set vim.opt.undodir (.. (os.getenv :HOME) :/.vim/undodir))
 (set vim.opt.undofile true)
 
+(set vim.g.mapleader " ")
+(set vim.g.maplocalleader ",")
+
 (local minis [:starter :files :misc :move :sessions :ai :pick :extra :statusline :indentscope :comment :jump "jump2d" :surround :bracketed :bufremove :splitjoin])
 (each [_ value (ipairs minis)]
   (let [mod-name (.. "mini." value)
         module (require mod-name)]
       (module.setup)))
-
-(set vim.g.mapleader " ")
-(set vim.g.maplocalleader ",")
 
 (local hipatterns (require :mini.hipatterns))
 (hipatterns.setup {:highlighters {:fixme {:group :MiniHipatternsFixme
