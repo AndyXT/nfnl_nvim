@@ -34,14 +34,25 @@
 (set vim.opt.undodir (.. (os.getenv :HOME) :/.vim/undodir))
 (set vim.opt.undofile true)
 
+(set vim.g.mapleader " ")
+(set vim.g.maplocalleader ",")
+
 (local minis [:starter :files :misc :move :sessions :ai :pick :extra :statusline :indentscope :comment :jump "jump2d" :surround :bracketed :bufremove :splitjoin])
 (each [_ value (ipairs minis)]
   (let [mod-name (.. "mini." value)
         module (require mod-name)]
       (module.setup)))
 
-(set vim.g.mapleader " ")
-(set vim.g.maplocalleader ",")
+(local hipatterns (require :mini.hipatterns))
+(hipatterns.setup {:highlighters {:fixme {:group :MiniHipatternsFixme
+                                          :pattern "%f[%w]()FIXME()%f[%W]"}
+                                  :hack {:group :MiniHipatternsHack
+                                         :pattern "%f[%w]()HACK()%f[%W]"}
+                                  :note {:group :MiniHipatternsNote
+                                         :pattern "%f[%w]()NOTE()%f[%W]"}
+                                  :todo {:group :MiniHipatternsTodo
+                                         :pattern "%f[%w]()TODO()%f[%W]"}	
+                                  :hex_color (hipatterns.gen_highlighter.hex_color)}})
 
 (local miniclue (require :mini.clue))
 (miniclue.setup {:window {:config {:anchor :SE :row :auto :col :auto}}
@@ -170,14 +181,14 @@
   (nmap :<leader>rn vim.lsp.buf.rename "[R]e[n]ame")
   (nmap :<leader>ca vim.lsp.buf.code_action "[C]ode [A]ction")
   (nmap :gd vim.lsp.buf.definition "[G]oto [D]efinition")
-  (nmap :gr "<cmd>Pick lsp scope='references'" 
+  (nmap :gr "<cmd>Pick lsp scope='references'<CR>" 
         "[G]oto [R]eferences")
-  (nmap :gI "<cmd>Pick lsp scope='implementation'"
+  (nmap :gI "<cmd>Pick lsp scope='implementation'<CR>"
         "[G]oto [I]mplementation")
   (nmap :<leader>D vim.lsp.buf.type_definition "Type [D]efinition")
-  (nmap :<leader>ds "<cmd>Pick lsp scope='document_symbols'"
+  (nmap :<leader>ds "<cmd>Pick lsp scope='document_symbol'<CR>"
         "[D]ocument [S]ymbols")
-  (nmap :<leader>ws "<cmd>Pick lsp scope='workspace_symbols'"
+  (nmap :<leader>ws "<cmd>Pick lsp scope='workspace_symbol'<CR>"
         "[W]orkspace [S]ymbols")
   (nmap :K vim.lsp.buf.hover "Hover Documentation")
   (nmap :<C-k> vim.lsp.buf.signature_help "Signature Documentation")
@@ -226,8 +237,8 @@
                 {:desc "[F]ind [F]iles"})
 (vim.keymap.set :n :<leader>fh "<CMD>Pick help<CR>"
                 {:desc "[S]earch [H]elp"})
-; (vim.keymap.set :n :<leader>fw "<CMD>Pick git_files<CR>"
-;                 {:desc "[S]earch current [W]ord"})
+(vim.keymap.set :n :<leader>fw "<CMD>Pick grep pattern='<cword>'<CR>"
+                {:desc "[S]earch current [W]ord"})
 (vim.keymap.set :n :<leader>fg "<CMD>Pick grep_live<CR>"
                 {:desc "[S]earch by [G]rep"})
 (vim.keymap.set :n :<leader>fd "<CMD>Pick diagnostic<CR>"
@@ -293,12 +304,10 @@
 (each [_ mapping (ipairs mappings)]
   (vim.keymap.set (. mapping 1) (. mapping 2) (. mapping 3) opts))	
 
-; (pcall (. (require :telescope) :load_extension) :file_browser)
-; (vim.keymap.set :n :<leader>.
-;                 "<cmd>Telescope file_browser path=%:p:h select_buffer=true<cr>"
-;                 {:desc "File Browser Buffer CWD"})
+(vim.keymap.set :n :<leader>.
+                (fn [] (MiniFiles.open (vim.api.nvim_buf_get_name 0) false) end)
+                {:desc "File Browser Buffer CWD"})
 
-; ((. (require :telescope) :load_extension) :harpoon)
 ; (vim.keymap.set :n :<leader>ha
 ;                 (fn []
 ;                   ((. (require :harpoon.mark) :add_file)))
