@@ -48,11 +48,11 @@
                                           :pattern "%f[%w]()FIXME()%f[%W]"}
                                   :hack {:group :MiniHipatternsHack
                                          :pattern "%f[%w]()HACK()%f[%W]"}
-                                  :hex_color (hipatterns.gen_highlighter.hex_color)
                                   :note {:group :MiniHipatternsNote
                                          :pattern "%f[%w]()NOTE()%f[%W]"}
                                   :todo {:group :MiniHipatternsTodo
-                                         :pattern "%f[%w]()TODO()%f[%W]"}}})	
+                                         :pattern "%f[%w]()TODO()%f[%W]"}	
+                                  :hex_color (hipatterns.gen_highlighter.hex_color)}})
 
 (local miniclue (require :mini.clue))
 (miniclue.setup {:window {:config {:anchor :SE :row :auto :col :auto}}
@@ -186,9 +186,9 @@
   (nmap :gI "<cmd>Pick lsp scope='implementation'<CR>"
         "[G]oto [I]mplementation")
   (nmap :<leader>D vim.lsp.buf.type_definition "Type [D]efinition")
-  (nmap :<leader>ds "<cmd>Pick lsp scope='document_symbols'<CR>"
+  (nmap :<leader>ds "<cmd>Pick lsp scope='document_symbol'<CR>"
         "[D]ocument [S]ymbols")
-  (nmap :<leader>ws "<cmd>Pick lsp scope='workspace_symbols'<CR>"
+  (nmap :<leader>ws "<cmd>Pick lsp scope='workspace_symbol'<CR>"
         "[W]orkspace [S]ymbols")
   (nmap :K vim.lsp.buf.hover "Hover Documentation")
   (nmap :<C-k> vim.lsp.buf.signature_help "Signature Documentation")
@@ -304,12 +304,10 @@
 (each [_ mapping (ipairs mappings)]
   (vim.keymap.set (. mapping 1) (. mapping 2) (. mapping 3) opts))	
 
-; (pcall (. (require :telescope) :load_extension) :file_browser)
-; (vim.keymap.set :n :<leader>.
-;                 (fn [] (MiniPick.start {:source {:items (vim.fn.readdir (vim.fn.expand "%:p:h"))}}) end)
-;                 {:desc "File Browser Buffer CWD"})
+(vim.keymap.set :n :<leader>.
+                (fn [] (MiniFiles.open (vim.api.nvim_buf_get_name 0) false) end)
+                {:desc "File Browser Buffer CWD"})
 
-; ((. (require :telescope) :load_extension) :harpoon)
 ; (vim.keymap.set :n :<leader>ha
 ;                 (fn []
 ;                   ((. (require :harpoon.mark) :add_file)))
