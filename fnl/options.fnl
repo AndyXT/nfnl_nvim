@@ -226,8 +226,8 @@
                 {:desc "[F]ind [F]iles"})
 (vim.keymap.set :n :<leader>fh "<CMD>Pick help<CR>"
                 {:desc "[S]earch [H]elp"})
-; (vim.keymap.set :n :<leader>fw "<CMD>Pick git_files<CR>"
-;                 {:desc "[S]earch current [W]ord"})
+(vim.keymap.set :n :<leader>fw "<CMD>Pick grep pattern='<cword>'<CR>"
+                {:desc "[S]earch current [W]ord"})
 (vim.keymap.set :n :<leader>fg "<CMD>Pick grep_live<CR>"
                 {:desc "[S]earch by [G]rep"})
 (vim.keymap.set :n :<leader>fd "<CMD>Pick diagnostic<CR>"
