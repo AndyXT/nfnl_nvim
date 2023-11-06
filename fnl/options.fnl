@@ -43,6 +43,17 @@
 (set vim.g.mapleader " ")
 (set vim.g.maplocalleader ",")
 
+(local hipatterns (require :mini.hipatterns))
+(hipatterns.setup {:highlighters {:fixme {:group :MiniHipatternsFixme
+                                          :pattern "%f[%w]()FIXME()%f[%W]"}
+                                  :hack {:group :MiniHipatternsHack
+                                         :pattern "%f[%w]()HACK()%f[%W]"}
+                                  :hex_color (hipatterns.gen_highlighter.hex_color)
+                                  :note {:group :MiniHipatternsNote
+                                         :pattern "%f[%w]()NOTE()%f[%W]"}
+                                  :todo {:group :MiniHipatternsTodo
+                                         :pattern "%f[%w]()TODO()%f[%W]"}}})	
+
 (local miniclue (require :mini.clue))
 (miniclue.setup {:window {:config {:anchor :SE :row :auto :col :auto}}
                  :clues [(miniclue.gen_clues.builtin_completion)
