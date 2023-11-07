@@ -105,5 +105,6 @@
              {1 :akinsho/git-conflict.nvim :config true :version "*"}
              :mileszs/ack.vim
              :folke/tokyonight.nvim
+             :oxfist/night-owl.nvim
             ])
 {}
