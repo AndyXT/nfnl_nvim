@@ -37,7 +37,7 @@
 (set vim.g.mapleader " ")
 (set vim.g.maplocalleader ",")
 
-(local minis [:starter :files :misc :move :sessions :ai :pick :extra :statusline :indentscope :comment :jump "jump2d" :surround :bracketed :bufremove :splitjoin])
+(local minis [:starter :files :misc :move :sessions :ai :pick :extra :statusline :indentscope :comment :jump "jump2d" :surround :bracketed :bufremove :splitjoin :pairs])
 (each [_ value (ipairs minis)]
   (let [mod-name (.. "mini." value)
         module (require mod-name)]
@@ -46,6 +46,8 @@
 (local hipatterns (require :mini.hipatterns))
 (hipatterns.setup {:highlighters {:fixme {:group :MiniHipatternsFixme
                                           :pattern "%f[%w]()FIXME()%f[%W]"}
+                                  :warning {:group :MiniHipatternsFixme
+                                          :pattern "%f[%w]()WARNING()%f[%W]"}
                                   :hack {:group :MiniHipatternsHack
                                          :pattern "%f[%w]()HACK()%f[%W]"}
                                   :note {:group :MiniHipatternsNote
