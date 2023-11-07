@@ -183,17 +183,33 @@ local function _18_()
   return __fnl_global__end
 end
 vim.keymap.set("n", "<leader>.", _18_, {desc = "File Browser Buffer CWD"})
+local function _19_()
+  return (require("harpoon.mark")).add_file()
+end
+vim.keymap.set("n", "<leader>ha", _19_, {desc = "Add File"})
+local function _20_()
+  return (require("harpoon.ui")).toggle_quick_menu()
+end
+vim.keymap.set("n", "<leader>hm", _20_, {desc = "Toggle Menu"})
+local function _21_()
+  return (require("harpoon.ui")).nav_next()
+end
+vim.keymap.set("n", "<leader>hn", _21_, {desc = "[N]ext  File"})
+local function _22_()
+  return (require("harpoon.ui")).nav_prev()
+end
+vim.keymap.set("n", "<leader>hp", _22_, {desc = "[P]revious File"})
 vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, {desc = "Go to previous diagnostic message"})
 vim.keymap.set("n", "]d", vim.diagnostic.goto_next, {desc = "Go to next diagnostic message"})
 vim.keymap.set("n", "<leader>E", vim.diagnostic.open_float, {desc = "Open floating diagnostic message"})
 vim.keymap.set("n", "<leader>q", vim.diagnostic.setloclist, {desc = "Open diagnostics list"})
-local function _19_()
+local function _23_()
   return MiniMisc.zoom()
 end
-vim.keymap.set("n", "<leader>z", _19_, {desc = "Toggle Zoom current window"})
+vim.keymap.set("n", "<leader>z", _23_, {desc = "Toggle Zoom current window"})
 local rt = require("rust-tools")
 rt.setup({server = {capabilities = capabilities, on_attach = on_attach}})
-do end (require("copilot")).setup({copilot_node_command = "node", filetypes = {c = true, go = true, lua = true, python = true, rust = true, scala = true, hgcommit = false, yaml = false, cvs = false, help = false, gitcommit = false, svn = false, ["."] = false, gitrebase = false, markdown = false}, panel = {auto_refresh = true, keymap = {accept = "<CR>", jump_next = "]]", jump_prev = "[[", open = "<M-CR>", refresh = "gr"}, layout = {position = "bottom", ratio = 0.4}, enabled = false}, server_opts_overrides = {}, suggestion = {debounce = 75, keymap = {accept = "<Tab>", dismiss = "<C-q>", next = "<C-l>", prev = "<C-h>", accept_word = false, accept_line = false}, auto_trigger = false, enabled = false}})
+do end (require("copilot")).setup({copilot_node_command = "node", filetypes = {c = true, go = true, lua = true, python = true, rust = true, scala = true, cvs = false, gitcommit = false, svn = false, markdown = false, yaml = false, gitrebase = false, ["."] = false, help = false, hgcommit = false}, panel = {auto_refresh = true, keymap = {accept = "<CR>", jump_next = "]]", jump_prev = "[[", open = "<M-CR>", refresh = "gr"}, layout = {position = "bottom", ratio = 0.4}, enabled = false}, server_opts_overrides = {}, suggestion = {debounce = 75, keymap = {accept = "<Tab>", dismiss = "<C-q>", next = "<C-l>", prev = "<C-h>", accept_word = false, accept_line = false}, enabled = false, auto_trigger = false}})
 vim.cmd("inoremap <expr> <c-x><c-f> fzf#vim#complete#path('rg --files')")
 vim.cmd("if executable('ag')\n  let g:ackprg = 'ag --vimgrep'\nendif")
 vim.cmd("command! -bang -nargs=? -complete=dir Files call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)")

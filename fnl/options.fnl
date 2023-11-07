@@ -308,22 +308,22 @@
                 (fn [] (MiniFiles.open (vim.api.nvim_buf_get_name 0) false) end)
                 {:desc "File Browser Buffer CWD"})
 
-; (vim.keymap.set :n :<leader>ha
-;                 (fn []
-;                   ((. (require :harpoon.mark) :add_file)))
-;                 {:desc "Add File"})
-; (vim.keymap.set :n :<leader>hm
-;                 (fn []
-;                   ((. (require :harpoon.ui) :toggle_quick_menu)))
-;                 {:desc "Toggle Menu"})
-; (vim.keymap.set :n :<leader>hn
-;                 (fn []
-;                   ((. (require :harpoon.ui) :nav_next)))
-;                 {:desc "[N]ext  File"})
-; (vim.keymap.set :n :<leader>hp
-;                 (fn []
-;                   ((. (require :harpoon.ui) :nav_prev)))
-;                 {:desc "[P]revious File"})
+(vim.keymap.set :n :<leader>ha
+                (fn []
+                  ((. (require :harpoon.mark) :add_file)))
+                {:desc "Add File"})
+(vim.keymap.set :n :<leader>hm
+                (fn []
+                  ((. (require :harpoon.ui) :toggle_quick_menu)))
+                {:desc "Toggle Menu"})
+(vim.keymap.set :n :<leader>hn
+                (fn []
+                  ((. (require :harpoon.ui) :nav_next)))
+                {:desc "[N]ext  File"})
+(vim.keymap.set :n :<leader>hp
+                (fn []
+                  ((. (require :harpoon.ui) :nav_prev)))
+                {:desc "[P]revious File"})
 ; 
 ; ((. (require :refactoring) :setup) {})
 ; (vim.keymap.set :x :<leader>re
