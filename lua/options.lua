@@ -23,7 +23,7 @@ vim.opt.undodir = (os.getenv("HOME") .. "/.vim/undodir")
 vim.opt.undofile = true
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
-local minis = {"starter", "files", "misc", "move", "sessions", "ai", "pick", "extra", "statusline", "indentscope", "comment", "jump", "jump2d", "surround", "bracketed", "bufremove", "splitjoin", "pairs"}
+local minis = {"starter", "files", "misc", "move", "sessions", "ai", "pick", "extra", "indentscope", "comment", "jump", "surround", "bracketed", "bufremove", "splitjoin", "pairs"}
 for _, value in ipairs(minis) do
   local mod_name = ("mini." .. value)
   local module = require(mod_name)
@@ -87,7 +87,7 @@ end
 local function _8_(args)
   return (require("luasnip")).lsp_expand(args.body)
 end
-cmp.setup({formatting = {format = lspkind.cmp_format({before = _3_, ellipsis_char = "...", maxwidth = 50, mode = "symbol", symbol_map = {Copilot = "\239\132\147"}})}, mapping = cmp.mapping.preset.insert({["<C-Space>"] = cmp.mapping.complete(), ["<C-b>"] = cmp.mapping.scroll_docs(( - 4)), ["<C-e>"] = cmp.mapping.abort(), ["<C-f>"] = cmp.mapping.scroll_docs(4), ["<C-n>"] = cmp.mapping.select_next_item(), ["<C-p>"] = cmp.mapping.select_prev_item(), ["<CR>"] = cmp.mapping.confirm({select = true}), ["<S-Tab>"] = cmp.mapping(_4_, {"i", "s"}), ["<Tab>"] = cmp.mapping(_6_, {"i", "s"})}), snippet = {expand = _8_}, sources = cmp.config.sources({{name = "nvim_lsp"}, {name = "luasnip"}, {name = "buffer"}, {name = "nvim_lua"}, {name = "path"}, {name = "copilot", group_index = 2}, {name = "conjure"}})})
+cmp.setup({formatting = {format = lspkind.cmp_format({before = _3_, ellipsis_char = "...", maxwidth = 50, mode = "symbol", symbol_map = {Copilot = "\239\132\147"}})}, mapping = cmp.mapping.preset.insert({["<C-Space>"] = cmp.mapping.complete(), ["<C-b>"] = cmp.mapping.scroll_docs(( - 4)), ["<C-e>"] = cmp.mapping.abort(), ["<C-f>"] = cmp.mapping.scroll_docs(4), ["<C-n>"] = cmp.mapping.select_next_item(), ["<C-p>"] = cmp.mapping.select_prev_item(), ["<CR>"] = cmp.mapping.confirm({select = true}), ["<S-Tab>"] = cmp.mapping(_4_, {"i", "s"}), ["<Tab>"] = cmp.mapping(_6_, {"i", "s"})}), snippet = {expand = _8_}, sources = cmp.config.sources({{name = "nvim_lsp"}, {name = "luasnip"}, {name = "buffer"}, {name = "nvim_lua"}, {name = "path"}, {name = "conjure"}, {name = "copilot", group_index = 2}})})
 cmp.setup.cmdline({"/", "?"}, {mapping = cmp.mapping.preset.cmdline(), sources = {{name = "buffer"}}})
 cmp.setup.cmdline(":", {mapping = cmp.mapping.preset.cmdline(), sources = cmp.config.sources({{name = "path"}}, {{name = "cmdline"}})})
 local capability = vim.lsp.protocol.make_client_capabilities()
@@ -126,12 +126,13 @@ do end (require("neodev")).setup()
 do
   local lspconfig = require("lspconfig")
   do
-    local servers = {"lua_ls", "gopls", "fennel_language_server", "clangd"}
+    local servers = {"lua_ls", "gopls", "fennel_language_server", "clangd", "nim_langserver"}
     for index, value in ipairs(servers) do
       lspconfig[value].setup({capabilities = capabilities, on_attach = on_attach})
     end
   end
   lspconfig.racket_langserver.setup({capabilities = capabilities, on_attach = on_attach})
+  lspconfig.nim_langserver.setup({capabilities = capabilities, on_attach = on_attach, settings = {nim = {nimsuggestPath = "~/.nimble/bin/nimsuggest"}}})
 end
 vim.keymap.set({"n", "v"}, "<Space>", "<Nop>", {silent = true})
 vim.keymap.set("n", "<esc>", "<cmd>noh<cr>", {silent = true})
@@ -155,7 +156,7 @@ local function _13_()
   return MiniFiles.open()
 end
 vim.keymap.set("n", "<leader>e", _13_, {desc = "File [e]xplorer"})
-do end (require("nvim-treesitter.configs")).setup({ensure_installed = {"c", "cpp", "go", "lua", "python", "rust", "tsx", "typescript", "vimdoc", "vim", "scala", "elixir", "heex", "kotlin", "fennel", "racket", "awk", "scheme"}, highlight = {enable = true}, incremental_selection = {enable = true, keymaps = {init_selection = "<c-space>", node_decremental = "<M-space>", node_incremental = "<c-space>", scope_incremental = "<c-s>"}}, indent = {enable = true}, textobjects = {move = {enable = true, goto_next_end = {["]M"] = "@function.outer", ["]["] = "@class.outer"}, goto_next_start = {["]]"] = "@class.outer", ["]m"] = "@function.outer"}, goto_previous_end = {["[M"] = "@function.outer", ["[]"] = "@class.outer"}, goto_previous_start = {["[["] = "@class.outer", ["[m"] = "@function.outer"}, set_jumps = true}, select = {enable = true, keymaps = {aa = "@parameter.outer", ac = "@class.outer", af = "@function.outer", ia = "@parameter.inner", ic = "@class.inner", ["if"] = "@function.inner"}, lookahead = true}, swap = {enable = true, swap_next = {["<leader>a"] = "@parameter.inner"}, swap_previous = {["<leader>A"] = "@parameter.inner"}}}, auto_install = false})
+do end (require("nvim-treesitter.configs")).setup({ensure_installed = {"c", "cpp", "go", "lua", "python", "rust", "tsx", "typescript", "vimdoc", "vim", "scala", "elixir", "heex", "kotlin", "fennel", "racket", "awk", "scheme", "markdown", "markdown_inline", "nim"}, highlight = {enable = true}, incremental_selection = {enable = true, keymaps = {init_selection = "<c-space>", node_decremental = "<M-space>", node_incremental = "<c-space>", scope_incremental = "<c-s>"}}, indent = {enable = true}, textobjects = {move = {enable = true, goto_next_end = {["]M"] = "@function.outer", ["]["] = "@class.outer"}, goto_next_start = {["]]"] = "@class.outer", ["]m"] = "@function.outer"}, goto_previous_end = {["[M"] = "@function.outer", ["[]"] = "@class.outer"}, goto_previous_start = {["[["] = "@class.outer", ["[m"] = "@function.outer"}, set_jumps = true}, select = {enable = true, keymaps = {aa = "@parameter.outer", ac = "@class.outer", af = "@function.outer", ia = "@parameter.inner", ic = "@class.inner", ["if"] = "@function.inner"}, lookahead = true}, swap = {enable = true, swap_next = {["<leader>a"] = "@parameter.inner"}, swap_previous = {["<leader>A"] = "@parameter.inner"}}}, auto_install = false})
 do end (require("nvterm")).setup({behavior = {auto_insert = true, autoclose_on_quit = {confirm = true, enabled = false}, close_on_exit = true}, terminals = {list = {}, shell = vim.o.shell, type_opts = {float = {border = "single", col = 0.25, height = 0.4, relative = "editor", row = 0.3, width = 0.5}, horizontal = {location = "rightbelow", split_ratio = 0.3}, vertical = {location = "rightbelow", split_ratio = 0.5}}}})
 local terminal = require("nvterm.terminal")
 local ft_cmds = {python = ("python3 " .. vim.fn.expand("%"))}
@@ -207,9 +208,7 @@ local function _23_()
   return MiniMisc.zoom()
 end
 vim.keymap.set("n", "<leader>z", _23_, {desc = "Toggle Zoom current window"})
-local rt = require("rust-tools")
-rt.setup({server = {capabilities = capabilities, on_attach = on_attach}})
-do end (require("copilot")).setup({copilot_node_command = "node", filetypes = {c = true, go = true, lua = true, python = true, rust = true, scala = true, hgcommit = false, cvs = false, gitcommit = false, yaml = false, svn = false, gitrebase = false, markdown = false, help = false, ["."] = false}, panel = {auto_refresh = true, keymap = {accept = "<CR>", jump_next = "]]", jump_prev = "[[", open = "<M-CR>", refresh = "gr"}, layout = {position = "bottom", ratio = 0.4}, enabled = false}, server_opts_overrides = {}, suggestion = {debounce = 75, keymap = {accept = "<Tab>", dismiss = "<C-q>", next = "<C-l>", prev = "<C-h>", accept_line = false, accept_word = false}, auto_trigger = false, enabled = false}})
+do end (require("copilot")).setup({copilot_node_command = "node", filetypes = {c = true, go = true, lua = true, python = true, rust = true, scala = true, gitcommit = false, gitrebase = false, yaml = false, markdown = false, hgcommit = false, svn = false, cvs = false, ["."] = false, help = false}, panel = {auto_refresh = true, keymap = {accept = "<CR>", jump_next = "]]", jump_prev = "[[", open = "<M-CR>", refresh = "gr"}, layout = {position = "bottom", ratio = 0.4}, enabled = false}, server_opts_overrides = {}, suggestion = {debounce = 75, keymap = {accept = "<Tab>", dismiss = "<C-q>", next = "<C-l>", prev = "<C-h>", accept_word = false, accept_line = false}, auto_trigger = false, enabled = false}})
 vim.cmd("inoremap <expr> <c-x><c-f> fzf#vim#complete#path('rg --files')")
 vim.cmd("if executable('ag')\n  let g:ackprg = 'ag --vimgrep'\nendif")
 vim.cmd("command! -bang -nargs=? -complete=dir Files call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)")
@@ -217,4 +216,23 @@ vim.cmd("let g:fzf_vim = {}")
 vim.cmd("let g:fzf_vim.preview_window = ['right,50%', 'ctrl-/']")
 vim.cmd("let g:pandoc#filetypes#handled = [\"pandoc\", \"markdown\"]")
 vim.cmd("let g:pandoc#filetypes#pandoc_markdown = 0")
-return vim.cmd("let g:pandoc#modules#disabled = [\"folding\"]")
+vim.cmd("let g:pandoc#modules#disabled = [\"folding\"]")
+do end (vim.g)["conjure#extract#tree_sitter#enabled"] = true
+local hop = require("hop")
+local directions = (require("hop.hint")).HintDirection
+local function _24_()
+  return hop.hint_char1({current_line_only = true, direction = directions.AFTER_CURSOR})
+end
+vim.keymap.set("", "f", _24_, {remap = true})
+local function _25_()
+  return hop.hint_char1({current_line_only = true, direction = directions.BEFORE_CURSOR})
+end
+vim.keymap.set("", "F", _25_, {remap = true})
+local function _26_()
+  return hop.hint_char1({current_line_only = true, direction = directions.AFTER_CURSOR, hint_offset = ( - 1)})
+end
+vim.keymap.set("", "t", _26_, {remap = true})
+local function _27_()
+  return hop.hint_char1({current_line_only = true, direction = directions.BEFORE_CURSOR, hint_offset = 1})
+end
+return vim.keymap.set("", "T", _27_, {remap = true})

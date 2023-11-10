@@ -37,7 +37,7 @@
 (set vim.g.mapleader " ")
 (set vim.g.maplocalleader ",")
 
-(local minis [:starter :files :misc :move :sessions :ai :pick :extra :statusline :indentscope :comment :jump "jump2d" :surround :bracketed :bufremove :splitjoin :pairs])
+(local minis [:starter :files :misc :move :sessions :ai :pick :extra :indentscope :comment :jump :surround :bracketed :bufremove :splitjoin :pairs])
 (each [_ value (ipairs minis)]
   (let [mod-name (.. "mini." value)
         module (require mod-name)]
@@ -164,8 +164,9 @@
                                           {:name :buffer}
                                           {:name :nvim_lua}
                                           {:name :path}
+                                          {:name :conjure}
                                           {:name :copilot :group_index 2}
-                                          {:name :conjure}])})
+                                          ])})
 (cmp.setup.cmdline ["/" "?"]
                    {:mapping (cmp.mapping.preset.cmdline)
                     :sources [{:name :buffer}]})
@@ -210,13 +211,16 @@
 ((. (require :neodev) :setup))
 
 (let [lspconfig (require :lspconfig)]
-  (let [servers [:lua_ls :gopls :fennel_language_server :clangd]]
+  (let [servers [:lua_ls :gopls :fennel_language_server :clangd :nim_langserver]]
     (each [index value (ipairs servers)]
       ((. lspconfig value :setup) {:capabilities capabilities
                                    :on_attach on_attach})))
   ((. lspconfig :racket_langserver :setup) {:capabilities capabilities
-                                            :on_attach on_attach}))
+                                            :on_attach on_attach})
                                             ;:cmd ["xvfb-run" "racket" "-l" "racket-langserver"]
+  ((. lspconfig :nim_langserver :setup) {:capabilities capabilities
+                                         :on_attach on_attach
+                                         :settings {:nim {:nimsuggestPath "~/.nimble/bin/nimsuggest"}}}))
 
 (vim.keymap.set [:n :v] :<Space> :<Nop> {:silent true})
 (vim.keymap.set :n :<esc> "<cmd>noh<cr>" {:silent true})
@@ -250,7 +254,7 @@
                 {:desc "File [e]xplorer"})
 ((. (require :nvim-treesitter.configs) :setup) 
   {:auto_install false
-   :ensure_installed [:c :cpp :go :lua :python :rust :tsx :typescript :vimdoc :vim :scala :elixir :heex :kotlin :fennel :racket :awk :scheme]
+   :ensure_installed [:c :cpp :go :lua :python :rust :tsx :typescript :vimdoc :vim :scala :elixir :heex :kotlin :fennel :racket :awk :scheme :markdown :markdown_inline :nim]
    :highlight {:enable true}
    :incremental_selection {:enable true
                            :keymaps {:init_selection :<c-space>
@@ -388,8 +392,8 @@
 
 ; (set vim.g.loaded_netrw 1)
 ; (set vim.g.loaded_netrwPlugin 1)
-(local rt (require :rust-tools))
-(rt.setup {:server {:capabilities capabilities :on_attach on-attach}})
+; (local rt (require :rust-tools))
+; (rt.setup {:server {:capabilities capabilities :on_attach on-attach}})
 
 ((. (require :copilot) :setup) {:copilot_node_command :node
                                 :filetypes {:. false
@@ -436,3 +440,28 @@ endif")
 (vim.cmd "let g:pandoc#filetypes#handled = [\"pandoc\", \"markdown\"]")
 (vim.cmd "let g:pandoc#filetypes#pandoc_markdown = 0")
 (vim.cmd "let g:pandoc#modules#disabled = [\"folding\"]")
+(tset vim.g "conjure#extract#tree_sitter#enabled" true)
+(local hop (require :hop))
+(local directions (. (require :hop.hint) :HintDirection))
+(vim.keymap.set "" :f
+                (fn []
+                  (hop.hint_char1 {:current_line_only true
+                                   :direction directions.AFTER_CURSOR}))
+                {:remap true})
+(vim.keymap.set "" :F
+                (fn []
+                  (hop.hint_char1 {:current_line_only true
+                                   :direction directions.BEFORE_CURSOR}))
+                {:remap true})
+(vim.keymap.set "" :t
+                (fn []
+                  (hop.hint_char1 {:current_line_only true
+                                   :direction directions.AFTER_CURSOR
+                                   :hint_offset (- 1)}))
+                {:remap true})
+(vim.keymap.set "" :T
+                (fn []
+                  (hop.hint_char1 {:current_line_only true
+                                   :direction directions.BEFORE_CURSOR
+                                   :hint_offset 1}))
+                {:remap true})

@@ -46,4 +46,5 @@ require('init')
 require('options')
 
 -- vim.cmd([[colorscheme carbonfox]])
-vim.cmd([[colorscheme tokyonight-night]])
+-- vim.cmd([[colorscheme tokyonight-night]])
+vim.cmd([[colorscheme rose-pine-main]])

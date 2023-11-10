@@ -7,7 +7,21 @@
              :max397574/better-escape.nvim
              :rktjmp/hotpot.nvim
              :Olical/aniseed
-             :Olical/conjure
+             ; :Olical/conjure
+             {1 :Olical/conjure
+              :config (fn [_ opts]
+                        ((. (require :conjure.main) :main))
+                        ((. (require :conjure.mapping) :on-filetype)))
+              :dependencies [{1 :PaterJason/cmp-conjure
+                              :config (fn []
+                                        (local cmp (require :cmp))
+                                        (local config (cmp.get_config))
+                                        (table.insert config.sources
+                                                      {:name :buffer
+                                                       :option {:sources [{:name :conjure}]}})
+                                        (cmp.setup config))}]
+              :ft [:clojure :fennel :python]
+              :init (fn [] (tset vim.g "conjure#debug" true))}
              :Olical/nvim-local-fennel
              :PaterJason/cmp-conjure
              :PeterRincker/vim-argumentative
@@ -69,7 +83,7 @@
               :opts {}}
              {1 :folke/neodev.nvim :opts {}}
              :rafamadriz/friendly-snippets
-             :simrat39/rust-tools.nvim
+             ; :simrat39/rust-tools.nvim
              {1 :zbirenbaum/copilot.lua
               :cmd :Copilot
               :config (fn []
@@ -106,5 +120,16 @@
              :mileszs/ack.vim
              :folke/tokyonight.nvim
              :oxfist/night-owl.nvim
+             :miikanissi/modus-themes.nvim
+             :cryptomilk/nightcity.nvim
+             {1 :nvimdev/lspsaga.nvim
+              :config (fn []
+                        ((. (require :lspsaga) :setup) {}))
+              :dependencies [:nvim-treesitter/nvim-treesitter :nvim-tree/nvim-web-devicons]}
+             :rebelot/kanagawa.nvim
+             :rose-pine/neovim
+             ; {1 :mrcjkb/rustaceanvim :ft [:rust] :version :^3}
+             {1 :smoka7/hop.nvim :opts {} :version "*"}
+             :nvim-lualine/lualine.nvim
             ])
 {}
