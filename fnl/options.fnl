@@ -184,11 +184,11 @@
 
   (nmap :<leader>rn vim.lsp.buf.rename "[R]e[n]ame")
   (nmap :<leader>ca vim.lsp.buf.code_action "[C]ode [A]ction")
-  (nmap :gd vim.lsp.buf.definition "[G]oto [D]efinition")
-  (nmap :gr "<cmd>Pick lsp scope='references'<CR>" 
-        "[G]oto [R]eferences")
-  (nmap :gI "<cmd>Pick lsp scope='implementation'<CR>"
-        "[G]oto [I]mplementation")
+  ; (nmap :gd vim.lsp.buf.definition "[G]oto [D]efinition")
+  ; (nmap :gr "<cmd>Pick lsp scope='references'<CR>" 
+  ;       "[G]oto [R]eferences")
+  ; (nmap :gI "<cmd>Pick lsp scope='implementation'<CR>"
+  ;       "[G]oto [I]mplementation")
   (nmap :<leader>D vim.lsp.buf.type_definition "Type [D]efinition")
   (nmap :<leader>ds "<cmd>Pick lsp scope='document_symbol'<CR>"
         "[D]ocument [S]ymbols")
@@ -208,7 +208,8 @@
                                         (fn [_] (vim.lsp.buf.format))
                                         {:desc "Format current buffer with LSP"}))
 
-((. (require :neodev) :setup))
+; ((. (require :neodev) :setup {:library {:plugins [:nvim-dap-ui] :types true}}))
+(let [neodev (require :neodev)] (neodev.setup {:library {:plugins [:nvim-dap-ui] :types true}}))
 
 (let [lspconfig (require :lspconfig)]
   (let [servers [:lua_ls :gopls :fennel_language_server :clangd :nim_langserver]]
@@ -234,22 +235,22 @@
                               :pattern "*"})
 (vim.keymap.set :n :<leader>? "<CMD>Pick oldfiles<CR>"
                 {:desc "[?] Find recently opened files"})
-(vim.keymap.set :n :<leader>b "<CMD>Pick buffers<CR>"
-                {:desc "[b] Find existing buffers"})
+; (vim.keymap.set :n :<leader>b "<CMD>Pick buffers<CR>"
+;                 {:desc "[b] Find existing buffers"})
 (vim.keymap.set :n :<leader>/ "<CMD>Pick buf_lines<CR>"
                 {:desc "[/] Fuzzily search in current buffer"})
-(vim.keymap.set :n :<leader>gf "<CMD>Pick git_files<CR>"
-                {:desc "Search [G]it [F]iles"})
-(vim.keymap.set :n :<leader>ff "<CMD>Pick files<CR>"
-                {:desc "[F]ind [F]iles"})
-(vim.keymap.set :n :<leader>fh "<CMD>Pick help<CR>"
-                {:desc "[S]earch [H]elp"})
-(vim.keymap.set :n :<leader>fw "<CMD>Pick grep pattern='<cword>'<CR>"
-                {:desc "[S]earch current [W]ord"})
-(vim.keymap.set :n :<leader>fg "<CMD>Pick grep_live<CR>"
-                {:desc "[S]earch by [G]rep"})
-(vim.keymap.set :n :<leader>fd "<CMD>Pick diagnostic<CR>"
-                {:desc "[S]earch [D]iagnostics"})
+; (vim.keymap.set :n :<leader>gf "<CMD>Pick git_files<CR>"
+;                 {:desc "Search [G]it [F]iles"})
+; (vim.keymap.set :n :<leader>ff "<CMD>Pick files<CR>"
+;                 {:desc "[F]ind [F]iles"})
+; (vim.keymap.set :n :<leader>fh "<CMD>Pick help<CR>"
+;                 {:desc "[S]earch [H]elp"})
+; (vim.keymap.set :n :<leader>fw "<CMD>Pick grep pattern='<cword>'<CR>"
+;                 {:desc "[S]earch current [W]ord"})
+; (vim.keymap.set :n :<leader>fg "<CMD>Pick grep_live<CR>"
+;                 {:desc "[S]earch by [G]rep"})
+; (vim.keymap.set :n :<leader>fd "<CMD>Pick diagnostic<CR>"
+;                 {:desc "[S]earch [D]iagnostics"})
 (vim.keymap.set :n :<leader>e (fn [] (MiniFiles.open))
                 {:desc "File [e]xplorer"})
 ((. (require :nvim-treesitter.configs) :setup) 
@@ -331,54 +332,6 @@
                 (fn []
                   ((. (require :harpoon.ui) :nav_prev)))
                 {:desc "[P]revious File"})
-; 
-; ((. (require :refactoring) :setup) {})
-; (vim.keymap.set :x :<leader>re
-;                 (fn []
-;                   ((. (require :refactoring) :refactor) "Extract Function"))
-;                 {:desc "Extract Function"})
-; (vim.keymap.set :x :<leader>rf
-;                 (fn []
-;                   ((. (require :refactoring) :refactor) "Extract Function To File"))
-;                 {:desc "Extract Function to File"})
-; (vim.keymap.set :x :<leader>rv
-;                 (fn []
-;                   ((. (require :refactoring) :refactor) "Extract Variable"))
-;                 {:desc "Extract Variable"})
-; (vim.keymap.set :n :<leader>rI
-;                 (fn []
-;                   ((. (require :refactoring) :refactor) "Inline Function"))
-;                 {:desc "Inline Function"})
-; (vim.keymap.set [:n :x] :<leader>ri
-;                 (fn []
-;                   ((. (require :refactoring) :refactor) "Inline Variable"))
-;                 {:desc "Inline Variable"})
-; (vim.keymap.set :n :<leader>rb
-;                 (fn []
-;                   ((. (require :refactoring) :refactor) "Extract Block"))
-;                 {:desc "Extract Block"})
-; (vim.keymap.set :n :<leader>rbf
-;                 (fn []
-;                   ((. (require :refactoring) :refactor) "Extract Block To File"))
-;                 {:desc "Extract Block To File"})
-;  ((. (require :telescope) :load_extension) :refactoring)
-;  (vim.keymap.set [:n :x] :<leader>rr
-;                  (fn []
-;                    ((. (. (. (require :telescope) :extensions) :refactoring)
-;                        :refactors)))
-;                  {:desc "Select Refactor Menu"})
-; (vim.keymap.set :n :<leader>rp
-;                 (fn []
-;                   ((. (. (require :refactoring) :debug) :printf) {:below false}))
-;                 {:desc "Debug Printf"})
-; (vim.keymap.set [:x :n] :<leader>rv
-;                 (fn []
-;                   ((. (. (require :refactoring) :debug) :print_var)))
-;                 {:desc "Debug Print Var"})
-; (vim.keymap.set :n :<leader>rc
-;                 (fn []
-;                   ((. (. (require :refactoring) :debug) :cleanup) {}))
-;                 {:desc "Debug Cleanup"})
 (vim.keymap.set :n "[d" vim.diagnostic.goto_prev
                 {:desc "Go to previous diagnostic message"})
 (vim.keymap.set :n "]d" vim.diagnostic.goto_next
@@ -405,6 +358,7 @@
                                             :help false
                                             :hgcommit false
                                             :lua true
+                                            :fennel true
                                             :markdown false
                                             :python true
                                             :rust true
@@ -430,13 +384,13 @@
                                                       :next :<C-l>
                                                       :prev :<C-h>}}})
 
-(vim.cmd "inoremap <expr> <c-x><c-f> fzf#vim#complete#path('rg --files')")
+; (vim.cmd "inoremap <expr> <c-x><c-f> fzf#vim#complete#path('rg --files')")
 (vim.cmd "if executable('ag')
   let g:ackprg = 'ag --vimgrep'
 endif")
-(vim.cmd "command! -bang -nargs=? -complete=dir Files call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)")
-(vim.cmd "let g:fzf_vim = {}")
-(vim.cmd "let g:fzf_vim.preview_window = ['right,50%', 'ctrl-/']")
+; (vim.cmd "command! -bang -nargs=? -complete=dir Files call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)")
+; (vim.cmd "let g:fzf_vim = {}")
+; (vim.cmd "let g:fzf_vim.preview_window = ['right,50%', 'ctrl-/']")
 (vim.cmd "let g:pandoc#filetypes#handled = [\"pandoc\", \"markdown\"]")
 (vim.cmd "let g:pandoc#filetypes#pandoc_markdown = 0")
 (vim.cmd "let g:pandoc#modules#disabled = [\"folding\"]")
@@ -465,3 +419,61 @@ endif")
                                    :direction directions.BEFORE_CURSOR
                                    :hint_offset 1}))
                 {:remap true})
+((. (require :lualine) :setup))
+; fzfx keymaps
+(vim.keymap.set :n :<space>f :<cmd>FzfxFiles<cr>
+                {:desc "Find files" :noremap true :silent true})
+(vim.keymap.set :x :<space>f :<cmd>FzfxFilesV<CR>
+                {:desc "Find files" :noremap true :silent true})
+(vim.keymap.set :n :<space>wf :<cmd>FzfxFilesW<cr>
+                {:desc "Find files by cursor word" :noremap true :silent true})
+(vim.keymap.set :n :<space>pf :<cmd>FzfxFilesP<cr>
+                {:desc "Find files by yank text" :noremap true :silent true})
+(vim.keymap.set :n :<space>l :<cmd>FzfxLiveGrep<cr>
+                {:desc "Live grep" :noremap true :silent true})
+(vim.keymap.set :x :<space>l :<cmd>FzfxLiveGrepV<cr>
+                {:desc "Live grep" :noremap true :silent true})
+(vim.keymap.set :n :<space>wl :<cmd>FzfxLiveGrepW<cr>
+                {:desc "Live grep by cursor word" :noremap true :silent true})
+(vim.keymap.set :n :<space>pl :<cmd>FzfxLiveGrepP<cr>
+                {:desc "Live grep by cursor word" :noremap true :silent true})
+(vim.keymap.set :n :<space>bf :<cmd>FzfxBuffers<cr>
+                {:desc "Find buffers" :noremap true :silent true})
+(vim.keymap.set :n :<space>gf :<cmd>FzfxGFiles<cr>
+                {:desc "Find git files" :noremap true :silent true})
+(vim.keymap.set :n :<space>gs :<cmd>FzfxGStatus<cr>
+                {:desc "Find git changed files (status)"
+                 :noremap true
+                 :silent true})
+(vim.keymap.set :n :<space>br :<cmd>FzfxGBranches<cr>
+                {:desc "Search git branches" :noremap true :silent true})
+(vim.keymap.set :n :<space>gc :<cmd>FzfxGCommits<cr>
+                {:desc "Search git commits" :noremap true :silent true})
+(vim.keymap.set :n :<space>gb :<cmd>FzfxGBlame<cr>
+                {:desc "Search git blame" :noremap true :silent true})
+(vim.keymap.set :n :<space>dg :<cmd>FzfxLspDiagnostics<cr>
+                {:desc "Search lsp diagnostics" :noremap true :silent true})
+(vim.keymap.set :x :<space>dg :<cmd>FzfxLspDiagnosticsV<CR>
+                {:desc "Search lsp diagnostics" :noremap true :silent true})
+(vim.keymap.set :n :<space>wdg :<cmd>FzfxLspDiagnosticsW<cr>
+                {:desc "Search lsp diagnostics by cursor word"
+                 :noremap true
+                 :silent true})
+(vim.keymap.set :n :<space>pdg :<cmd>FzfxLspDiagnosticsP<cr>
+                {:desc "Search lsp diagnostics by yank text"
+                 :noremap true
+                 :silent true})
+(vim.keymap.set :n :gd :<cmd>FzfxLspDefinitions<cr>
+                {:desc "Goto lsp definitions" :noremap true :silent true})
+(vim.keymap.set :n :gt :<cmd>FzfxLspTypeDefinitions<cr>
+                {:desc "Goto lsp type definitions" :noremap true :silent true})
+(vim.keymap.set :n :gr :<cmd>FzfxLspReferences<cr>
+                {:desc "Goto lsp references" :noremap true :silent true})
+(vim.keymap.set :n :gi :<cmd>FzfxLspImplementations<cr>
+                {:desc "Goto lsp implementations" :noremap true :silent true})
+(vim.keymap.set :n :<space>cm :<cmd>FzfxCommands<cr>
+                {:desc "Search vim commands" :noremap true :silent true})
+(vim.keymap.set :n :<space>km :<cmd>FzfxKeyMaps<cr>
+                {:desc "Search vim keymaps" :noremap true :silent true})
+(vim.keymap.set :n :<space>xp :<cmd>FzfxFileExplorer<cr>
+                {:desc "File explorer" :noremap true :silent true})

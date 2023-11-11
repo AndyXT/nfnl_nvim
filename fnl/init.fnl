@@ -7,7 +7,6 @@
              :max397574/better-escape.nvim
              :rktjmp/hotpot.nvim
              :Olical/aniseed
-             ; :Olical/conjure
              {1 :Olical/conjure
               :config (fn [_ opts]
                         ((. (require :conjure.main) :main))
@@ -48,8 +47,13 @@
              :nvim-tree/nvim-web-devicons
              :yorickpeterse/nvim-pqf
              :kevinhwang91/nvim-bqf
-             {1 :junegunn/fzf :build "./install --bin"}
-             :junegunn/fzf.vim
+             ; {1 :junegunn/fzf :build "./install --bin"}
+             {1 :junegunn/fzf :build (fn [] ((. vim.fn "fzf#install")))}
+             ; :junegunn/fzf.vim
+             {1 :linrongbin16/fzfx.nvim
+              :config (fn []
+                        ((. (require :fzfx) :setup)))
+              :dependencies [:junegunn/fzf :nvim-tree/nvim-web-devicons]}
              :nvim-pack/nvim-spectre
              :chentoast/marks.nvim
              :bakpakin/fennel.vim
@@ -131,5 +135,10 @@
              ; {1 :mrcjkb/rustaceanvim :ft [:rust] :version :^3}
              {1 :smoka7/hop.nvim :opts {} :version "*"}
              :nvim-lualine/lualine.nvim
+             :mfussenegger/nvim-dap
+             :rcarriga/nvim-dap-ui
+             {1 :theHamsta/nvim-dap-virtual-text
+              :config (fn []
+                        ((. (require :nvim-dap-virtual-text) :setup) {}))}
             ])
 {}
