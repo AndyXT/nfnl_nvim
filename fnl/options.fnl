@@ -97,7 +97,8 @@
                             {:keys :<C-r> :mode :c}
                             {:keys :<C-w> :mode :n}
                             {:keys :z :mode :n}
-                            {:keys :z :mode :x}]})
+                            {:keys :z :mode :x}]
+                 :window {:config {:width 50 :anchor :SE :row :auto :col 90}}})
 
 (vim.keymap.set :n :<LocalLeader>bd (fn [] (MiniBufremove.delete))
                 {:desc "Delete"})
