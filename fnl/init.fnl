@@ -140,5 +140,7 @@
              {1 :theHamsta/nvim-dap-virtual-text
               :config (fn []
                         ((. (require :nvim-dap-virtual-text) :setup) {}))}
+             {1 :dasupradyumna/midnight.nvim :lazy false :priority 1000}
+             :Yazeed1s/oh-lucy.nvim
             ])
 {}
