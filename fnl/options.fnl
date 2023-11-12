@@ -428,6 +428,9 @@ endif")
                                    :direction directions.BEFORE_CURSOR
                                    :hint_offset 1}))
                 {:remap true})
+(vim.keymap.set "" :<cr>
+                "<cmd>HopAnywhereMW<CR>"
+                {:remap true})
 ((. (require :lualine) :setup))
 ; fzfx keymaps
 (vim.keymap.set :n :<space>f :<cmd>FzfxFiles<cr>
