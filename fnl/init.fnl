@@ -142,5 +142,9 @@
                         ((. (require :nvim-dap-virtual-text) :setup) {}))}
              {1 :dasupradyumna/midnight.nvim :lazy false :priority 1000}
              :Yazeed1s/oh-lucy.nvim
+             {1 :robitx/gp.nvim
+              :config (fn []
+                        ((. (require :gp) :setup)))}
+             :vimwiki/vimwiki
             ])
 {}

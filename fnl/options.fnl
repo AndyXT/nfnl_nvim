@@ -2,6 +2,10 @@
 (local config (require :nfnl.config))
 (local default (config.default))
 
+(vim.cmd "syntax on")
+(vim.cmd "set nocompatible")
+(vim.cmd "filetype plugin on")
+
 (set vim.wo.number true)
 (set vim.o.mouse "a")
 (set vim.o.clipboard "unnamedplus")
@@ -69,6 +73,7 @@
                          {:mode :n :keys :<LocalLeader>r :desc :+REPLConjure}
                          {:mode :n :keys :<LocalLeader>t :desc :+TestConjure}
                          {:mode :n :keys :<LocalLeader>b :desc :+Buffer}
+                         {:mode :n :keys :<C-g> :desc :+ChatGpt}
                          {:mode :n :keys :<Leader>c :desc :+Code}
                          {:mode :n :keys :<Leader>r :desc :+Refactor}
                          {:mode :n :keys :<Leader>w :desc :+Workspace}
@@ -96,6 +101,9 @@
                             {:keys :<C-r> :mode :i}
                             {:keys :<C-r> :mode :c}
                             {:keys :<C-w> :mode :n}
+                            {:keys :<C-g> :mode :n}
+                            {:keys :<C-g> :mode :i}
+                            {:keys :<C-g> :mode :v}
                             {:keys :z :mode :n}
                             {:keys :z :mode :x}]
                  :window {:config {:width 50 :anchor :SE :row :auto :col 90}}})
@@ -478,3 +486,45 @@ endif")
                 {:desc "Search vim keymaps" :noremap true :silent true})
 (vim.keymap.set :n :<space>xp :<cmd>FzfxFileExplorer<cr>
                 {:desc "File explorer" :noremap true :silent true})
+(fn keymap-options [desc]
+  {:desc (.. "GPT prompt " desc) :noremap true :nowait true :silent true})
+(vim.keymap.set [:n :i] :<C-g>c :<cmd>GpChatNew<cr> (keymap-options "New Chat"))
+(vim.keymap.set [:n :i] :<C-g>t :<cmd>GpChatToggle<cr>
+                (keymap-options "Toggle Popup Chat"))
+(vim.keymap.set [:n :i] :<C-g>f :<cmd>GpChatFinder<cr>
+                (keymap-options "Chat Finder"))
+(vim.keymap.set :v :<C-g>c ":<C-u>'<,'>GpChatNew<cr>"
+                (keymap-options "Visual Chat New"))
+(vim.keymap.set :v :<C-g>v ":<C-u>'<,'>GpChatPaste<cr>"
+                (keymap-options "Visual Chat Paste"))
+(vim.keymap.set :v :<C-g>t ":<C-u>'<,'>GpChatToggle<cr>"
+                (keymap-options "Visual Popup Chat"))
+(vim.keymap.set [:n :i] :<C-g><C-x> "<cmd>GpChatNew split<cr>"
+                (keymap-options "New Chat split"))
+(vim.keymap.set [:n :i] :<C-g><C-v> "<cmd>GpChatNew vsplit<cr>"
+                (keymap-options "New Chat vsplit"))
+(vim.keymap.set [:n :i] :<C-g><C-t> "<cmd>GpChatNew tabnew<cr>"
+                (keymap-options "New Chat tabnew"))
+(vim.keymap.set :v :<C-g><C-x> ":<C-u>'<,'>GpChatNew split<cr>"
+                (keymap-options "Visual Chat New split"))
+(vim.keymap.set :v :<C-g><C-v> ":<C-u>'<,'>GpChatNew vsplit<cr>"
+                (keymap-options "Visual Chat New vsplit"))
+(vim.keymap.set :v :<C-g><C-t> ":<C-u>'<,'>GpChatNew tabnew<cr>"
+                (keymap-options "Visual Chat New tabnew"))
+(vim.keymap.set [:n :i] :<C-g>r :<cmd>GpRewrite<cr>
+                (keymap-options "Inline Rewrite"))
+(vim.keymap.set [:n :i] :<C-g>a :<cmd>GpAppend<cr> (keymap-options :Append))
+(vim.keymap.set [:n :i] :<C-g>b :<cmd>GpPrepend<cr> (keymap-options :Prepend))
+(vim.keymap.set [:n :i] :<C-g>e :<cmd>GpEnew<cr> (keymap-options :Enew))
+(vim.keymap.set [:n :i] :<C-g>p :<cmd>GpPopup<cr> (keymap-options :Popup))
+(vim.keymap.set :v :<C-g>r ":<C-u>'<,'>GpRewrite<cr>"
+                (keymap-options "Visual Rewrite"))
+(vim.keymap.set :v :<C-g>a ":<C-u>'<,'>GpAppend<cr>"
+                (keymap-options "Visual Append"))
+(vim.keymap.set :v :<C-g>b ":<C-u>'<,'>GpPrepend<cr>"
+                (keymap-options "Visual Prepend"))
+(vim.keymap.set :v :<C-g>e ":<C-u>'<,'>GpEnew<cr>"
+                (keymap-options "Visual Enew"))
+(vim.keymap.set :v :<C-g>p ":<C-u>'<,'>GpPopup<cr>"
+                (keymap-options "Visual Popup"))
+(vim.keymap.set [:n :i :v :x] :<C-g>s :<cmd>GpStop<cr> (keymap-options :Stop))
