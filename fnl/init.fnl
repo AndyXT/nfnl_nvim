@@ -146,5 +146,6 @@
               :config (fn []
                         ((. (require :gp) :setup)))}
              :vimwiki/vimwiki
+             :sekke276/dark_flat.nvim
             ])
 {}

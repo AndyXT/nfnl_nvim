@@ -429,7 +429,7 @@ endif")
                                    :hint_offset 1}))
                 {:remap true})
 (vim.keymap.set "" :<cr>
-                "<cmd>HopAnywhereMW<CR>"
+                "<cmd>HopWordMW<CR>"
                 {:remap true})
 ((. (require :lualine) :setup))
 ; fzfx keymaps
